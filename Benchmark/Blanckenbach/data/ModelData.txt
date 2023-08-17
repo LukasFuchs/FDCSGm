@@ -1,0 +1,32 @@
+Die Modelle wurden mit den folgenden Solvern und Anfangsbedingungen berechnet: 
+  --------------------- 
+ Diffusion mit: ADI
+ Advektion mit: semi-lag
+ Viskositaet ist: const
+ Anfangstemperaturfeld: block
+ Anfangsgeschwindigkeitsfeld: none
+  --------------------- 
+
+Die wichtigen Parameter, welche im Skript verändert wurden sind:
+----------------------------------------------------------------
+% Model	eta0	nx/nz	dtfac	dtdifac	tmax [Ma]	tmax [non-dim]	itmax	Modell_time [s]
+    1		1e23	51      10.0	1.0     10000		0.3156          3000	576.5995
+    2		1e22	51      10.0	1.0     10000		0.3156          3000 	376.2914
+    3		1e21	51      10.0	1.0     10000		0.3156          3000	400.6648
+
+
+Wichtige Konstanten die für alle Modelle gelten sind:
+-----------------------------------------------------
+Gravitationsbeschleunigung, g ( m/s ) 	10
+Modelhoehe, H ( km ) 			1000
+Modelbreite, L ( km ) 			1000
+Temperatur oben, Ttop ( K ) 		273
+Temperatur unten, Tbottom ( K ) 	1273
+Thermische Leitfaehigkeit, k ( W/m/K ) 	5
+Waermekapazitaet, cp ( J/kg ) 		1250
+Dichte, rho ( kg/m^3 ) 			4000
+Thermische Ausdehnung, alpha ( 1/K )	2.5e-5
+
+Für die dynamischen Randbedingungen nehmen wir überall free-slip an. Die thermischen 
+Randbedingungen sind konstante Temperatur oben und unten und keinen Waermefluss an den 
+lateralen Rändern. 
