@@ -137,7 +137,8 @@ end
 % Animation settings ---------------------------------------------------- %
 switch Pl.savefig
     case 'yes'
-        M.ModDir    =   ['data/Blanckenbach_Ra_',sprintf('%2.2e',Py.Ra),...
+        M.ModDir    =   ['data/',Py.eparam,'_eta/Blanckenbach_Ra_',...
+            sprintf('%2.2e',Py.Ra),...
             '_eta_',Py.eparam,'_xmax_',num2str(M.xmax),...
             '_nx_',num2str(N.nz),'_nz_',num2str(N.nz),'_Adv_',...
             B.AdvMethod,'_Diff_',B.DiffMethod];
@@ -194,6 +195,10 @@ for it = 1:T.itmax
     T.dt        =   min(T.dt,T.dtdiff);    
     if it>1
         T.time(it)  =   T.time(it-1) + T.dt;
+        if T.time(it) > T.tmax 
+            T.dt        =   T.tmax - T.time(it-1);
+            T.time(it)  =   T.time(it-1) + T.dt; 
+        end
     end
     % =================================================================== %
     %% =========== Interpolate velocity onto the regular grid =========== %

@@ -21,7 +21,7 @@ else
 end
 % ======================================================================= %
 %% Some initial definitions --------------------------------------------- %
-Pl.savefig      =   'yes';
+Pl.savefig      =   'no';
 Pl.plotfields   =   'yes';
 Py.scale        =   'yes';
 % ======================================================================= %
@@ -97,7 +97,7 @@ B.bhf       =   B.thf + Py.DeltaT;
 % ======================================================================= %
 %% ====================== Define time constants ========================= %
 T.tmaxini   =   10000;          %   Maximale Zeit in Ma
-T.itmax     =   1e5;            %   Maximal erlaubte Anzahl der Iterationen
+T.itmax     =   1e6;            %   Maximal erlaubte Anzahl der Iterationen
 T.dtfac     =   1.0;            %   Advektionscourantkriterium
 T.dtdifac   =   0.9;            %   Diffusions Stabilitaetskriterium
 % ======================================================================= %
@@ -112,13 +112,12 @@ else
     Py.eta0 =   Py.rho0*Py.g*Py.alpha*Py.DeltaT*(-M.H*1e3)^3/Py.Ra/Py.kappa;
 end
 % ======================================================================= %
-n           = [8,9]; %[2,3,4,5,6,7,8,9];
+n           =   2; %[2,3,4,5,6,7,8,9];
 % n           = 2;
-nz          = ceil((n-1).*(Py.Ra/4)^(1/3)+1);
-Nus         = zeros(length(n),1);
-VRMS        = zeros(length(n),1);
+nz          =   ceil((n-1).*(Py.Ra/4)^(1/3)+1);
+Nus         =   zeros(length(n),1);
+VRMS        =   zeros(length(n),1);
 for i = 1:length(n)
-
     T.tstart    =   tic;
     N.nz    =   nz(i);
     N.nx    =   nz(i);

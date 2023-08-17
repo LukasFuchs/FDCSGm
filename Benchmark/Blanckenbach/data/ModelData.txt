@@ -9,10 +9,10 @@ Die Modelle wurden mit den folgenden Solvern und Anfangsbedingungen berechnet:
 
 Die wichtigen Parameter, welche im Skript verändert wurden sind:
 ----------------------------------------------------------------
-% Model	eta0	nx/nz	dtfac	dtdifac	tmax [Ma]	tmax [non-dim]	itmax	Modell_time [s]
-    1		1e23	51      10.0	1.0     10000		0.3156          3000	576.5995
-    2		1e22	51      10.0	1.0     10000		0.3156          3000 	376.2914
-    3		1e21	51      10.0	1.0     10000		0.3156          3000	400.6648
+% Model		eta0	nx/nz	dtfac	dtdifac	tmax [Ma]	tmax [non-dim]	itmax	Modell_time [s]
+  1		1e23	51      10.0	1.0     10000		0.3156          3000	576.5995
+  2		1e22	51      10.0	1.0     10000		0.3156          3000 	376.2914
+  3		1e21	51      10.0	1.0     10000		0.3156          3000	400.6648
 
 
 Wichtige Konstanten die für alle Modelle gelten sind:

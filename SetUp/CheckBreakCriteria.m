@@ -23,7 +23,7 @@ if (mod(it,10)==0||it==1)
     disp(['eps_V = ',sprintf('%g',epsV)])
 end
 
-if (T.time(it) > T.tmax)
+if (T.time(it) >= T.tmax)
     set(figure(1),'position',[1.8,1.8,766.4,780.8]);
     h           =   figure(1);
     disp('Maximale Zeit erreicht. Zeitschleife unterbrochen')
