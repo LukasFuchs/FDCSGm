@@ -72,6 +72,8 @@ The same applies to the other boundaries. Caution needs to be taken at the corne
 
 # Advection equation 
 
+# Numerical Methods
+
 # Benchmarks 
 ## Blanckenbach 
 ## Channel Flow
