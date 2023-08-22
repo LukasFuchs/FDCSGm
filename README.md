@@ -10,9 +10,13 @@
 
 # Energy equation
    The conservation of energy is a fundamental principle in physics and describes that the loss and generation of energy needs to be equal. In terms of a geodynamical problem, the energy can be described by the temperature, which is transported mainly through *conductive* and *convective* processes, such that a simple general energy equation is define as follows (assuming only radioactive heat sources): 
+
 	 ,	(1)
+  
 where the energy can be described as  , *c<sub>p</sub>* is the specific heat capacity [J/kg/K], *ρ* is a reference density [kg/m3], *T* is the temperature [K], *t* is the time,  is the velocity vector, *q<sub>i</sub>* is the heat flux in direction *i*, *∂/∂xi* is a directional derivative in direction *i*, and *H* the heat production rate per mass [W/kg]. The repeated index means a summation of derivatives. This conservation law contains the variation of the heat flux in a certain direction, where the heat flux is defined by the Fourier’s law as follows: 
-	 ,	(2)
+
+  	,	(2)
+
 where *k* is the thermal conductivity [W/m/K].
 
 # Stokes equation 
