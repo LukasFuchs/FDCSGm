@@ -1,6 +1,6 @@
 # FDCSGm
 
-   This is a **<sub>F</sub>**inite **<sub>D</sub>**ifference **<sub>C</sub>**ode with a **<sub>S</sub>**taggered **<sub>G</sub>**rid for the stokes variables (velocity and pressure) for **<sub>m</sub>**ATLAB (**FDCSGm**). 
+   This is a **F**inite **D**ifference **C**ode with a **S**taggered **G**rid for the stokes variables (velocity and pressure) for **m**ATLAB (**FDCSGm**). 
    
    I use the code mainly for teaching purposes. The students learn how to discretize the equations for the conservation of energy, momentum, and mass using different discretization forms (explicit, implicit, ADI, etc.), how to connect the momentum equation with the energy equation (a simple operator splitting method), and finally create a simple two-dimensional thermal convection code for an isoviscous convection with application (that is, the Blanckenbach benchmark). The style of the code might be very flexible since I do optimize and very routines from time to time, but it is a very effective way to teach numerical methods in combination with geodynamical issues as well as to check simple geodynamic problems. 
    
