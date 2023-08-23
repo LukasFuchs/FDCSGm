@@ -72,9 +72,9 @@ for k = 1:size(Schema,1)
         B.thf       =   B.T0;   B.bhf       =   B.T0;
         % ======================================================================= %
         %% ====================== Define time constants ========================= %
-        T.tmaxini   =   5;           %   Maximum time in Ma
-        T.itmax     =   1000;        %   Maximum number of iterations
-        T.dtdifac   =   1.0;         %   Diffusion stability criterium
+        T.tmaxini   =   10;           %   Maximum time in Ma
+        T.itmax     =   5000;        %   Maximum number of iterations
+        T.dtdifac   =   0.95;         %   Diffusion stability criterium
         % ======================================================================= %
         %% ========================= Define fields required ===================== %
         [Py,D,ID,M,N,T,A,Pl]    =   SetUpFields(Py,B,N,M,T,Pl);

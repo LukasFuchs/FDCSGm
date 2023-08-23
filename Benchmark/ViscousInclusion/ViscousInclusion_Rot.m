@@ -131,7 +131,7 @@ for i = 1:length(rotAngle)
     % ------------------------------------------------------------------- %
     
     %% ---------------- Definition der Anfangsbedingungen --------------- %
-    [T,D,B,Ma,Py]   =   SetUpInitialConditions(T,D,Py,M,N,B);
+    [T,D,B,M,Ma,Py]         =   SetUpInitialConditions(T,D,Py,M,N,B);
     
     Py.Ra       =   Py.rho0*Py.g*Py.alpha*Py.DeltaT*(-M.H)^3/Py.eta0/Py.kappa;
     % ------------------------------------------------------------------- %
@@ -145,7 +145,7 @@ for i = 1:length(rotAngle)
     % ------------------------------------------------------------------- %
     
     %% Scale Parameters ================================================= %
-    [M,N,D,T,S]  = ScaleParameters(M,Py,N,D,T);
+    [M,N,D,T,S]         =   ScaleParameters(B,M,Py,N,D,T);
     switch B.IniFlow
         case 'SimpleShear'
             gr  =   1;

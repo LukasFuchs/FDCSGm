@@ -19,7 +19,7 @@ end
 T.tstart        =   tic;
 %% ===================== Some initial definitions ======================= %
 Pl.savefig      =   'no';
-Pl.plotfields   =   'no';
+Pl.plotfields   =   'yes';
 Py.scale        =   'no';
 % ======================================================================= %
 %% ============ Define method to solve the energy equation ============== %
@@ -87,7 +87,7 @@ T.dtfac     =   1.0;        %   Advektionscourantkriterium
 [Py,D,ID,M,N,T,A,Pl]    =   SetUpFields(Py,B,N,M,T,Pl);
 % ======================================================================= %
 %% ======================== Setup initial conditions ==================== %
-[T,D,B,Ma,Py]           =   SetUpInitialConditions(T,D,Py,M,N,B);
+[T,D,B,M,Ma,Py]         =   SetUpInitialConditions(T,D,Py,M,N,B);
 % ======================================================================= %
 %% ========================= Plot parameter ============================= %
 Pl.inc      =   min(N.nz/10,N.nx/5);
@@ -120,7 +120,7 @@ end
 %% ========================== Scale Parameters ========================== %
 switch lower(Py.scale)
     case 'yes'
-        [M,N,D,T,S]     =   ScaleParameters(M,Py,N,D,T);
+        [M,N,D,T,S]         =   ScaleParameters(B,M,Py,N,D,T);
 end
 % ======================================================================= %
 %% ================ Information for the command window ================== %

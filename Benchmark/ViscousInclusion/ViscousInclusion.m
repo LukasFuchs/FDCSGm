@@ -103,7 +103,7 @@ T.dtdifac   =   1.0;            %   Diffusions Stabilitaetskriterium
 [Py,D,ID,M,N,T,A,Pl]    =   SetUpFields(Py,B,N,M,T,Pl);
 % ======================================================================= %
 %% ======================== Setup initial conditions ==================== %
-[T,D,B,Ma,Py]   =   SetUpInitialConditions(T,D,Py,M,N,B);
+[T,D,B,M,Ma,Py]         =   SetUpInitialConditions(T,D,Py,M,N,B);
 % ======================================================================= %
 %% ======================= Rayleigh number conditions =================== %
 Py.Ra           =   Py.rho0*Py.g*Py.alpha*Py.DeltaT*(-M.H)^3/Py.eta0/Py.kappa;
@@ -115,7 +115,7 @@ Pl.inc      =   round(Pl.inc);
 %% ========================== Scale Parameters ========================== %
 switch lower(Py.scale)
     case 'yes'
-        [M,N,D,T,S]     =   ScaleParameters(M,Py,N,D,T);
+        [M,N,D,T,S]         =   ScaleParameters(B,M,Py,N,D,T);
 end
 % ======================================================================= %
 switch B.IniFlow
