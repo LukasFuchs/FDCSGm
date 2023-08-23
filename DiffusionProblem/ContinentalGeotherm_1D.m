@@ -19,7 +19,7 @@ function [T,Py] = ContinentalGeotherm_1D(T,M,N,Py,t,plotparam)
 %       rho -   Density [ kg/m^3 ]                                        %
 %       cp  -   Specific heat [ J/kg/K ]                                  %
 %       k   -   Thermal conductivity [ W/m/K ]                            %
-%       H   -   Volumetric radiogentic heat source [ W/kg ]               %
+%       H   -   Radiogentic heat source per mass [ W/kg ]                 %
 %   t - contains:                                                         %
 %       dtfac   -   Courant criterion                                     %
 %       age     -   Lithospheric age [ Ma ]                               %

@@ -16,7 +16,7 @@ function [T,Py] = OceanicGeotherm_1D(T,M,N,Py,t,plotparam)
 %       rho -   Density [ kg/m^3 ]                                        %
 %       cp  -   Specific heat [ J/kg/K ]                                  %
 %       k   -   Thermal conductivity [ W/m/K ]                            %
-%       H   -   Volumetric radiogenic heat source [ W/kg ]                %
+%       H   -   Radiogenic heat source per mass [ W/kg ]                  %
 %   t - contains:                                                         %
 %       dtfac   -   Courant criterion                                     %
 %       age     -   Lithospheric age [ Ma ]                               %
@@ -102,7 +102,7 @@ Py.cp(:)    =   Py.cpM;
 Py.k(:)     =   Py.kM;
 Py.H(:)     =   Py.HM;
 
-Py.kappa    =   max(Py.k)/min(Py.rho)/min(Py.cp); % Thermal diffusivity [ m^2/s ]
+Py.kappa    =   max(Py.k)/min(Py.rho)/min(Py.cp); % Therma  l diffusivity [ m^2/s ]
 % ======================================================================= %
 
 %% Time stability criterion ============================================= %
