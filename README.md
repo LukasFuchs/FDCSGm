@@ -78,6 +78,8 @@ The same applies to the other boundaries. Caution needs to be taken at the corne
 
 # Numerical Methods
 
+# Scaling
+
 # Benchmarks 
 ## Blanckenbach 
 ## Channel Flow
