@@ -122,4 +122,5 @@ The gradient of temperature (and thus the vertical heat flux) can be defined usi
 
 ## Steady State Solution
 
+## Discretization Methods
 ...
