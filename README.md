@@ -68,15 +68,13 @@ $T_{i,1}^{n+1} = T_{i,1}^{n} + s_x(2T_{i,2}^{n} - 2(T_{i,1}^{n} + \Delta x c_l))
  
 The same applies to the other boundaries. Caution needs to be taken at the corners of the model. 
 
-   The routines for the explicit, implicit, and ADI discretization methods are available in a dimensional and non-dimensional way. For more details on the scaling of the parameters see *FDCSGm/ScaleParam*. Besides the routines to solve the diffusive part of the 2-D temperature conservation equation using different discretization methods there are additional  routines available within the code. There are two routines to calculate 1-D temperature profiles for a oceanic and continental lithosphere based on an 1-D implicit solver for constant and variable thermal parameters. A 1- and 2-D Poisson solver for a constant and variable *k* is available, to solve the steady-state diffusive equation (i.e. $\frac{\partial T}{\partial t} = 0$). For more details see *FDCSGm/DiffusionProblem/README.md*.
+   The routines for the explicit, implicit, and ADI discretization methods are available in a dimensional and non-dimensional way. For more details on the scaling of the parameters see *FDCSGm/ScaleParam*. Besides the routines to solve the diffusive part of the 2-D temperature conservation equation using different discretization methods there are additional  routines available within the code. There are two routines to calculate 1-D temperature profiles for a oceanic and continental lithosphere based on an 1-D implicit solver for constant and variable thermal parameters. A 1- and 2-D Poisson solver for a constant and variable *k* is available, to solve the steady-state diffusive equation (i.e. $\frac{\partial T}{\partial t} = 0$). For more details, also on the different discretization schemes, see *FDCSGm/DiffusionProblem/README.md*.
 
 # Stokes equation 
 
 # Advection equation 
 
 # Scaling
-
-# Numerical Methods
 
 # Benchmarks 
 ## Blanckenbach 
