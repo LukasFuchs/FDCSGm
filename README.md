@@ -2,7 +2,7 @@
 
    This is a two-dimensional **F**inite **D**ifference **C**ode with a **S**taggered **G**rid for the stokes variables (velocity and pressure) in **m**ATLAB (**FDCSGm**) I wrote, mainly for teaching purposes. The students learn how to discretize the conservation equations of energy, momentum, and mass using different discretization forms (explicit, implicit, CNV, ADI, etc.), how to couple the momentum equation with the energy equation (here, a simple operator splitting method), and finally build a simple two-dimensional thermal convection code for isoviscous convection with application (that is, the Blanckenbach benchmark). The style of the code is very flexible since I do optimize and vary routines from time to time, but it is an effective way to teach numerical methods in combination with geodynamical problems as well as to check simple geodynamic settings. 
    
-   The staggered grid method, how to discretize and solve the stokes equation, and how to index those variables are based on the methods described by *Gerya (2010)*, as well as the coupling between the momentum and energy equation. The energy equation can be discretized in multiple different ways (explicit, implicit, Crank Nicolson, Alternating-Direction implicit) and also be used in the thermal convection code. The advection equation can be discretized in multiple ways (upwind, semi-lagrangian, and passive tracers). For the thermal convection code, temperature is advected using the semi-lagrangian method, however, passive tracers can also be used to advect composition (density and viscosity) or temperature (so far only the advection of the absolute temperature is implemented, though) if necessary (e.g., for the falling block or rigid body rotation benchmark, a growth rate of a Rayleigh-Taylor instability test, and the viscous inclusion benchmark). 
+   The staggered grid method, how to discretize and solve the stokes equation, and how to index those variables are based on the methods described by *Gerya (2009)*, as well as the coupling between the momentum and energy equation. The energy equation can be discretized in multiple different ways (explicit, implicit, Crank Nicolson, Alternating-Direction implicit) and also be used in the thermal convection code. The advection equation can be discretized in multiple ways (upwind, semi-lagrangian, and passive tracers). For the thermal convection code, temperature is advected using the semi-lagrangian method, however, passive tracers can also be used to advect composition (density and viscosity) or temperature (so far only the advection of the absolute temperature is implemented, though) if necessary (e.g., for the falling block or rigid body rotation benchmark, a growth rate of a Rayleigh-Taylor instability test, and the viscous inclusion benchmark). 
    
    The *MasterFile.m* in the main directory (*FDCSGm/*) contains a list and description of all constants, parameters, and variables, as well as a general structure of the code to solve the equations. Some variables can be removed if not needed, otherwise they need to be defined as *‘none’*. Within the code there are multiple benchmarks included to test the accuracy and different discretization methods for the energy, advection, and stokes equations. The thermal convection code is based on the routines used in those benchmarks. 
 
@@ -114,7 +114,42 @@ Equations (20) and (22) enables us to solve for the three unknowns *v<sub>x</sub
 
 # Advection equation 
 
-# Scaling
+# Scaling and equation of state
+   To better compare different kinds of thermal convection, one can scale the governing equations. The equation can be scaled by the following reference parameters: 
+
+$h_{sc} = h$,&emsp;&emsp;&emsp;(23)
+
+$\eta_{sc} = \eta_0$,&emsp;&emsp;&emsp;(24)
+
+$t_{sc} = \frac{h^2}{\kappa}$,&emsp;&emsp;&emsp;(25)
+
+$v_{sc} = \frac{\kappa}{h}$,&emsp;&emsp;&emsp;(26)
+
+$\tau_{sc} = \frac{\eta_0 \kappa}{h^2}$,&emsp;&emsp;&emsp;(27)
+
+$T_{sc} = \Delta T$,&emsp;&emsp;&emsp;(28)
+
+$H_{sc} = \frac{c_p \Delta T \kappa}{h^2}$,&emsp;&emsp;&emsp;(29)
+
+where the subscript *sc* stands for the scaling parameters, and *h*, *η<sub>0</sub>*, *t*, *κ*, *v*, *τ*, *T*, *H*, *c<sub>p</sub>*, are the height, the reference viscosity, the time, the thermal diffusivity, the velocity, the stress, the temperature, the heat generation source, and the specific heat capacit, respectively. 
+
+   The buoyance term on the right-hand side of equation, that is the density term which is temperature dependent (and pressure, but we do neglect this effect here so far), can be approximated with the so-called *equation of state* for the density. Here, its is a linear approximation of the change of density due to temperature variations and can be defined as:
+
+$\rho = \rho_0 (1-\alpha T)$,&emsp;&emsp;&emsp;(30)
+
+where *ρ<sub>0</sub>* is the reference density and *α* the thermal expansion coefficient. 
+
+For the given scaling parameters, the non-dimensional governing equations are given as (assuming a constant viscosity, scaling for a variable viscosity is applicable in the same way):
+
+$\frac{\partial v_x}{\partial x} + \frac{\partial v_z}{\partial z} = 0$,&emsp;&emsp;&emsp;(31)
+
+$\frac{\partial T}{\partial t} + v_x \frac{\partial T}{\partial x} + v_z \frac{\partial T}{\partial z} = (\frac{\partial^2 T}{\partial x^2} + \frac{\partial^2 T}{\partial z^2} + H)$,&emsp;&emsp;&emsp;(32)
+
+$-\frac{\partial P}{\partial x} + \eta \frac{\partial^2 v_x}{\partial x^2} + \eta \frac{\partial^2 v_x}{\partial z^2} = 0$,&emsp;&emsp;&emsp;(33)
+
+$-\frac{\partial P}{\partial z} + \eta \frac{\partial^2 v_z}{\partial z^2} + \eta \frac{\partial^2 v_z}{\partial x^2} - RaT = 0$,&emsp;&emsp;&emsp;(34)
+
+where *Ra* is the so-called thermal *Rayleigh number* and *P* the *dynamic pressure*. In case of a basally heated thermal convection, the convective vigor is defined by the Rayleigh number, which describes a relationship between heat transported by buoyancy and conduction, and the effect of the layers thickness and bulk viscosity.
 
 # Benchmarks 
 ## Blanckenbach 
