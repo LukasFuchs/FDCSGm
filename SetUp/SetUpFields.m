@@ -89,6 +89,9 @@ Pl.VColMapName      =   'imola';
 Pl.EColMapName      =   'lapaz';
 Pl.rhoColMapName    =   'turku';
 Pl.vikColMapName    =   'vik';
+Pl.tauColMapName    =   'nuuk';
+Pl.epsColMapName    =   'batlowW';
+Pl.PColMapName      =   'hawaii';
 
 if strcmp(getenv('OS'),'Windows_NT')
     Pl.SciColDir    =   ['D:\Users\lukas\Numerics\BACKUP\',...
@@ -112,11 +115,20 @@ Pl.rhoColMap    =   [Pl.SciColDir,Pl.Slash,Pl.rhoColMapName,Pl.Slash,...
     Pl.rhoColMapName,'.mat'];
 Pl.vikColMap    =   [Pl.SciColDir,Pl.Slash,Pl.vikColMapName,Pl.Slash,...
     Pl.vikColMapName,'.mat'];
+Pl.tauColMap    =   [Pl.SciColDir,Pl.Slash,Pl.tauColMapName,Pl.Slash,...
+    Pl.tauColMapName,'.mat'];
+Pl.epsColMap    =   [Pl.SciColDir,Pl.Slash,Pl.epsColMapName,Pl.Slash,...
+    Pl.epsColMapName,'.mat'];
+Pl.PColMap      =   [Pl.SciColDir,Pl.Slash,Pl.PColMapName,Pl.Slash,...
+    Pl.PColMapName,'.mat'];
 
 load(Pl.TColMap); Pl.lajolla    = lajolla;
 load(Pl.VColMap); Pl.imola      = imola;
 load(Pl.EColMap); Pl.lapaz      = lapaz;
 load(Pl.rhoColMap); Pl.oslo     = turku;
 load(Pl.vikColMap); Pl.vik      = vik;
+load(Pl.tauColMap); Pl.nuuk     = nuuk;
+load(Pl.epsColMap); Pl.batlowW  = batlowW;
+load(Pl.PColMap); Pl.hawaii  = hawaii;
 
 end

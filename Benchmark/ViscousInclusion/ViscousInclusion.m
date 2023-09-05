@@ -176,18 +176,22 @@ for it = 1:T.itmax
     if (mod(it,5)==0||it==1)
         figure(1) % ----------------------------------------------------- %
         clf
-        subplot(2,2,1)
+        ax1 = subplot(2,2,1);
         plotfield(log10(D.eta),M.X,M.Z,Pl,'pcolor',...
-            '\itlog_{10} ( \eta ) \rm\bf','quiver',ID.vx,ID.vz)
-        subplot(2,2,2)
+            '\itlog_{10} ( \eta ) \rm\bf','quiver',ID.vx,ID.vz);
+        colormap(ax1,flipud(Pl.lapaz))
+        ax2 = subplot(2,2,2);
         plotfield(log10(ID.psi),M.X,M.Z,Pl,'pcolor',...
-            '\it log_{10} ( \psi ) \rm\bf')
-        subplot(2,2,3)
+            '\it log_{10} ( \psi ) \rm\bf');
+        colormap(ax2,Pl.imola)
+        ax3 = subplot(2,2,3);
         plotfield(log10(ID.eII),M.X,M.Z,Pl,'pcolor',...
             '\itlog_{10} ( \epsilon_{II} ) \rm\bf')
-        subplot(2,2,4)
+        colormap(ax3,Pl.batlowW)
+        ax4 = subplot(2,2,4);
         plotfield(log10(ID.tauII),M.X,M.Z,Pl,'pcolor',...
             '\it log_{10} ( \tau_{II} ) \rm\bf')
+        colormap(ax4,Pl.nuuk)
     end       
     % =================================================================== %
     
@@ -201,24 +205,33 @@ D.vxe       = abs(D.vx(1:end-1,:)-D.Vxa);
 D.vze       = abs(D.vz(:,1:end-1)-D.Vza);
 
 figure(2)
-subplot(3,3,1); plotfield(D.Vxa,M.xVx,M.zVx,Pl,...
+ax1 = subplot(3,3,1); plotfield(D.Vxa,M.xVx,M.zVx,Pl,...
     'pcolor','vx (analytical)\rm\bf')
-subplot(3,3,2); plotfield(D.vx(1:end-1,:),M.xVx,M.zVx,Pl,...
+colormap(ax1,Pl.imola)
+ax2 = subplot(3,3,2); plotfield(D.vx(1:end-1,:),M.xVx,M.zVx,Pl,...
     'pcolor','vx (numerical)\rm\bf')
-subplot(3,3,3); plotfield(D.vxe,M.xVx,M.zVx,Pl,...
+colormap(ax2,Pl.imola)
+ax3 = subplot(3,3,3); plotfield(D.vxe,M.xVx,M.zVx,Pl,...
     'pcolor','vx (error)\rm\bf')
-subplot(3,3,4); plotfield(D.Vza,M.xVz,M.zVz,Pl,...
+colormap(ax3,Pl.batlowW)
+ax4 = subplot(3,3,4); plotfield(D.Vza,M.xVz,M.zVz,Pl,...
     'pcolor','vz (analytical)\rm\bf')
-subplot(3,3,5); plotfield(D.vz(:,1:end-1),M.xVz,M.zVz,Pl,...
+colormap(ax4,Pl.imola)
+ax5 = subplot(3,3,5); plotfield(D.vz(:,1:end-1),M.xVz,M.zVz,Pl,...
     'pcolor','vz (numerical)\rm\bf')
-subplot(3,3,6); plotfield(D.vze,M.xVz,M.zVz,Pl,...
+colormap(ax5,Pl.imola)
+ax6 = subplot(3,3,6); plotfield(D.vze,M.xVz,M.zVz,Pl,...
     'pcolor','vz (error)\rm\bf')
-subplot(3,3,7); plotfield(D.Pa,M.X1,M.Z1,Pl,...
+colormap(ax6,Pl.batlowW)
+ax7 = subplot(3,3,7); plotfield(D.Pa,M.X1,M.Z1,Pl,...
     'pcolor','P (analytical)\rm\bf')
-subplot(3,3,8); plotfield(D.P(2:end,2:end),M.X1,M.Z1,Pl,...
+colormap(ax7,Pl.hawaii)
+ax8 = subplot(3,3,8); plotfield(D.P(2:end,2:end),M.X1,M.Z1,Pl,...
     'pcolor','P (numerical)\rm\bf')
-subplot(3,3,9   ); plotfield(D.Pe,M.X1,M.Z1,Pl,...
+colormap(ax8,Pl.hawaii)
+ax9 = subplot(3,3,9); plotfield(D.Pe,M.X1,M.Z1,Pl,...
     'pcolor','P (error)\rm\bf')
+colormap(ax9,Pl.batlowW)
 
 psiinc1 = mean(ID.psi(incind));
 psiinc2 = -sum(ID.psi(incind))./sum(incind(:).*N.dx.*N.dz);
@@ -226,13 +239,13 @@ psiinc3 = sum(ID.psi(incind))./pi/B.EllA/B.EllB;
 
 %% ====================== Clear path structure ========================== %
 if strcmp(getenv('OS'),'Windows_NT')
-    rmpath('..\..\DiffusionProblem')
+%     rmpath('..\..\DiffusionProblem')
     rmpath('..\..\AdvectionProblem')
     rmpath('..\..\StokesProblem')
     rmpath('..\..\SetUp')
     rmpath('..\..\ScaleParam')
 else
-    rmpath('../../DiffusionProblem')
+%     rmpath('../../DiffusionProblem')
     rmpath('../../AdvectionProblem')
     rmpath('../../StokesProblem')
     rmpath('../../SetUp')

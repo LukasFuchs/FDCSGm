@@ -22,7 +22,7 @@ end
 % ======================================================================= %
 T.tstart        =   tic;
 %% ===================== Some initial definitions ======================= %
-Pl.savefig      =   'no';
+Pl.savefig      =   'yes';
 Pl.plotfields   =   'yes';
 Py.scale        =   'yes';
 % ======================================================================= %
@@ -32,7 +32,7 @@ B.Aparam        =   'temp';
 B.DiffMethod    =   'explicit';
 % ======================================================================= %
 %% ==================== Define viscosity conditions ===================== %
-Py.eparam       =   'const';
+Py.eparam       =   'variable';
 Py.b            =   log(1000);  % log(16384);     % Temperaturabhaengigkeit
 Py.c            =   0;      % log(64);            % Tiefenabhaengigkeit
 B.EtaIni        =   'tdep';
@@ -50,8 +50,8 @@ M.H         =   -1000;          %   Modeltiefe [ in km ]
 M.xmax      =   1;              %   Seitenverhaeltniss
 % ======================================================================= %
 %% ====================== Define the numerical grid ===================== %
-N.nz        =   51;             %   Vertikale Gitteraufloesung
-N.nx        =   51;             %   Horizontale Gitteraufloesung
+N.nz        =   101;             %   Vertikale Gitteraufloesung
+N.nx        =   101;             %   Horizontale Gitteraufloesung
 % ======================================================================= %
 %% ====================== Define physical constants ===================== %
 Py.g        =   10;                 %   Schwerebeschleunigung [m/s^2]
@@ -98,7 +98,7 @@ B.bhf       =   B.thf + Py.DeltaT;
 % ======================================================================= %
 %% ====================== Define time constants ========================= %
 T.tmaxini   =   10000;         %   Maximale Zeit in Ma
-T.itmax     =   5000;           %   Maximal erlaubte Anzahl der Iterationen
+T.itmax     =   50000;           %   Maximal erlaubte Anzahl der Iterationen
 T.dtfac     =   1.0;           %   Advektionscourantkriterium
 T.dtdifac   =   1.0;            %   Diffusions Stabilitaetskriterium
 % ======================================================================= %
