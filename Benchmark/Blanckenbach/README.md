@@ -1,3 +1,7 @@
+... Additional info missing ...
+
+--------------------------------------------------------------
+
 ### **The models were solved with the following solver routines and initial conditions:**
 
 Diffusion: explicit
@@ -10,7 +14,7 @@ Initial temperature field: block
 
 Resolution (nx x nz): 51 x 51
 
-Reference viscosity [Pa s]: 1.00e+23
+--------------------------------------------------------------
 
 ### **Constants**
 Gravitional acceleartion, **g** [m/s]: 10
@@ -29,22 +33,35 @@ Specific heat capacity, **c<sub>p</sub>** [J/kg]: 1250
 
 Density, **ρ** [kg/m<sup>3</sup>]: 4000
 
-Thermal expansion coefficient, **alpha** [1/K]:	2.5e-5
+Thermal expansion coefficient, **α** [1/K]:	2.5∙10<sup>-5</sup>
+
+--------------------------------------------------------------
 
 The kinematic boundary conditions are free-slip on all boundaries and the thermal boundary conditions are constant temperature at the top and bottomt and no lateral heat flux at the sides. 
 
+--------------------------------------------------------------
+
 ## Isoviscous Convection
 
-Ra = 1e4
-
+***Ra* = 10<sup>4</sup>**<br>
+Reference viscosity [Pa s]: 10<sup>23</sup>
 ![Field_SS](https://github.com/LukasFuchs/FDCSGm/assets/25866942/a307c72b-d33e-411a-9f8d-4d7849c6b55a)
-
-*Time series*
-
+**Time series**
 ![TimeSeries](https://github.com/LukasFuchs/FDCSGm/assets/25866942/7e7863a1-9360-41af-94a9-58f26065bb37)
 
-Ra = 1e6
+**Resolution Test**
+![ResTest_eta_const](https://github.com/LukasFuchs/FDCSGm/assets/25866942/b1837f13-d1b2-4a8b-882a-1005013cc6bf)
+
+***Ra* = 10<sup>6</sup>**<br>
+Reference viscosity [Pa s]: 10<sup>21</sup>
+![Field_SS](https://github.com/LukasFuchs/FDCSGm/assets/25866942/24db94dd-0c7d-4566-aac3-49a995cd3ff0)
+**Time series**
+![TimeSeries](https://github.com/LukasFuchs/FDCSGm/assets/25866942/0d87a365-3347-40a6-83d1-150ea76f34cd)
+
+--------------------------------------------------------------
+
+## Temperature Dependent Convection<br>
+***Ra* = 10<sup>4</sup>**<br>
+Reference viscosity [Pa s]: 10<sup>23</sup>
 
 
-
-## Temperature Dependent Convection
