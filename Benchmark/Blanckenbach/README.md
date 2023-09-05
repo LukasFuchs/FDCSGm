@@ -61,7 +61,12 @@ Reference viscosity [Pa s]: 10<sup>21</sup>
 --------------------------------------------------------------
 
 ## Temperature Dependent Convection<br>
+The temperature dependent viscosity is given by: 
+
+$\eta=\eta_0 exp(-b \frac{T-T_{top}}{T_{bottom}-T{top}} + c\frac{y}{H})$
+
+where $\eta_0$ is the viscosity at the top of the model and *b* and *c* are coefficients establishing the dependences of viscosity with temperature and depth, respectively. 
+
 ***Ra* = 10<sup>4</sup>**<br>
 Reference viscosity [Pa s]: 10<sup>23</sup>
-
 
