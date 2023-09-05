@@ -33,7 +33,7 @@ $\frac{\partial T}{\partial t} = \kappa (\frac{\partial^2 T}{\partial x^2} + \fr
   
 where κ is the thermal diffusivity [m<sup>2</sup>/s] and $Q=\rho H$ is the heat production rate per volume [W/m<sup>3</sup>]. Equation (6) is a *parabolic partial differential equation* which can be solve numerically in different manners, assuming initial and boundary conditions are defined. 
 
-   Here we would like to discuss a simple, but effective finite difference method to discretize and solve the equation, that is the forward in time and centered in space (FTCS) method in an explicit manner. The advantage of an explicit description is that it is simple to derive and rather fast computationally, however, it is only numerically stable as long as the *heat diffusive stability criterion* is fulfilled. The stability criterion can be determined by a simple Von Neumann stability analysis, which analysis the growth of an eigenmode perturbation for a certain finite difference approach. In case of an explicit 2-D finite difference approach, the heat diffusive stability criterion is defined as $\Delta t < \frac{\Delta x^2}{3 \kappa}$, that is the time step is limited by the model’s resolution. Within the code different discretization methods can be chosen to solve the diffusive part of the temperature conservation equation (i.e., implicit, CNV, ADI). In the following, we would like to focus on the explicit method as an example of how to discretize the equation. For the other discretization methods check the numerical methods section below. 
+   Here we would like to discuss a simple, but effective finite difference method to discretize and solve the equation, that is the forward in time and centered in space (FTCS) method in an explicit manner. The advantage of an explicit description is that it is simple to derive and rather fast computationally, however, it is only numerically stable as long as the *heat diffusive stability criterion* is fulfilled. The stability criterion can be determined by a simple Von Neumann stability analysis, which analysis the growth of an eigenmode perturbation for a certain finite difference approach. In case of an explicit 2-D finite difference approach, the heat diffusive stability criterion is defined as $\Delta t < \frac{\Delta x^2}{3 \kappa}$, that is the time step is limited by the model’s resolution. Within the code different discretization methods can be chosen to solve the diffusive part of the temperature conservation equation (i.e., implicit, CNV, ADI). In the following, we would like to focus on the explicit method as an example of how to discretize the equation. For the other discretization methods check the *DiffusionProblem* directory. 
 
    Using a general finite difference discretization method to approximate the partial derivatives from equation (6), the temperature equation can be written as:
 
@@ -45,7 +45,7 @@ $T_{i,j}^{n+1} = T_{i,j}^{n} + s_x(T_{i,j+1}^{n} - 2T_{i,j}^{n} + T_{i,j-1}^{n})
 
 where $s_x = \frac{\kappa \Delta t}{(\Delta x)^2}$ and $s_z = \frac{\kappa \Delta t}{(\Delta z)^2}$. Equation (8) can be solved *iteratively* for every inner grid point assuming an initial condition is defined (multiple initial conditions can be set in the code). 
 
-   Different conditions can be set for the boundaries of our modell domain. Here, we focus on two fundamental conditions, the *Dirichlet* and *Neumann* boundary conditions. The Dirichlet boundary condition simply define a constant temperature along the boundary, such that the temperature, for example, along the *left* boundary can be defined as:
+   Different conditions can be set for the boundaries of our modell domain. Here, we focus on two fundamental conditions, the *Dirichlet* and *Neumann* boundary conditions. The Dirichlet boundary condition simply defines a constant temperature along the boundary, such that the temperature, for example, along the *left* boundary can be defined as:
 
 $T_{i,j=1} = T_{left}$, for all i. &emsp;&emsp;&emsp;(9)
 
@@ -67,7 +67,7 @@ $T_{i,1}^{n+1} = T_{i,1}^{n} + s_x(2T_{i,2}^{n} - 2(T_{i,1}^{n} + \Delta x c_l))
  
 The same applies to the other boundaries. Caution needs to be taken at the corners of the model. 
 
-   The routines for the explicit, implicit, and ADI discretization methods are available in a dimensional and non-dimensional way. For more details on the scaling of the parameters see *FDCSGm/ScaleParam*. Besides the routines to solve the diffusive part of the 2-D temperature conservation equation using different discretization methods there are additional  routines available within the code. There are two routines to calculate 1-D temperature profiles for a oceanic and continental lithosphere based on an 1-D implicit solver for constant and variable thermal parameters. A 1- and 2-D Poisson solver for a constant and variable *k* is available, to solve the steady-state diffusive equation (i.e. $\frac{\partial T}{\partial t} = 0$). For more details, also on the different discretization schemes, see *FDCSGm/DiffusionProblem/README.md*.
+   The routines for the explicit, implicit, and ADI discretization methods are available in a dimensional and non-dimensional form in the *DiffusionProblem* directory. For more details on the scaling of the parameters see the scaling section below and *FDCSGm/ScaleParam*. Besides the routines to solve the diffusive part of the 2-D temperature conservation equation using different discretization methods, there are additional routines available within the code. There are two routines to calculate 1-D temperature profiles for a oceanic and continental lithosphere based on an 1-D implicit solver for constant and variable thermal parameters. A 1- and 2-D Poisson solver for a constant and variable *k* is available, to solve the steady-state diffusive equation (i.e. $\frac{\partial T}{\partial t} = 0$). For more details, also on the different discretization schemes, see *FDCSGm/DiffusionProblem/README.md*.
 
 # Stokes equation 
    On geological time scales, Earth’s mantle and lithosphere do behave like a fluid and move and deform. A fluid does generally move due to forces acting on it whereas the forces must be in balance. In general, there are three major forces one might consider, i.e., inertia, surface, and volumetric forces. A common equation to describes such motion is given by: 
@@ -150,14 +150,6 @@ $-\frac{\partial P}{\partial x} + \eta \frac{\partial^2 v_x}{\partial x^2} + \et
 $-\frac{\partial P}{\partial z} + \eta \frac{\partial^2 v_z}{\partial z^2} + \eta \frac{\partial^2 v_z}{\partial x^2} - RaT = 0$,&emsp;&emsp;&emsp;(34)
 
 where *Ra* is the so-called thermal *Rayleigh number* and *P* the *dynamic pressure*. In case of a basally heated thermal convection, the convective vigor is defined by the Rayleigh number, which describes a relationship between heat transported by buoyancy and conduction, and the effect of the layers thickness and bulk viscosity.
-
-# Benchmarks 
-## Blanckenbach 
-## Channel Flow
-## Falling Block
-## Gaussian Diffusion 
-## Rayleigh Taylor Instability 
-## Spherical Viscous Inclusion 
 
 # References
 *Gerya, T. (2009). Introduction to numerical geodynamic modelling.*
