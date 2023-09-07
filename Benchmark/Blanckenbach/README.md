@@ -49,19 +49,19 @@ Resolution (nx x nz): 51 x 51<br>
 
 ## Isoviscous Convection
 
-The temperature and velocity patterns are resolved well and the steady state values for the Nusselt number and the root mean square velocity are nearly reached, too. Variations from the benchmark values might be due to a rather coarse resolution (51x51) and the given solving method, that is the explicit diffusion solver, the semi-lagrangian advection method, and the operator splitting method. 
+The temperature and velocity patterns are resolved well and the steady state values for the Nusselt number and the root mean square velocity are nearly reached, too. Variations from the benchmark values might be due to a rather coarse resolution (51x51) and the given solving methods, that is the explicit diffusion solver, the semi-lagrangian advection method, and the operator splitting method. 
 
 This becomes even more obvious for higher Rayleigh number (*Ra* = 10<sup>6</sup>) calculations for which the deviations of the Nusselt number are quite significant as well as for a temperature-dependend thermal convection. For the latter, a higher resolution (101x101) is necessary to obtain a stable solution of the temperature field. A higher resolution significantly increases the computation time (at least to reach the same final time as in the previous calculations; steady state seems to be reached rather early within the computations), which should be compansated using a variable grid size, which needs to be implemented first. 
 
 *Resolution test for higher Ra*
 
-Depdending on the Rayleigh number, we can estimate the number of grid points in the upper thermal boundary layer (d) and, thus, the total resolution of our model, with:  
+Depdending on the Rayleigh number, we can estimate the number of grid points in the upper thermal boundary layer (*d*) and, thus, the total resolution of our model, with:
 
 $(\frac{H}{d})^3 = \frac{1}{4}Ra$, &emsp; &emsp; &emsp; (2)
 
 Assuming that we want to use *n* grid points within the upper thermal boundary layer, the total number of vertical grid points is given by : 
 
-$nz = (n-1)\sqrt[3]{\frac{Ra}{4}}+1$
+$nz = (n-1)\sqrt[3]{\frac{Ra}{4}}+1$, &emsp; &emsp; &emsp; (3)
 
 ### Low Rayleigh Number Calculations
 
