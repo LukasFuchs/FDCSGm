@@ -97,7 +97,9 @@ Reference viscosity [Pa s]: 10<sup>21</sup>
 --------------------------------------------------------------
 
 ## Temperature Dependent Thermal Convection<br>
-nx = nz = 101
+nx = nz = 101<br>
+a = log(1000)<br>
+b = 0
 
 ### Low Rayleigh Number Calculations
 
