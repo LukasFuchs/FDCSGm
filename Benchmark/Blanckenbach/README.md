@@ -56,6 +56,9 @@ Reference viscosity [Pa s]: 10<sup>23</sup>
 ![TimeSeries](https://github.com/LukasFuchs/FDCSGm/assets/25866942/7e7863a1-9360-41af-94a9-58f26065bb37)
 **Figure 2.** Time series of Nusselt number and root mean square velocity as well as the vertical temperautre profile in the middle of the model domain and the temperautre differences at the corners of the model (in the following order: top left (1), top right (2), bottom right (3), and bottom left (4)).
 
+***Evolutuion***<br>
+![Evolution_small](https://github.com/LukasFuchs/FDCSGm/assets/25866942/fb4f6e36-29d7-4f2a-affa-3bca238ae59d)
+
 **Resolution Test**<br>
 **Figure 3.** Resolution test for high Rayleigh number calculations. 
 
