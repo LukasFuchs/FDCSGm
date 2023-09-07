@@ -1,3 +1,5 @@
+# General Information
+
 This directory contains two scripts: 
 
 1. *GaussianDiffusion.m*<br>
@@ -13,8 +15,9 @@ This directory contains two scripts:
 
 ------------------------------------------------------------------------
 
-Example of the transient behavior for a model solved with an explicit solver and for a resolution of 41 x 41. <br>
+## Example of a gaussian diffusion 
 
+The model is solved with an explicit solver and for a resolution of 41 x 41. <br>
 The parameter for the Gaussian temperature anomaly are: <br> 
 A = 200 [K], <br>
 σ = 10 [% of L], <br>
