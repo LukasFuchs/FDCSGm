@@ -1,3 +1,13 @@
+This directory contains three scripts: 
+
+1. ViscousInclusion.m<br>
+   -> Script to calculate the instantaneous solution of the stokes equation for a viscous spherical or elliptical includion within a viscous medium under pure shear or simple shear deformation (define model and inclusion geometry, numerical resolution, viscosity contrast, and deformation field). In case the includion is a sphere, the solution is compared to the analytical solution (Schmidt and Podladchikov, 2003). The parameters are scaled by the constants as defined in */FDCSGm/ScaleParam/ScaleParameters.m*.
+
+2. ViscousInclusion_Deta.m<br>
+   -> Script to calculate the instantaneous stokes solution for an elliptical inclusion with a certain orientation (*angle*) under pure shear or simple shear for a range of different viscosity contrats. The final plot shows the mean of the second invariant of the deviotoric stress, the strain-rate, and the "dissipative energy" $(\tau_{II} \cdot \varepsilon_{II})$ of the inclusion over the viscosity contrast for each orientaion.
+   
+3. ViscousInclusion_Rot.m<br>
+   -> Script to calculate the instantaneous stokes solution for an elliptical inclusion with a certain viscosity contrast under pure shear or simple shear for a range of different orientations. The final plot shows the mean of the second invariant of the deviotoric stress, the strain-rate, and the "dissipative energy" $(\tau_{II} \cdot \varepsilon_{II})$ of the inclusion over the orientation.
 
 Background strain-rate <br>
 $\dot{\varepsilon}_{bg} = 10^{-15} 1/s$
