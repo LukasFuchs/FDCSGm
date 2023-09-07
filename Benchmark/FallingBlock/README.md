@@ -5,24 +5,24 @@ This directory contains three scripts:
 2. FallongBlockBenchmark.m<br>
    -> A script to calculate the instantaneous sinking velocity of a block with a certain geometry and density ratio for differnet viscosity ratios between the block and the background material.
 
-3. FallingBlockBenchmark_timedependent.m
-   -> Script to calculate the time-dependent solution of the previous script. The final time for each model is set to the time given by *Gerya* (2009). Here, the code does advect the composition with passive tracers to transport the density and the viscosity.
+3. FallingBlockBenchmark_timedependent.m<br>
+   -> Script to calculate the time-dependent solution of the previous script. The final time for each model is set to the time given by *Gerya* (2009). Here, the code does advect the composition with passive tracers to transport density and viscosity.
 
 ------------------------------------------------------------------
 ## **Constants**<br>
-Model height **H** [km]: 500 
-Model width **W** [km]: 500
-Graviational acceleration **g** [m/s<sup>2</sup>]: 9.81
-Medium viscosity $\eta_0$ [Pa s]: 10<sup>21</sup>
-Medium density $\rho_0$ [kg/m<sup>3</sup>]: 3200
-Block density $\rho_1$ [kg/m<sup>3</sup>]: 3300
+Model height **H** [km]: 500 <br>
+Model width **W** [km]: 500 <br>
+Graviational acceleration **g** [m/s<sup>2</sup>]: 9.81 <br>
+Medium viscosity $\eta_0$ [Pa s]: 10<sup>21</sup> <br>
+Block viscosity $\eta_1$ [Pa s]: 10<sup>15</sup> -  10<sup>27</sup> <br>
+Medium density $\rho_0$ [kg/m<sup>3</sup>]: 3200 <br>
+Block density $\rho_1$ [kg/m<sup>3</sup>]: 3300 <br>
 
-
-nx = 51
+nx = 51<br>
 nz = 51
 
 Number of tracers per cell: nmx*nmz
-nmx = 5; 
+nmx = 5 <br>
 nmz = 5
 
 ------------------------------------------------------------------
