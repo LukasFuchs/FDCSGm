@@ -101,7 +101,8 @@ Reference viscosity [Pa s]: 10<sup>21</sup>
 --------------------------------------------------------------
 
 ## Temperature Dependent Thermal Convection<br>
-nx = nz = 101<br>
+nx = 101<br>
+nz = 101<br>
 a = log(1000)<br>
 b = 0
 
