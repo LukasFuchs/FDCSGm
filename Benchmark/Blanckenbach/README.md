@@ -1,3 +1,11 @@
+This directory contains two files: 
+1. BlanckenbachBenchmark.m<br>
+     -> Main script to calculate one benchmark model (define *Ra* and viscosity). 
+   
+3. Blanckenbach_Res_Test.m<br>
+     -> Script to run a resolution test for a given *Ra* and viscosity. See below for more details. 
+
+-------------------------------------------------------------
 The Blankenbach benchmark is an effective benchmark to test and compare a code for isoviscous and temperature-dependent viscosity thermal convection. Blankenbach et al. (1989) tested different two dimensional thermal convection codes with a broad variety of numerical techniques and reported steady-state values for a number of model parameters. 
 
 Convection is studied in a rectangular box of height *H* and width *L*. The kinematic boundary conditions are free slip along all boundaries, a specified temperature on the top (T<sub>top</sub>) and at the bottom (T<sub>bottom</sub>) and thermal insulation along the lateral boundaries. The difference between T<sub>top</sub> and T<sub>bottom</sub> in all experiments is 1000 K. The following formulation for temperature- and depth-dependent viscosity of the mantle is used: 
