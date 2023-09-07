@@ -2,7 +2,7 @@ The Blankenbach benchmark is an effective benchmark to test and compare a code f
 
 Convection is studied in a rectangular box of height *H* and width *L*. The kinematic boundary conditions are free slip along all boundaries, a specified temperature on the top (T<sub>top</sub>) and at the bottom (T<sub>bottom</sub>) and thermal insulation along the lateral boundaries. The difference between T<sub>top</sub> and T<sub>bottom</sub> in all experiments is 1000 K. The following formulation for temperature- and depth-dependent viscosity of the mantle is used: 
 
-$\eta=\eta_0 exp(-b \frac{T-T_{top}}{T_{bottom}-T{top}} + c\frac{y}{H})$
+$\eta=\eta_0 exp(-b \frac{T-T_{top}}{T_{bottom}-T{top}} + c\frac{y}{H})$, &emsp; &emsp; &emsp; (1)
 
 where $\eta_0$ is the viscosity at the top of the model and *b* and *c* are coefficients establishing the dependences of viscosity with temperature and depth, respectively. The model constants are listed in the table below. The density depends linearly on temperature (see *equation of state* formulation). 
 
@@ -45,7 +45,17 @@ The temperature and velocity patterns are resolved well and the steady state val
 
 This becomes even more obvious for higher Rayleigh number (*Ra* = 10<sup>6</sup>) calculations for which the deviations of the Nusselt number are quite significant as well as for a temperature-dependend thermal convection. For the latter, a higher resolution (101x101) is necessary to obtain a stable solution of the temperature field. A higher resolution significantly increases the computation time (at least to reach the same final time as in the previous calculations; steady state seems to be reached rather early within the computations), which should be compansated using a variable grid size, which needs to be implemented first. 
 
-... Resolution test for higher Ra ...
+*Resolution test for higher Ra*
+
+Depdending on the Rayleigh number, we can estimate the number of grid points in the upper thermal boundary layer (d) and, thus, the total resolution of our model, with:  
+
+$(\frac{H}{d})^3 = \frac{1}{4}Ra$, &emsp; &emsp; &emsp; (2)
+
+Assuming that we want to use *n* grid points within the upper thermal boundary layer, the total number of vertical grid points is given by : 
+
+$nz = (n-1)\sqrt[3]{\frac{Ra}{4}}+1$
+
+### Low Rayleigh Number Calculations
 
 ***Ra* = 10<sup>4</sup>**<br>
 Reference viscosity [Pa s]: 10<sup>23</sup>
@@ -56,11 +66,13 @@ Reference viscosity [Pa s]: 10<sup>23</sup>
 ![TimeSeries](https://github.com/LukasFuchs/FDCSGm/assets/25866942/7e7863a1-9360-41af-94a9-58f26065bb37)
 **Figure 2.** Time series of Nusselt number and root mean square velocity as well as the vertical temperautre profile in the middle of the model domain and the temperautre differences at the corners of the model (in the following order: top left (1), top right (2), bottom right (3), and bottom left (4)).
 
-***Evolutuion***<br>
+***Evolution***<br>
 ![Evolution_small](https://github.com/LukasFuchs/FDCSGm/assets/25866942/fb4f6e36-29d7-4f2a-affa-3bca238ae59d)
 
 **Resolution Test**<br>
 **Figure 3.** Resolution test for high Rayleigh number calculations. 
+
+### 'High' Rayleigh Number Calculations
 
 ***Ra* = 10<sup>6</sup>**<br>
 Reference viscosity [Pa s]: 10<sup>21</sup>
@@ -71,10 +83,15 @@ Reference viscosity [Pa s]: 10<sup>21</sup>
 ![TimeSeries](https://github.com/LukasFuchs/FDCSGm/assets/25866942/0d87a365-3347-40a6-83d1-150ea76f34cd)
 **Figure 5.** Time series, temperature profile, and corner heat fluxes. For more details see captions of Figure 2.
 
+***Evolution***<br>
+![Evolution_small](https://github.com/LukasFuchs/FDCSGm/assets/25866942/2cf47636-250b-4494-9f8c-c27fb24aac47)
+
 --------------------------------------------------------------
 
 ## Temperature Dependent Thermal Convection<br>
 nx = nz = 101
+
+### Low Rayleigh Number Calculations
 
 ***Ra* = 10<sup>4</sup>**<br>
 Reference viscosity [Pa s]: 10<sup>23</sup><br>
@@ -84,5 +101,8 @@ Reference viscosity [Pa s]: 10<sup>23</sup><br>
 **Time Series**<br>
 ![TimeSeries](https://github.com/LukasFuchs/FDCSGm/assets/25866942/a8d16cfe-739b-4233-be88-e06bb98a753f)
 **Figure 7.** Time series, temperature profile, and corner heat fluxes. For more details see captions of Figure 2.
+
+***Evolution***<br>
+
 
 
