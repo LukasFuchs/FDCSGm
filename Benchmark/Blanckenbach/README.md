@@ -103,6 +103,7 @@ Reference viscosity [Pa s]: 10<sup>23</sup><br>
 **Figure 7.** Time series, temperature profile, and corner heat fluxes. For more details see captions of Figure 2.
 
 ***Evolution***<br>
+![Evolution_small](https://github.com/LukasFuchs/FDCSGm/assets/25866942/6dd49bc4-258c-4334-8d90-513984750067)
 
 
 
