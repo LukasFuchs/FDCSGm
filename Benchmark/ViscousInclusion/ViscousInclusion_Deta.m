@@ -64,7 +64,7 @@ for k = 1:length(angle)
         h           =   figure(1);
     end
     
-    Pl.savefig      =   'no';
+    Pl.savefig      =   'yes';
     Pl.plotfields   =   'yes';
     
     for i = 1:length(eta2)
@@ -148,7 +148,7 @@ for k = 1:length(angle)
         B.ebg           =   -1e-14;         % < 0 compression
         B.RotAng        =   Orientation;    % positive -> counter clockwise
         B.EllA          =   3e2;            % [ m ]
-        B.EllB          =   5e1;
+        B.EllB          =   0.5e2;          % [ m ]
         
         switch Pl.savefig
             case 'yes'
@@ -252,18 +252,22 @@ for k = 1:length(angle)
             if (mod(it,5)==0||it==1)
                 figure(1) % --------------------------------------------- %
                 clf
-                subplot(2,2,1)
+                ax1 = subplot(2,2,1);
                 plotfield(log10(D.eta),M.X,M.Z,Pl,'pcolor',...
                     '\itlog_{10} ( \eta ) \rm\bf','quiver',ID.vx,ID.vz)
-                subplot(2,2,2)
+                colormap(ax1,Pl.lapaz)
+                ax2 = subplot(2,2,2);
                 plotfield(log10(ID.psi),M.X,M.Z,Pl,'pcolor',...
                     '\it log_{10} ( \psi ) \rm\bf')
-                subplot(2,2,3)
+                colormap(ax2,Pl.imola)
+                ax3 = subplot(2,2,3);
                 plotfield(log10(ID.eII),M.X,M.Z,Pl,'pcolor',...
                     '\itlog_{10} ( \epsilon_{II} ) \rm\bf')
-                subplot(2,2,4)
+                colormap(ax3,Pl.batlowW)
+                ax4 = subplot(2,2,4);
                 plotfield(log10(ID.tauII),M.X,M.Z,Pl,'pcolor',...
                     '\it log_{10} ( \tau_{II} ) \rm\bf')
+                colormap(ax4,Pl.nuuk)
             end
             
             switch Pl.savefig
