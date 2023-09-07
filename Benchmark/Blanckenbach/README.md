@@ -41,9 +41,11 @@ Resolution (nx x nz): 51 x 51<br>
 
 ## Isoviscous Convection
 
-The temperature and velocity patterns are resolved well and the steady state values for the Nusselt number and the root mean square velocity are almost reached, too. Variations from the benchmark values might be due to a rather coarse resolution (51x51) and the given solving method, that is the explicit diffusion solver, the semi-lagrangian advection method, and the operator splitting method. 
+The temperature and velocity patterns are resolved well and the steady state values for the Nusselt number and the root mean square velocity are nearly reached, too. Variations from the benchmark values might be due to a rather coarse resolution (51x51) and the given solving method, that is the explicit diffusion solver, the semi-lagrangian advection method, and the operator splitting method. 
 
-This becomes even more obvious for higher Rayleigh number (*Ra* = 10<sup>6</sup>) calculations for which the deviations of the Nusselt number are quite significant. ... Resolution test for higher Ra ...
+This becomes even more obvious for higher Rayleigh number (*Ra* = 10<sup>6</sup>) calculations for which the deviations of the Nusselt number are quite significant as well as for a temperature-dependend thermal convection. For the latter, a higher resolution (101x101) is necessary to obtain a stable solution of the temperature field. A higher resolution significantly increases the computation time (at least to reach the same final time as in the previous calculations; steady state seems to be reached rather early within the computations), which should be compansated using a variable grid size, which needs to be implemented first. 
+
+... Resolution test for higher Ra ...
 
 ***Ra* = 10<sup>4</sup>**<br>
 Reference viscosity [Pa s]: 10<sup>23</sup>
@@ -54,7 +56,7 @@ Reference viscosity [Pa s]: 10<sup>23</sup>
 ![TimeSeries](https://github.com/LukasFuchs/FDCSGm/assets/25866942/7e7863a1-9360-41af-94a9-58f26065bb37)
 **Figure 2.** Time series of Nusselt number and root mean square velocity as well as the vertical temperautre profile in the middle of the model domain and the temperautre differences at the corners of the model (in the following order: top left (1), top right (2), bottom right (3), and bottom left (4)).
 
-**Resolution Test**
+**Resolution Test**<br>
 **Figure 3.** Resolution test for high Rayleigh number calculations. 
 
 ***Ra* = 10<sup>6</sup>**<br>
@@ -68,7 +70,7 @@ Reference viscosity [Pa s]: 10<sup>21</sup>
 
 --------------------------------------------------------------
 
-## Temperature Dependent Convection<br>
+## Temperature Dependent Thermal Convection<br>
 nx = nz = 101
 
 ***Ra* = 10<sup>4</sup>**<br>
