@@ -1,4 +1,7 @@
+# General Information
+
 This directory contains three scripts: 
+
 1. FallingBlock.m<br>
    -> A general script to calculate the falling block problem (define model geometry, viscosity ratio, density ratio, and time). The parameters are not scaled for all scripts here. 
 
@@ -9,6 +12,7 @@ This directory contains three scripts:
    -> Script to calculate the time-dependent solution of the previous script. The final time for each model is set to the time given by *Gerya* (2009). Here, the code does advect the composition with passive tracers to transport density and viscosity.
 
 ------------------------------------------------------------------
+
 ## **Constants**<br>
 Model height **H** [km]: 500 <br>
 Model width **W** [km]: 500 <br>
