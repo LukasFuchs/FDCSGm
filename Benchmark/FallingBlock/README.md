@@ -2,13 +2,13 @@
 
 This directory contains three scripts: 
 
-1. FallingBlock.m<br>
+1. *FallingBlock.m*<br>
    -> A general script to calculate the falling block problem (define model geometry, viscosity ratio, density ratio, and time). The parameters are not scaled for all scripts here. 
 
-2. FallongBlockBenchmark.m<br>
+2. *FallingBlockBenchmark.m*<br>
    -> A script to calculate the instantaneous sinking velocity of a block with a certain geometry and density ratio for differnet viscosity ratios between the block and the background material.
 
-3. FallingBlockBenchmark_timedependent.m<br>
+3. *FallingBlockBenchmark_timedependent.m*<br>
    -> Script to calculate the time-dependent solution of the previous script. The final time for each model is set to the time given by *Gerya* (2009). Here, the code does advect the composition with passive tracers to transport density and viscosity.
 
 ------------------------------------------------------------------
