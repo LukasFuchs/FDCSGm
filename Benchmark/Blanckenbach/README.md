@@ -2,10 +2,10 @@
 
 This directory contains two files: 
 
-1. BlanckenbachBenchmark.m<br>
+1. *BlanckenbachBenchmark.m*<br>
      -> Main script to calculate one benchmark model (define *Ra* and viscosity). 
    
-3. Blanckenbach_Res_Test.m<br>
+2. *Blanckenbach_Res_Test.m*<br>
      -> Script to run a resolution test for a given *Ra* and viscosity. See below for more details. 
 
 -------------------------------------------------------------
