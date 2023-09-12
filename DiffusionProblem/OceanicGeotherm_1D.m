@@ -59,12 +59,12 @@ if nargin==0
     T.T     =   T.Tpot + abs(M.z/1e3)*T.dTadi;      % Initial T-profile [ K ]
     T.T(1)  =   T.T0;
     T.Tini  =   T.T;
-    T.ubound    =   'const';
+    T.ubound    =   'flux';
     T.utbf      =   -0.03;          % c     =   -k/q -> 90 mW/m^2
-    T.lbound    =   'const';
+    T.lbound    =   'flux';
     T.ltbf      =   -0.0033;        % c     =   -k/q -> 10 mW/m^2
     % Time stability criterion ------------------------------------------ %
-    t.dtfac =   1.0;                % Courant criterion
+    t.dtfac =   0.8;                % Courant criterion
     t.age   =   60;                 % Lithosphere age [ Ma ]
     t.tfac  =   (60*60*24*365.25);  % Seconds per year
     t.age   =   t.age.*1e6*t.tfac;  % Age in seconds
@@ -117,7 +117,8 @@ for i = 1:t.nit
     if i > 1
         t.time(i)   =   t.time(i-1) + t.dt;
     end
-    [T]     =   SolveDiff1Dimplicit_vary(N,T,Py,t);
+%     [T]     =   SolveDiff1Dimplicit_vary(N,T,Py,t);
+    [T]     =   SolveDiff1Dexplicit_vary(N,T,Py,t);
 end
 % ======================================================================= %
 
@@ -169,5 +170,5 @@ if plotparam
     set(gca,'FontWeight','Bold','LineWidth',2,'FontSize',15)
 end
 % ======================================================================= %
-
+% keyboard
 end

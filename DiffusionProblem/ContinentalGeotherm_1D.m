@@ -162,7 +162,8 @@ for i = 1:t.nit
     if i > 1
         t.time(i)   =   t.time(i-1) + t.dt;
     end
-    [T]     =   SolveDiff1Dimplicit_vary(N,T,Py,t);
+%     [T]     =   SolveDiff1Dimplicit_vary(N,T,Py,t);
+    [T]     =   SolveDiff1Dexplicit_vary(N,T,Py,t);
 end
 % ----------------------------------------------------------------------- %
 
@@ -218,7 +219,7 @@ if plotparam
     set(gca,'xscale','log','FontWeight','Bold','LineWidth',2,'FontSize',15)
 end
 % ======================================================================= %
-
+% keyboard
 end
 
 
