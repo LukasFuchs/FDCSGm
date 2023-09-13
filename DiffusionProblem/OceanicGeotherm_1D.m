@@ -72,7 +72,7 @@ if nargin==0
     
     %% Plot Initial condition ------------------------------------------- %
     plotparam   =   1;
-    fig = figure;
+    fig = figure;   
     clf
     subplot(1,2,1)
     plot(T.T,M.z./1e3,'LineWidth',2)
