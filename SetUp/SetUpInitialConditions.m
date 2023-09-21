@@ -1,7 +1,5 @@
 function [T,D,B,M,Ma,Py] = SetUpInitialConditions(T,D,Py,M,N,B)
-
 Ma  = [];
-
 %% Randbedingungen ------------------------------------------------------ %
 B.B0c       =   N.nz*2+2;
 if isfield(Py,'eparam')
@@ -10,37 +8,41 @@ else
     B.EtaIni    =   'none';
 end
 % ----------------------------------------------------------------------- %
-
 %% Maximale Zeit -------------------------------------------------------- %
 if ~isempty(T)
     T.tmax      =   T.tmaxini.*1e6*(365.25*24*60*60);      % in [ s ]
 end
 % ----------------------------------------------------------------------- %
-
 %% Temperaturanfangsbedingungen ----------------------------------------- %
 if isfield(B,'Tini')
     switch B.Tini
         case 'none'
             D.T     = [];
+        case 'circle'
+            % Define anomaly -------------------------------------------- %
+            xc              =   M.L/4;
+            zc              =   M.H/2;
+            a_ell           =   B.Tsigma*M.L;
+            b_ell           =   B.Tsigma*M.L;
+            Elli            =   ...
+                ((M.X - xc)./ a_ell).^2 + ((M.Z-zc)./ b_ell).^2;
+            D.T(Elli<=1)    =   B.T0 + B.TAmpl;
+            D.T(Elli>1)     =   B.T0;
+            D.Tmax          =   max(D.T,[],'all');
         case 'ellipse'
-            Tb      = Py.DeltaT/2;
-            Ta      = Tb + Py.DeltaT*0.2;
-            % Bereich der Temperatur Anomalie --------------------------- %
-            % Halbachsen der Ellipse in m
-            a       = -M.H/2;
-            b       = -M.H/6;
+            % Area of the elliptical temperature anomaly ---------------- %
+            % Half axes in [ m ]
+            a       =   -M.H/2;
+            b       =   -M.H/6;
+            % Centre of the ellips
+            xc      =   M.L/4;
+            zc      =   M.H/2 - b;
             
-            % Mittelpunkt der Ellipse
-            xc      = M.L/4;
-            zc      = M.H/2 - b;
+            Elleq   =   (M.X-xc).^2./a^2 + (M.Z-zc).^2./b^2;
+            ind     =   Elleq < 1;
             
-            Elleq   = (M.X-xc).^2./a^2 + (M.Z-zc).^2./b^2;
-            
-            ind     = Elleq < 1;
-            
-            D.T(ind)    = Ta;
-            D.T(~ind)   = Tb;
-            
+            D.T(ind)    =   B.T0 + B.TAmpl;
+            D.T(~ind)   =   B.T0;
         case 'gaussian'
             % Gaussche Temperatur Anomalie ------------------------------ %
             B.Tsigma    =   (B.Tsigma/100)*M.L; % Breite der Anomalie [ m ]
@@ -55,27 +57,17 @@ if isfield(B,'Tini')
             D.Tmax      =   zeros(1,T.itmax);
             D.TProfilea =   zeros(N.nz,T.itmax);
             D.Tmaxa     =   zeros(1,T.itmax);
-            
-            %                 D.T     =   B.T0 + ...
-            %             B.TAmpl.*exp(-((M.X-0.25*M.L).^2+(M.Z-0.5*M.H).^2)./sigma^2);
-            
         case 'block'
-            % Hintergrund Temperatur ------------------------------------ %
-            Tb      =   1000;           % [ K ]
+            % Area of the block
+            xTl         =   M.L/8;
+            xTr         =   xTl + M.L/5;
+            zTu         =   M.H/2 + M.H/10;
+            zTo         =   M.H/2 - M.H/10;
             
-            % Bereich der Temperatur Anomalie --------------------------- %
-            xTl     =   M.L/8;
-            xTr     =   xTl + M.L/5;
-            zTu     =   M.H/2 + M.H/10;
-            zTo     =   M.H/2 - M.H/10;
-            
-            Ta      =   1020;           % [ K ]
-            
-            % Anfangstemperatur Verteilung ------------------------------ %
-            D.T    =   Tb.*ones(N.nz,N.nx);
-            D.T(M.z>=zTu&M.z<=zTo,M.x>=xTl&M.x<=xTr) = Ta;
+            D.T         =   B.T0.*ones(N.nz,N.nx);
+            D.T(M.z>=zTu&M.z<=zTo,M.x>=xTl&M.x<=xTr) = B.T0 + B.TAmpl;
         case 'const'
-            D.T    =   ones(N.nz,N.nx).*1000;               % [ K ]
+            D.T         =   ones(N.nz,N.nx).*B.T0;
         case 'linear'
             Ttop        =   273;
             Tgrad       =   0.5;                            % [ K/km ]
@@ -94,13 +86,11 @@ if isfield(B,'Tini')
             Py.DeltaT   =   B.bhf - B.thf;
             
             % Gaussche Temperatur Anomalie ------------------------------ %
-            % Amplitude der Anomalie [ K ]
-            Ampl    =   D.T(find(M.Z(:,1)==0.5*M.H),1)*0.1;
-            sigma   =   M.L/10;         % Breite der Anomalies
-            zano    =   0.5.*M.H;       % Tiefe des Zentrums der Anomalie
+            B.Tsigma    =   (B.Tsigma/100)*M.L; % Breite der Anomalie [ m ]
             
-            T0      =   Ampl.*...
-                exp(-((M.X-0.25*M.L).^2+(M.Z-zano).^2)./sigma^2);
+            T0      =   B.TAmpl ...
+                .*exp( -( (M.X-0.5*M.L).^2 + (M.Z-0.5*M.H).^2 ) ./...
+                ( 2*B.Tsigma^2/pi ));
             
             D.T     = D.T + T0;
         otherwise
@@ -136,12 +126,19 @@ if isfield(B,'IniFlow')
     switch B.IniFlow
         case 'RigidBody'
             % Starre Rotation
-            D.vx    =   -B.FlowFac.*((M.Z-N.dz/2)-M.H/2)./M.H;       % [ cm/a ]
-            D.vz    =   B.FlowFac.*((M.X-N.dx/2)-M.L/2)./M.H;      % [ cm/a ]
+            D.vx    =   -B.FlowFac.*((M.Z-N.dz/2)-M.H/2)./M.H;          % [ cm/a ]
+            D.vz    =   B.FlowFac.*((M.X-N.dx/2)-M.L/2)./M.H;           % [ cm/a ]
             
-            D.vx    =   D.vx/(100*(60*60*24*365.25));   % [ m/s ]
-            D.vz    =   D.vz/(100*(60*60*24*365.25));   % [ m/s ]
+            D.vx    =   D.vx./(100*(60*60*24*365.25));   % [ m/s ]
+            D.vz    =   D.vz./(100*(60*60*24*365.25));   % [ m/s ]
             
+            switch B.AdvMethod
+                case 'tracers'
+                    Rad = sqrt((M.X-(M.L)/2).^2 + (M.Z-(M.H)/2).^2);
+                    
+                    D.vx(Rad>((M.L)/2)) = 0;
+                    D.vz(Rad>((M.L)/2)) = 0;
+            end
         case 'ShearCell'
             % Zelle mit einfacher Scherdehnung
             D.vx    =   B.FlowFac.*(sin(pi.*M.X./M.L).*cos(-pi.*(M.Z-N.dz/2)./M.H));
@@ -183,7 +180,6 @@ if isfield(B,'IniFlow')
     end
 end
 % ----------------------------------------------------------------------- %
-
 %% Anfangsdichte -------------------------------------------------------- %
 % Zustandsgleichung
 if isfield(Py,'tparam')
@@ -194,7 +190,6 @@ if isfield(Py,'tparam')
     end
 end
 % ----------------------------------------------------------------------- %
-
 %% Anfangsviskositaet --------------------------------------------------- %
 switch B.EtaIni
     case 'none'
@@ -227,9 +222,9 @@ switch B.EtaIni
         clear XM ZM
         Ma.C        =   ones(nmzz*nmxx,1);
         
-        ind         = Ma.XM>xL & Ma.XM<xR & Ma.ZM > zB & Ma.ZM < zT;
+        ind         =   Ma.XM>xL & Ma.XM<xR & Ma.ZM > zB & Ma.ZM < zT;
         
-        Ma.C(ind) = 2;
+        Ma.C(ind)   =   2;
         
         Ma.rho      =   [Py.rho0,Py.rho1];
         Ma.eta      =   [Py.eta0,Py.eta1];
@@ -237,16 +232,6 @@ switch B.EtaIni
         % Interpolate from tracers to grid ------------------------------ %
         [~,D.eta]   =   TracerInterp(Ma,D.eta,[],M.X,M.Z,'from','eta');
         [~,D.rho]   =   TracerInterp(Ma,D.rho,[],M.X,M.Z,'from','rho');
-        
-        if ~isfield(B,'AdvMethod')
-            Ma  =   [];
-        else            
-            switch lower(B.AdvMethod)
-                case 'semi-lag'
-                    Ma  = [];
-            end
-        end
-        
     case 'ellipse'
         % Tracer Initialisierung
         nmxx        =   (N.nx-1)*N.nmx;
@@ -266,33 +251,26 @@ switch B.EtaIni
         
         % Bereich der Inclusion --------------------------------- %
         % Halbachsen der Ellipse in m
-        a       = B.EllA;
-        b       = B.EllB;
+        a           =   B.EllA;
+        b           =   B.EllB;
+        alpha       =   B.RotAng;
+        xc          =   M.L/2;
+        zc          =   M.H/2;
         
-        alpha   = B.RotAng;
+        x_ell   =   (Ma.XM-xc).*cosd(alpha) + (Ma.ZM-zc).*sind(alpha);
+        z_ell   =   -(Ma.XM-xc).*sind(alpha) + (Ma.ZM-zc).*cosd(alpha);
         
-        % Mittelpunkt der Ellipse
-        xc      = M.L/2;
-        zc      = M.H/2;
-        
-        x_ell   = (Ma.XM-xc).*cosd(alpha) + (Ma.ZM-zc).*sind(alpha);
-        z_ell   = -(Ma.XM-xc).*sind(alpha) + (Ma.ZM-zc).*cosd(alpha);
-        
-        Elleq   = (x_ell./a).^2 + (z_ell./b).^2;
-        
+        Elleq   =   (x_ell./a).^2 + (z_ell./b).^2;
         ind     =   Elleq < 1;
         
-        Ma.C(ind) = 2;
+        Ma.C(ind)   =   2;
         
-        % Ma.rho      =   [Py.rho0,Py.rho1];
+        Ma.rho      =   [Py.rho0,Py.rho1];
         Ma.eta      =   [Py.eta0,Py.eta1];
         
         % Interpolate from tracers to grid ------------------------------ %
-        [~,D.eta]  = TracerInterp(Ma,D.eta,[],M.X,M.Z,'from','eta');
-        %         [~,Py.rho]  = TracerInterp(Ma,Py.eta,[],M.X,M.Z,'from','rho');
-        %                 D.eta(ind)  =   Py.eta1;
-        %                 D.eta(~ind) =   Py.eta0;
-        Ma  = [];
+        [~,D.eta]   =   TracerInterp(Ma,D.eta,[],M.X,M.Z,'from','eta');
+        [~,D.rho]   =   TracerInterp(Ma,D.rho,[],M.X,M.Z,'from','rho');
     case 'RTI'
         % Tracer Initialisierung
         nmxx        =   (N.nx-1)*N.nmx;
@@ -321,25 +299,64 @@ switch B.EtaIni
         Ma.C        =   reshape(C,[nmzz*nmxx,1]);
         
         Ma.c        =   [1,2];
-        
-        switch lower(B.AdvMethod)
-            case 'semi-lag'
-                % Interpolate from tracers to grid ---------------------- %
-                [~,D.C]     =   TracerInterp(Ma,D.C,[],M.X,M.Z,'from','comp');
-                D.C         =   round(D.C);
-                Ma  = [];
-                
-                D.rho(D.C<=1)   =    Py.rho0;
-                D.rho(D.C==2)   =    Py.rho1;
-                D.eta(D.C<=1)   =    Py.eta0;
-                D.eta(D.C==2)   =    Py.eta1;
-            case 'tracers'
-                Ma.rho      =   [Py.rho0 Py.rho1];
-                Ma.eta      =   [Py.eta0 Py.eta1];
-                % Interpolate from the tracers to the grid -------------- %
-                [~,D.rho]   =   TracerInterp(Ma,D.rho,[],M.X,M.Z,'from','rho');
-                [~,D.eta]   =   TracerInterp(Ma,D.eta,[],M.X,M.Z,'from','eta');
-        end
+end
+
+if ~isfield(B,'AdvMethod')
+    Ma  =   [];
+else
+    switch lower(B.AdvMethod)
+        case 'slf'
+            switch lower(B.Aparam)
+                case 'temp'
+                    D.Told          =   D.T;
+                    D.Tnew          =   D.T;
+            end
+        case 'semi-lag'            
+            switch lower(B.Aparam)
+                case 'comp'
+                    % Interpolate from tracers to grid ------------------ %
+                    [~,D.C]     =   TracerInterp(Ma,D.C,[],M.X,M.Z,'from','comp');
+                    D.C         =   round(D.C);
+                    
+                    D.rho(D.C<=1)   =    Py.rho0; D.rho(D.C==2)   =    Py.rho1;
+                    D.eta(D.C<=1)   =    Py.eta0; D.eta(D.C==2)   =    Py.eta1;
+            end
+            Ma          =   [];
+        case 'tracers'
+            switch B.Aparam
+                case 'comp'
+                    Ma.rho      =   [Py.rho0 Py.rho1];
+                    Ma.eta      =   [Py.eta0 Py.eta1];
+                    % Interpolate from the tracers to the grid ---------- %
+                    [~,D.rho]   =   ...
+                        TracerInterp(Ma,D.rho,[],M.X,M.Z,'from','rho');
+                    [~,D.eta]   =   ...
+                        TracerInterp(Ma,D.eta,[],M.X,M.Z,'from','eta');
+                case 'temp'
+                    % Tracer Initialisierung
+                    nmxx        =   (N.nx-1)*N.nmx;
+                    nmzz        =   (N.nz-1)*N.nmz;
+                    dmx         =   M.L/(nmxx-1);
+                    dmz         =   M.H/(nmzz-1);
+                    xm          =   linspace(0,M.L-dmx,nmxx);
+                    zm          =   linspace(M.H-dmz,0,nmzz);
+                    
+                    [XM,ZM]     =   meshgrid(xm,zm);
+                    XM          =   XM + rand(nmzz,nmxx)*dmx;
+                    Ma.XM       =   reshape(XM,[nmzz*nmxx,1]);
+                    ZM          =   ZM + rand(nmzz,nmxx)*dmz;
+                    Ma.ZM       =   reshape(ZM,[nmzz*nmxx,1]);
+                    
+                    Ma.C        =   ones(nmzz*nmxx,1);
+                    Ma.T        =   zeros(nmzz*nmxx,1);
+                    % Interpolate from the grid to the tracers ---------- %
+                    [Ma,~]   =   ...
+                        TracerInterp(Ma,D.T,[],M.X,M.Z,'to','temp');
+%                     keyboard
+                otherwise
+                    error('Error! Check advection settings!s')
+            end
+    end
 end
 % ----------------------------------------------------------------------- %
 end

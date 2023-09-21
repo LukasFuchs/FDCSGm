@@ -64,7 +64,7 @@ for k = 1:length(angle)
         h           =   figure(1);
     end
     
-    Pl.savefig      =   'yes';
+    Pl.savefig      =   'no';
     Pl.plotfields   =   'yes';
     
     for i = 1:length(eta2)
@@ -103,11 +103,11 @@ for k = 1:length(angle)
         N.nmz       =   5;
         
         %% -------------- Definition Physikalischer Konstanten ---------- %
-        Py.g        =   10;                 %   Schwerebeschleunigung [m/s^2]
-        Py.rho0     =   3200;               %   Hintergunddichte [kg/m^3]
-        Py.k        =   3;                  %   Thermische Leitfaehigkeit [ W/m/K ]
-        Py.cp       =   1000;               %   Heat capacity [ J/kg/K ]
-        Py.alpha    =   5e-5;               %   Thermischer Expnasionskoef. [ K^-1 ]
+        Py.g        =   10;             %   Schwerebeschleunigung [m/s^2]
+        Py.rho0     =   3200;           %   Hintergunddichte [kg/m^3]
+        Py.k        =   3;              %   Thermische Leitfaehigkeit [ W/m/K ]
+        Py.cp       =   1000;           %   Heat capacity [ J/kg/K ]
+        Py.alpha    =   5e-5;           %   Thermischer Expnasionskoef. [ K^-1 ]
         
         Py.kappa    =   Py.k/Py.rho0/Py.cp; % 	Thermische Diffusivitaet [ m^2/s ]
         
@@ -116,6 +116,7 @@ for k = 1:length(angle)
         
         Py.eta0     =   1e23;           % Viskositaet [ Pa*s ]
         Py.eta1     =   eta2(i);        % Inclusion viscosity
+        Py.rho1     =   Py.rho0; 
         
         Py.DeltaT   =   1000;           % Temperaturdifferenz
         % --------------------------------------------------------------- %
@@ -149,6 +150,8 @@ for k = 1:length(angle)
         B.RotAng        =   Orientation;    % positive -> counter clockwise
         B.EllA          =   3e2;            % [ m ]
         B.EllB          =   0.5e2;          % [ m ]
+        B.T0            =   1000; 
+        B.TAmpl         =   1000; 
         
         switch Pl.savefig
             case 'yes'
