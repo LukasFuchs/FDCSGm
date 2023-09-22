@@ -1,5 +1,9 @@
 # General Information
 
+This directory contains two main scripts: 
+
+
+
 Function to solve the two-dimensional advection problem with different
 finite difference discrectization schemes. One can choose from:       
     'upwind'    - Upwind
