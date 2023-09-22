@@ -39,3 +39,10 @@ As simple as this problem sounds, it is rather difficult to preserve the initial
 
 To avoid the effect of boundary conditions, I set the velocity outside of the circular rigid body rotation field to zero. 
 
+----------------------------------------------------
+
+![Field1](https://github.com/LukasFuchs/FDCSGm/assets/25866942/f632c6e3-2051-45d8-ae48-c62a40ac2242)
+**Figure 1.** Initial setup for a circular, constant (temperature) perturbation. The temperature field is scaled by the maximum of the temperature, thus it is one inside. 
+
+![2D_Advection_RigidBody](https://github.com/LukasFuchs/FDCSGm/assets/25866942/66ea8ad6-a277-4cd5-a91e-627f1b3f41fd)
+**Figure 2.** Example of an evolution of a full rotation. The advection scheme is a semi-lagragian scheme for a grid resolution of 301x301, shown at every 50th iteration step. The shape of the initial perturbation is preserved rather well and only minor *diffusion* due to the interpolation of the temperature is obervable. 
