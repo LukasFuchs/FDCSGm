@@ -61,7 +61,7 @@ To avoid the effect of boundary conditions, I set the velocity outside of the ci
 ![Comparison_101_101_gaussian](https://github.com/LukasFuchs/FDCSGm/assets/25866942/c516f57b-4860-4a68-9e25-41e50a271d08)
 **Figure 6.** Same as *Figure 4*, but with a gaussian (temperature) perturbation. For more details see the titles of each subplot. 
 
-![Initial_101_101_block](https://github.com/LukasFuchs/FDCSGm/assets/25866942/3fe2ccf2-a341-4446-bca1-c274bf2b1c75)
+![Initial_101_101_block](https://github.com/LukasFuchs/FDCSGm/assets/25866942/3fe2ccf2-a341-4446-bca1-c274bf2b1c75) <br>
 **Figure 7.** Initial setup for a rectangular, constant (temperature) perturbation. The temperature field is scaled by the maximum of the temperature, thus it is one inside.
 
 ![Comparison_101_101_block](https://github.com/LukasFuchs/FDCSGm/assets/25866942/2c1c431c-7b63-4f82-8a6b-34894afc8261)
