@@ -1,6 +1,6 @@
 # General Information
 
-This directory contains three scripts: 
+This directory contains three files: 
 
 1. *FallingBlock.m*<br>
    -> A general script to calculate the falling block problem (define model geometry, viscosity ratio, density ratio, and time). The parameters are not scaled for all scripts here. 
