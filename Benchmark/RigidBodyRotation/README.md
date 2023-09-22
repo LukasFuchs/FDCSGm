@@ -32,7 +32,7 @@ As simple as this problem sounds, it is rather difficult to preserve the initial
 1. *The upwind scheme*<br>
     -> A stable and effective way, however, with a certain amount of numerical diffusion if the *courant criteria* is not fulfilled. The courant criteria implies that the time step is smaller than the minimum grid spacing divided by the maximum velocity, that is, a property should not be advected over a distance larger than the grid spacing, or:<br>
 $\Delta t \le \frac{\Delta x}{max(|v|)}$<br>
-The upwind scheme is similar to a forward in time and centered in space discretization, however, one needs to consider the advection velocity as well, to ensure that the discretization in space is always upstream.<br>
+Here, I use a courant criteria of one. The upwind scheme is similar to a forward in time and centered in space discretization, however, one needs to consider the advection velocity as well, to ensure that the discretization in space is always upstream.<br>
    
 2. *The Staggered Leap Frog (SLF) scheme*<br>
     -> This method considers a centered in time and centered in space discretization of the partial differentials, thus it has a higher order of error and is suppose to not have any numerical diffusion. As promissing as this scheme sounds it is not properly working here yet (I believe, could also be some boundary condition effects)!<br>
