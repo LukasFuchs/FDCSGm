@@ -20,7 +20,7 @@ One can choose one of three different initial perturbations:
     -> Choose **'block'** as B.Tini; a rectangular block of certain width and height is positioned on the left side of the model domain, with a perturbation amplitude of B.TAmpl and a background (temperature) of B.T0.<br>
 
 2. **A gaussian perturbation**<br>
-    -> Choose **'gaussianRBR'** as B.Tini; a gaussian temperature distribution is positioned on the left side of the model domain (for more details see [/FDCSGm/tree/main/Benchmark/GaussDiffusion/](https://github.com/LukasFuchs/FDCSGm/tree/main/Benchmark/GausDiffusion)). <br>
+    -> Choose **'gaussianRBR'** as B.Tini; a gaussian temperature distribution is positioned on the left side of the model domain (for more details see [/FDCSGm/Benchmark/GaussDiffusion/](https://github.com/LukasFuchs/FDCSGm/tree/main/Benchmark/GausDiffusion)). <br>
 
 3. A circular, constant perturbation<br>
     -> Choose 'circle' as B.Tini; a circular perturbation of certain radius (*B.Tsigma* * *M.L*) and amplitude (*B.TAmpl*) relative to the background (*B.T0*) is positioned on the left side of the model domain.<br>
