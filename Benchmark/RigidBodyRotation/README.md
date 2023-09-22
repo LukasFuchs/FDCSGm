@@ -52,3 +52,23 @@ To avoid the effect of boundary conditions, I set the velocity outside of the ci
 ![Comparison_301_301_circular](https://github.com/LukasFuchs/FDCSGm/assets/25866942/e3bea260-2b1c-4f4e-9da7-79cc429069f4)
 **Figure 3.** Comparison of the final step for each advection method. For more details see the titles of each subplot. 
 
+![Comparison_101_101_circular](https://github.com/LukasFuchs/FDCSGm/assets/25866942/ca206459-0f94-4500-8982-61b030ae71b8)
+**Figure 4.** Same as *Figure 3*, but with a smaller resolution of 101x101. For more details see the titles of each subplot. 
+
+![Initial_101_101_gaussian](https://github.com/LukasFuchs/FDCSGm/assets/25866942/c6b09e02-5ce4-4cd7-b9a6-fbd78cebf3a4)
+**Figure 5.** Initial setup for a gaussian (temperature) perturbation. The temperature field is scaled by the maximum of the temperature, thus the maximum is one.
+
+![Comparison_101_101_gaussian](https://github.com/LukasFuchs/FDCSGm/assets/25866942/c516f57b-4860-4a68-9e25-41e50a271d08)
+**Figure 6.** Same as *Figure 4*, but with a gaussian (temperature) perturbation. For more details see the titles of each subplot. 
+
+![Initial_101_101_block](https://github.com/LukasFuchs/FDCSGm/assets/25866942/3fe2ccf2-a341-4446-bca1-c274bf2b1c75)
+**Figure 7.** Initial setup for a rectangular, constant (temperature) perturbation. The temperature field is scaled by the maximum of the temperature, thus it is one inside.
+
+![Comparison_101_101_block](https://github.com/LukasFuchs/FDCSGm/assets/25866942/2c1c431c-7b63-4f82-8a6b-34894afc8261)
+**Figure 8.** Same as *Figure 4*, but with a rectangular, constant (temperature) perturbation. For more details see the titles of each subplot.
+
+
+
+
+
+
