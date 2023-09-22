@@ -13,7 +13,8 @@ This directory contains three files:
 
 ------------------------------------------------------------------
 
-## **Constants**<br>
+## **Constants**
+
 Model height **H** [km]: 500 <br>
 Model width **W** [km]: 500 <br>
 Graviational acceleration **g** [m/s<sup>2</sup>]: 9.81 <br>
@@ -31,7 +32,7 @@ nmz = 5
 
 ------------------------------------------------------------------
 
-## Instantaneous Solution <br>
+## Instantaneous Solution
 
 ![Field](https://github.com/LukasFuchs/FDCSGm/assets/25866942/95af2887-d065-4be7-ab7f-a0b09d7bf73c)<br>
 **Figure 1.** Denstiy [kg/m<sup>3</sup>] and viscosity [Pa s] fields for a viscosity ratio between the block and the background medium of 6 orders of magnitude. The arrows show the instantaneous solution for the velocity field. 
@@ -41,7 +42,8 @@ nmz = 5
 
 --------------------------
 
-## Time Dependent <br>
+## Time Dependent
+
 The material defroms and sinks similar to the ones presented in *Gerya* (2009). However, somehow the block seems to rotate, especially for the high viscosity ratio cases. This might be due to the advection of the tracers with the regular grid velocity instead of the staggered grid one. This is will be implemente in the future. 
 
 ![TracerComparison_nx_51](https://github.com/LukasFuchs/FDCSGm/assets/25866942/97afa25c-9f3a-4a98-923e-040fb4b379ce)<br>
