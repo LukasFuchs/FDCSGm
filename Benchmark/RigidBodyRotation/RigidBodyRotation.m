@@ -35,21 +35,21 @@ B.IniFlow       =   'RigidBody';    % FlowField
 B.FlowFac       =   1;
 % ======================================================================= %
 %% ==================== Define model geometry constants ================= %
-M.H     =   -1e-3;                 % [ km ]
-M.xmax  =   1;                  % Aspect ratio
+M.H             =   -1;             % [ km ]
+M.xmax          =   1;              % Aspect ratio
 % ======================================================================= %
 %% ====================== Define the numerical grid ===================== %
-N.nx    =   101;
-N.nz    =   101;
+N.nx            =   101;
+N.nz            =   101;
 % ======================================================================= %
 %% ====================== Define time constants ========================= %
-T.tmaxini   =   6.2869e-4;      % [ Ma ]
-T.itmax     =   1e4;
-T.dtfac     =   1.0;           % Courant time factor, i.e. dtfac*dt_courant
+T.tmaxini       =   6.2869e-1;      % [ Ma ]
+T.itmax         =   1e4;
+T.dtfac         =   1.0;            % Courant time factor
 % ======================================================================= %
 %% ====================== Tracer advection method ======================= %
-N.nmx   =   5;
-N.nmz   =   5;
+N.nmx           =   5;
+N.nmz           =   5;
 % ======================================================================= %
 %% ========================= Define fields required ===================== %
 [Py,D,ID,M,N,T,A,Pl]    =   SetUpFields(Py,B,N,M,T,Pl);
@@ -65,7 +65,6 @@ D                       =   rmfield(D,{'Q','rho','P','Nus','eta'});
 T.dt      =     T.dtfac*min(N.dx,abs(N.dz))/...
     (sqrt(max(max(D.vx))^2 + max(max(D.vz))^2));
 %% ========================= Plot parameter ============================= %
-% inc     =   10;                 % Increment for quiver vectors
 Pl.inc      =   min(N.nz/10,N.nx/10);
 Pl.inc      =   round(Pl.inc);
 Pl.xlab     =   '\bfx [ km ]';
@@ -73,11 +72,11 @@ Pl.zlab     =   '\bfz [ km ]';
 % Animation settings ---------------------------------------------------- %
 switch Pl.savefig
     case 'yes'
-        M.ModDir    =   'data/';
+        M.ModDir    =   ['data/',B.AdvMethod,'/'];
         if ~exist(M.ModDir,'dir')
             mkdir(M.ModDir)
         end
-        Pl.filename    = ['2D_Advection_',B.AdvMethod,'_',B.IniFlow,'.gif'];
+        Pl.filename    = [M.ModDir,'2D_Advection_',B.IniFlow,'.gif'];
         if strcmp(B.AdvMethod,'tracers')
             if strcmp(getenv('OS'),'Windows_NT')
                 set(figure(1),'position',[193.0,165.8,1274.4,596.2]);
@@ -90,7 +89,7 @@ switch Pl.savefig
         h           = figure(1);
 end
 %% ================ Information for the command window ================== %
-fprintf([' Rayleigh-Taylor Instabilitaet  --------------------- ',...
+fprintf([' Rigid Body Rotation  --------------------- ',...
     '\n Advektion mit: %s',...
     '\n Viskositaet ist: %s',...
     '\n Aufloesung (nx x nz): %i x %i',...
@@ -118,14 +117,14 @@ for it = 1:T.itmax
         '; Time: ',sprintf('%2.2e',T.time(it)/1e6/(365.25*24*60*60)),' Myr'];
     switch Pl.plotfields
         case 'yes'
-            if (mod(it,5)==0||it==1)
+            if (mod(it,50)==0||it==1)
                 switch B.AdvMethod
                     case 'tracers'
                         figure(1),clf
                         tit = {['2-D numerical Advection:',B.AdvMethod];...
                             ['\Deltat_{fac} = ',num2str(T.dtfac),...
                             '; nx = ',num2str(N.nx),', nz = ',...
-                            num2str(N.nz),', mpe: ',num2str(N.nmx),...
+                            num2str(N.nz),', mpe: ',num2str(N.nmx*N.nmz),...
                             ', Step: ',num2str(it)]};
                         ax1=subplot(1,2,1);
                         plotfield(D.T./D.Tmax,M.X/1e3,M.Z/1e3,Pl,...
@@ -136,8 +135,6 @@ for it = 1:T.itmax
                         plot(Ma.XM./1e3,Ma.ZM./1e3,'.','MarkerSize',1)
                         hold on
                         plot(M.X./1e3,M.Z./1e3,'kx','MarkerSize',2)
-%                         contour(M.X./1e3,M.Z./1e3,D.T,...
-%                             [mean(D.T) mean(D.T)],'k's,'LineWidth',1)
                         xlabel('x [ km ]'); ylabel('z [ km ]')
                         title('Tracerdistribution')
                         axis equal; axis tight
@@ -147,11 +144,12 @@ for it = 1:T.itmax
                         tit = {['2-D numerical Advection:',B.AdvMethod];...
                             ['\Deltat_{fac} = ',num2str(T.dtfac),...
                             '; nx = ',num2str(N.nx),', nz = ',...
-                            num2str(N.nz),', mpe: ',num2str(N.nmx),...
+                            num2str(N.nz),', mpe: ',num2str(N.nmx*N.nmz),...
                             ', Step: ',num2str(it)]};
                         ax1=subplot(1,1,1);
                         plotfield(D.T./D.Tmax,M.X/1e3,M.Z/1e3,Pl,...
                             'pcolor',tit,'quiver',ID.vx,ID.vz)
+                        caxis([B.T0/(B.T0+B.TAmpl) 1])
                         colormap(ax1,flipud(Pl.lajolla))
                 end
                 switch Pl.savefig
@@ -165,7 +163,7 @@ for it = 1:T.itmax
                         [imind,cm]  = rgb2ind(im,256);
                         
                         % Write to the GIF File
-                        if t == 1
+                        if it == 1
                             imwrite(imind,cm,Pl.filename,'gif', 'Loopcount',inf);
                         else
                             imwrite(imind,cm,Pl.filename,'gif','WriteMode','append');
@@ -185,7 +183,7 @@ for it = 1:T.itmax
                 tit = {['2-D numerical Advection:',B.AdvMethod];...
                     ['\Deltat_{fac} = ',num2str(T.dtfac),...
                     '; nx = ',num2str(N.nx),', nz = ',...
-                    num2str(N.nz),', mpe: ',num2str(N.nmx),...
+                    num2str(N.nz),', mpe: ',num2str(N.nmx*N.nmz),...
                     ', Step: ',num2str(it)]};
                 ax1=subplot(1,2,1);
                 plotfield(D.T./D.Tmax,M.X/1e3,M.Z/1e3,Pl,...
@@ -196,8 +194,6 @@ for it = 1:T.itmax
                 plot(Ma.XM./1e3,Ma.ZM./1e3,'.','MarkerSize',1)
                 hold on
                 plot(M.X./1e3,M.Z./1e3,'kx','MarkerSize',2)
-                contour(M.X./1e3,M.Z./1e3,D.T,...
-                    [mean(D.T) mean(D.T)],'k','LineWidth',1)
                 xlabel('x [ km ]'); ylabel('z [ km ]')
                 title('Tracerdistribution')
                 axis equal; axis tight
@@ -207,11 +203,12 @@ for it = 1:T.itmax
                 tit = {['2-D numerical Advection:',B.AdvMethod];...
                     ['\Deltat_{fac} = ',num2str(T.dtfac),...
                     '; nx = ',num2str(N.nx),', nz = ',...
-                    num2str(N.nz),', mpe: ',num2str(N.nmx),...
+                    num2str(N.nz),', mpe: ',num2str(N.nmx*N.nmz),...
                     ', Step: ',num2str(it)]};
                 ax1=subplot(1,1,1);
                 plotfield(D.T./D.Tmax,M.X/1e3,M.Z/1e3,Pl,...
                     'pcolor',tit,'quiver',ID.vx,ID.vz)
+                caxis([B.T0/(B.T0+B.TAmpl) 1])
                 colormap(ax1,flipud(Pl.lajolla))
         end
         break

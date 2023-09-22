@@ -43,6 +43,19 @@ if isfield(B,'Tini')
             
             D.T(ind)    =   B.T0 + B.TAmpl;
             D.T(~ind)   =   B.T0;
+        case 'gaussianRBR'
+            xc              =   M.L/4;
+            zc              =   M.H/2;
+            % Gaussche Temperatur Anomalie ------------------------------ %
+            B.Tsigma    =   (B.Tsigma/100)*M.L; % Breite der Anomalie [ m ]
+            
+            D.T         =   B.T0 + ...
+                B.TAmpl .*exp( -( (M.X-xc).^2 + (M.Z-zc).^2 ) ./...
+                ( 2*B.Tsigma^2/pi ));
+            
+            D.Tana      =   D.T;
+            
+            D.Tmax      =   max(D.T,[],'all');
         case 'gaussian'
             % Gaussche Temperatur Anomalie ------------------------------ %
             B.Tsigma    =   (B.Tsigma/100)*M.L; % Breite der Anomalie [ m ]
@@ -66,6 +79,7 @@ if isfield(B,'Tini')
             
             D.T         =   B.T0.*ones(N.nz,N.nx);
             D.T(M.z>=zTu&M.z<=zTo,M.x>=xTl&M.x<=xTr) = B.T0 + B.TAmpl;
+            D.Tmax      =   max(D.T,[],'all');
         case 'const'
             D.T         =   ones(N.nz,N.nx).*B.T0;
         case 'linear'
@@ -132,13 +146,13 @@ if isfield(B,'IniFlow')
             D.vx    =   D.vx./(100*(60*60*24*365.25));   % [ m/s ]
             D.vz    =   D.vz./(100*(60*60*24*365.25));   % [ m/s ]
             
-            switch B.AdvMethod
-                case 'tracers'
-                    Rad = sqrt((M.X-(M.L)/2).^2 + (M.Z-(M.H)/2).^2);
-                    
-                    D.vx(Rad>((M.L)/2)) = 0;
-                    D.vz(Rad>((M.L)/2)) = 0;
-            end
+            %             switch B.AdvMethod
+            %                 case 'tracers'
+            Rad     =   sqrt((M.X-(M.L)/2).^2 + (M.Z-(M.H)/2).^2);
+            
+            D.vx(Rad>((M.L-5*N.dx)/2))  =   0;
+            D.vz(Rad>((M.L-5*N.dx)/2))  =   0;
+            %             end
         case 'ShearCell'
             % Zelle mit einfacher Scherdehnung
             D.vx    =   B.FlowFac.*(sin(pi.*M.X./M.L).*cos(-pi.*(M.Z-N.dz/2)./M.H));
@@ -311,7 +325,7 @@ else
                     D.Told          =   D.T;
                     D.Tnew          =   D.T;
             end
-        case 'semi-lag'            
+        case 'semi-lag'
             switch lower(B.Aparam)
                 case 'comp'
                     % Interpolate from tracers to grid ------------------ %
@@ -352,7 +366,7 @@ else
                     % Interpolate from the grid to the tracers ---------- %
                     [Ma,~]   =   ...
                         TracerInterp(Ma,D.T,[],M.X,M.Z,'to','temp');
-%                     keyboard
+                    %                     keyboard
                 otherwise
                     error('Error! Check advection settings!s')
             end
