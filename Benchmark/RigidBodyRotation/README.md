@@ -15,13 +15,13 @@ A rigid body rotation test is an effective benchmark to check the efficiency of 
 One can choose three different initial perturbation to be advected: 
 
 1. A rectangular, constant perturbation<br>
-    -><br>
+    -> Choose 'block' as B.Tini; a rectangular block of certain widht and height is positioned on the left side of the model domain, with a perturbation amplitude of B.TAmpl and a background (temperature) of B.T0. <br>
 
 2. A gaussian perturbation<br>
-    -><br>
+    -> Choose 'gaussian' as B.Tini; a gaussian temperature distribution is position on the left side of the model domain (for more details see */FDCSGm/Benchmark/GaussDiffusion/*). <br>
 
 3. A circular, constant perturbation<br>
-    -> <br>
+    -> Choose 'circle' as B.Tini; a circular perturbation of certain radius (*B.Tsigma* * *M.L*) and amplitude (*B.TAmpl*) relative to the background (*B.T0*) is positioned on the left side of the model domain.(<br>
 
 As simple as this problem sounds, it is rather difficult to preserve the initial shape, mainly due to numerical diffusion effects or due to inaccuracies due to an interpolation. Here, I use four different advection schemes to advect the temperature: 
 
