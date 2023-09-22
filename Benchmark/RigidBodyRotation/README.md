@@ -8,6 +8,8 @@ This directory contains two files:
 2. *RigidBodyRotationComp.m*<br>
     -> Similar as the script above, but it executes the different advection schemes conecutively to compare the effect of different numerical parameters on the advection scheme, e.g., the grid resolution. The final result is plotted in one figure.
 
+For more details on the advection see [/FDCSGm/AdvectionProblem/README.md](/FDCSGm/AdvectionProblem/README.md)
+
 -----------------------------------------------------------------
 
 A rigid body rotation test is an effective benchmark to check the efficiency of a specific advection scheme. Ideally, an initial perturbation (depending of which property is advected; here it is temperature) should end at the same position after one full rotation and should not lose its initial shape. 
