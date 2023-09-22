@@ -8,7 +8,7 @@ This directory contains two files:
 2. *RigidBodyRotationComp.m*<br>
     -> Similar as the script above, but it executes the different advection schemes conecutively to compare the effect of different numerical parameters on the advection scheme, e.g., the grid resolution. The final result is plotted in one figure.
 
-For more details on the advection see [/FDCSGm/AdvectionProblem/README.md](https://github.com/LukasFuchs/FDCSGm/tree/main/AdvectionProblem)
+For more details on the advection see [/FDCSGm/AdvectionProblem/](https://github.com/LukasFuchs/FDCSGm/tree/main/AdvectionProblem)
 
 -----------------------------------------------------------------
 
@@ -16,11 +16,11 @@ A rigid body rotation test is an effective benchmark to check the efficiency of 
 
 One can choose one of three different initial perturbations: 
 
-1. A rectangular, constant perturbation<br>
-    -> Choose 'block' as B.Tini; a rectangular block of certain width and height is positioned on the left side of the model domain, with a perturbation amplitude of B.TAmpl and a background (temperature) of B.T0. <br>
+1. **A rectangular, constant perturbation**<br>
+    -> Choose **'block'** as B.Tini; a rectangular block of certain width and height is positioned on the left side of the model domain, with a perturbation amplitude of B.TAmpl and a background (temperature) of B.T0.<br>
 
-2. A gaussian perturbation<br>
-    -> Choose 'gaussianRBR' as B.Tini; a gaussian temperature distribution is positioned on the left side of the model domain (for more details see */FDCSGm/Benchmark/GaussDiffusion/README.md*). <br>
+2. **A gaussian perturbation**<br>
+    -> Choose **'gaussianRBR'** as B.Tini; a gaussian temperature distribution is positioned on the left side of the model domain (for more details see [/FDCSGm/tree/main/Benchmark/GaussDiffusion/](https://github.com/LukasFuchs/FDCSGm/tree/main/Benchmark/GausDiffusion/)). <br>
 
 3. A circular, constant perturbation<br>
     -> Choose 'circle' as B.Tini; a circular perturbation of certain radius (*B.Tsigma* * *M.L*) and amplitude (*B.TAmpl*) relative to the background (*B.T0*) is positioned on the left side of the model domain.<br>
