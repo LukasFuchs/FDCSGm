@@ -12,6 +12,8 @@ For more details on the advection see [/FDCSGm/AdvectionProblem/](https://github
 
 -----------------------------------------------------------------
 
+## Perturbation setting
+
 A rigid body rotation test is an effective benchmark to check the efficiency of a specific advection scheme. Ideally, an initial perturbation (depending of which property is advected; here it is temperature) should end at the same position after one full rotation and should not lose its initial shape. 
 
 One can choose one of three different initial perturbations: 
@@ -26,6 +28,8 @@ One can choose one of three different initial perturbations:
     -> Choose **'circle'** as B.Tini; a circular perturbation of certain radius (*B.Tsigma* * *M.L*) and amplitude (*B.TAmpl*) relative to the background (*B.T0*) is positioned on the left side of the model domain.<br>
 
 ------------------
+
+## Advection scheme
 
 As simple as this problem sounds, it is rather difficult to preserve the initial shape, mainly due to numerical diffusion or due to inaccuracies of an interpolation. Here, I use *four* different advection schemes to advect the temperature: 
 
@@ -46,6 +50,8 @@ Here, I use a courant criteria of one. The upwind scheme is similar to a forward
 To avoid the effect of boundary conditions as best as possible, I set the velocity outside of the circular rigid body rotation field to zero. 
 
 ----------------------------------------------------
+
+## Examples of the advection schemes
 
 ![Field1](https://github.com/LukasFuchs/FDCSGm/assets/25866942/f632c6e3-2051-45d8-ae48-c62a40ac2242)<br>
 **Figure 1.** Initial setup for a circular, constant (temperature) perturbation. The temperature field is scaled by the maximum of the temperature, thus it is equal to one inside. 
