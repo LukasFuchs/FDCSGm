@@ -71,15 +71,15 @@ $nz = (n-1)\sqrt[3]{\frac{Ra}{4}}+1$, &emsp; &emsp; &emsp; (3)
 
 ***Ra* = 10<sup>4</sup>**<br>
 Reference viscosity [Pa s]: 10<sup>23</sup>
-![Field3150](https://github.com/LukasFuchs/FDCSGm/assets/25866942/115d5bb6-3c3d-44a6-992a-b6606d7d5144)
+![Field3150](https://github.com/LukasFuchs/FDCSGm/assets/25866942/115d5bb6-3c3d-44a6-992a-b6606d7d5144)<br>
 **Figure 1.** Steady-state temperautre (top) and velcoity field (bottom). The arrows whos the velocity vectors at certain grid points.
 
 **Time series**
-![TimeSeries](https://github.com/LukasFuchs/FDCSGm/assets/25866942/7e7863a1-9360-41af-94a9-58f26065bb37)
+![TimeSeries](https://github.com/LukasFuchs/FDCSGm/assets/25866942/7e7863a1-9360-41af-94a9-58f26065bb37)<br>
 **Figure 2.** Time series of Nusselt number and root mean square velocity as well as the vertical temperautre profile in the middle of the model domain and the temperautre differences at the corners of the model (in the following order: top left (1), top right (2), bottom right (3), and bottom left (4)).
 
 ***Evolution***<br>
-![Evolution_small](https://github.com/LukasFuchs/FDCSGm/assets/25866942/fb4f6e36-29d7-4f2a-affa-3bca238ae59d)
+![Evolution_small](https://github.com/LukasFuchs/FDCSGm/assets/25866942/fb4f6e36-29d7-4f2a-affa-3bca238ae59d)<br>
 
 **Resolution Test**<br>
 **Figure 3.** Resolution test for high Rayleigh number calculations. 
@@ -88,15 +88,15 @@ Reference viscosity [Pa s]: 10<sup>23</sup>
 
 ***Ra* = 10<sup>6</sup>**<br>
 Reference viscosity [Pa s]: 10<sup>21</sup>
-![Field_SS](https://github.com/LukasFuchs/FDCSGm/assets/25866942/24db94dd-0c7d-4566-aac3-49a995cd3ff0)
+![Field_SS](https://github.com/LukasFuchs/FDCSGm/assets/25866942/24db94dd-0c7d-4566-aac3-49a995cd3ff0)<br>
 **Figure 4.** Steady-state temperautre and velcoity field. For more details see captions Figure 1. 
 
 **Time series**
-![TimeSeries](https://github.com/LukasFuchs/FDCSGm/assets/25866942/0d87a365-3347-40a6-83d1-150ea76f34cd)
+![TimeSeries](https://github.com/LukasFuchs/FDCSGm/assets/25866942/0d87a365-3347-40a6-83d1-150ea76f34cd)<br>
 **Figure 5.** Time series, temperature profile, and corner heat fluxes. For more details see captions of Figure 2.
 
 ***Evolution***<br>
-![Evolution_small](https://github.com/LukasFuchs/FDCSGm/assets/25866942/2cf47636-250b-4494-9f8c-c27fb24aac47)
+![Evolution_small](https://github.com/LukasFuchs/FDCSGm/assets/25866942/2cf47636-250b-4494-9f8c-c27fb24aac47)<br>
 
 --------------------------------------------------------------
 
@@ -110,15 +110,15 @@ b = 0
 
 ***Ra* = 10<sup>4</sup>**<br>
 Reference viscosity [Pa s]: 10<sup>23</sup><br>
-![Field43800](https://github.com/LukasFuchs/FDCSGm/assets/25866942/d0c64608-e208-4ac3-912b-890e939a1644)
+![Field43800](https://github.com/LukasFuchs/FDCSGm/assets/25866942/d0c64608-e208-4ac3-912b-890e939a1644)<br>
 **Figure 6.**  Steady-state temperautre and velcoity field. For more details see captions Figure 1. 
 
 **Time Series**<br>
-![TimeSeries](https://github.com/LukasFuchs/FDCSGm/assets/25866942/a8d16cfe-739b-4233-be88-e06bb98a753f)
+![TimeSeries](https://github.com/LukasFuchs/FDCSGm/assets/25866942/a8d16cfe-739b-4233-be88-e06bb98a753f)<br>
 **Figure 7.** Time series, temperature profile, and corner heat fluxes. For more details see captions of Figure 2.
 
 ***Evolution***<br>
-![Evolution_small](https://github.com/LukasFuchs/FDCSGm/assets/25866942/6dd49bc4-258c-4334-8d90-513984750067)
+![Evolution_small](https://github.com/LukasFuchs/FDCSGm/assets/25866942/6dd49bc4-258c-4334-8d90-513984750067)<br>
 
 
 
