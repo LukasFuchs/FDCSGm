@@ -121,7 +121,7 @@ $\frac{\partial f}{\partial t} = - \overrightarrow{v} \cdot \nabla f$.&emsp;&ems
 
 For more details on how to discretize and sovle the advection equation see [*/FDCSGm/AdvectionProblem/*](https://github.com/LukasFuchs/FDCSGm/tree/main/AdvectionProblem). 
 
-   For the thermal convection code I do prefer, so far, the semi-lagrangian method. However, I do only advect the total temperature and not the increments, so far. In case of a temperature independent material (e.g., a Rayleigh-Taylor Instability), advection with passive tracers, wich advect different properties (so far, density and viscosity), should be used (this partly works with a semi-lagrangian advection method, too). The tracers are advected using fourth order Runge-Kutta. For more details and examples see the [benchmark directory](https://github.com/LukasFuchs/FDCSGm/tree/main/Benchmark).
+   For the thermal convection code I do prefer, so far, the semi-lagrangian method. However, I do only advect the total temperature and not the increments, so far. In case of a temperature independent material (e.g., a Rayleigh-Taylor Instability), advection with passive tracers, wich advect different properties (so far, density and viscosity), should be used. For more details and examples see the [benchmark directory](https://github.com/LukasFuchs/FDCSGm/tree/main/Benchmark).
 
 # Scaling and equation of state
    To better compare different kinds of thermal convection, one can scale the governing equations. The equation can be scaled by the following reference parameters: 
