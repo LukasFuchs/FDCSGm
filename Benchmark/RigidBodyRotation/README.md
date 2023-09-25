@@ -31,10 +31,9 @@ One can choose one of three different initial perturbations:
 
 ## Advection scheme
 
-As simple as this problem sounds, it is rather difficult to preserve the initial shape, mainly due to numerical diffusion or due to inaccuracies of an interpolation. Here, I use *four* different advection schemes to advect the temperature (for more details, see [/FDCSGm/AdvectionProblem/](https://github.com/LukasFuchs/FDCSGm/tree/main/AdvectionProblem)): 
+As simple as this problem sounds, it is rather difficult to preserve the initial shape, mainly due to numerical diffusion or due to inaccuracies of an interpolation. Here, I use *four* different advection schemes to advect the total temperature, where the courant criteria is equal to one (for more details, see [/FDCSGm/AdvectionProblem/](https://github.com/LukasFuchs/FDCSGm/tree/main/AdvectionProblem)): 
 
 1. *The upwind scheme*<br>
-    -> Here, I use a courant criteria of one and the total temperature is advected.<br>
    
 2. *The Staggered Leap Frog (SLF) scheme*<br>
    
