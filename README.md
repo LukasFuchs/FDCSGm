@@ -115,7 +115,7 @@ Equations (20) and (22) enable us to solve for the three unknowns *v<sub>x</sub>
 # Advection equation 
    In  case the material is not moving, one can solve the energy equation only for the diffusive part (e.g., an intrusion problem or a non-deformation lithosphere). Generally, however, the material is moving and certain properties need to be advected with the flow (e.g., the temperature). Thermal mantle convection is a perfect example on how to transport heat with both diffusion (especiall in the thermal boundary layers) and advection (mainly within the interior). 
    
-   The energy equation can be solved simultaneously with the diffusive and convective part using different discretization methods (interestingly, *FTCS* is stable with some numerical diffusion). However, for the sake of simplicity and a more conveniant way to teach both mechanisms (at least in my opinion), I do prefer, so far, the operator-splitting method, that is, I first solve for the convective part of the energy equation, followed by the conductive part. The conducitve part can be solved by the different discretization methods as described above and the convective part by the e.g., upwind, semi-lagrangian, or passive tracer method. Advection can then generally be described in an Eulerian reference frame as followed: 
+   The energy equation can be solved simultaneously with the diffusive and convective part using different discretization methods (interestingly, *FTCS* is stable with some numerical diffusion). However, for the sake of simplicity and a more conveniant way to teach both mechanisms (at least in my opinion), I do prefer, so far, the operator-splitting method, that is, I first solve for the convective part of the energy equation, followed by the conductive part. The conducitve part can be solved by the different discretization methods as described above and the convective part by the e.g., upwind, semi-lagrangian, or passive tracer method. Advection of a certain property *f* can then generally be described in an Eulerian reference frame as followed: 
 
 $\frac{\partial f}{\partial t} = - \overrightarrow{v} \cdot \nabla f$.&emsp;&emsp;&emsp;(23)
 
@@ -126,37 +126,37 @@ For more details on how to discretize and sovle the advection equation see [*/FD
 # Scaling and equation of state
    To better compare different kinds of thermal convection, one can scale the governing equations. The equation can be scaled by the following reference parameters: 
 
-$h_{sc} = h$,&emsp;&emsp;&emsp;(23)
+$h_{sc} = h$,&emsp;&emsp;&emsp;(24)
 
-$\eta_{sc} = \eta_0$,&emsp;&emsp;&emsp;(24)
+$\eta_{sc} = \eta_0$,&emsp;&emsp;&emsp;(25)
 
-$t_{sc} = \frac{h^2}{\kappa}$,&emsp;&emsp;&emsp;(25)
+$t_{sc} = \frac{h^2}{\kappa}$,&emsp;&emsp;&emsp;(26)
 
-$v_{sc} = \frac{\kappa}{h}$,&emsp;&emsp;&emsp;(26)
+$v_{sc} = \frac{\kappa}{h}$,&emsp;&emsp;&emsp;(27)
 
-$\tau_{sc} = \frac{\eta_0 \kappa}{h^2}$,&emsp;&emsp;&emsp;(27)
+$\tau_{sc} = \frac{\eta_0 \kappa}{h^2}$,&emsp;&emsp;&emsp;(28)
 
-$T_{sc} = \Delta T$,&emsp;&emsp;&emsp;(28)
+$T_{sc} = \Delta T$,&emsp;&emsp;&emsp;(29)
 
-$H_{sc} = \frac{c_p \Delta T \kappa}{h^2}$,&emsp;&emsp;&emsp;(29)
+$H_{sc} = \frac{c_p \Delta T \kappa}{h^2}$,&emsp;&emsp;&emsp;(30)
 
 where the subscript *sc* stands for the scaling parameters, and *h*, *η<sub>0</sub>*, *t*, *κ*, *v*, *τ*, *T*, *H*, *c<sub>p</sub>*, are the height, the reference viscosity, the time, the thermal diffusivity, the velocity, the stress, the temperature, the heat generation source, and the specific heat capacit, respectively. 
 
    The buoyance term on the right-hand side of equation (19), that is the density term which is temperature dependent (and pressure, but I do neglect this effect here so far), can be approximated with the so-called *equation of state* for the density. Here, its is a linear approximation of the change of density due to temperature variations and can be defined as:
 
-$\rho = \rho_0 (1-\alpha T)$,&emsp;&emsp;&emsp;(30)
+$\rho = \rho_0 (1-\alpha T)$,&emsp;&emsp;&emsp;(31)
 
 where *ρ<sub>0</sub>* is the reference density and *α* the thermal expansion coefficient [1/K]. 
 
 For the given scaling parameters, the non-dimensional governing equations are given as (assuming a constant viscosity; scaling for a variable viscosity is applicable in the same way):
 
-$\frac{\partial v_x}{\partial x} + \frac{\partial v_z}{\partial z} = 0$,&emsp;&emsp;&emsp;(31)
+$\frac{\partial v_x}{\partial x} + \frac{\partial v_z}{\partial z} = 0$,&emsp;&emsp;&emsp;(32)
 
-$\frac{\partial T}{\partial t} + v_x \frac{\partial T}{\partial x} + v_z \frac{\partial T}{\partial z} = (\frac{\partial^2 T}{\partial x^2} + \frac{\partial^2 T}{\partial z^2} + H)$,&emsp;&emsp;&emsp;(32)
+$\frac{\partial T}{\partial t} + v_x \frac{\partial T}{\partial x} + v_z \frac{\partial T}{\partial z} = (\frac{\partial^2 T}{\partial x^2} + \frac{\partial^2 T}{\partial z^2} + H)$,&emsp;&emsp;&emsp;(33)
 
-$-\frac{\partial P}{\partial x} + \eta \frac{\partial^2 v_x}{\partial x^2} + \eta \frac{\partial^2 v_x}{\partial z^2} = 0$,&emsp;&emsp;&emsp;(33)
+$-\frac{\partial P}{\partial x} + \eta \frac{\partial^2 v_x}{\partial x^2} + \eta \frac{\partial^2 v_x}{\partial z^2} = 0$,&emsp;&emsp;&emsp;(34)
 
-$-\frac{\partial P}{\partial z} + \eta \frac{\partial^2 v_z}{\partial z^2} + \eta \frac{\partial^2 v_z}{\partial x^2} - RaT = 0$,&emsp;&emsp;&emsp;(34)
+$-\frac{\partial P}{\partial z} + \eta \frac{\partial^2 v_z}{\partial z^2} + \eta \frac{\partial^2 v_z}{\partial x^2} - RaT = 0$,&emsp;&emsp;&emsp;(35)
 
 where *Ra* is the so-called thermal *Rayleigh number* and *P* the *dynamic pressure*. In case of a basally heated thermal convection, the convective vigor is defined by the Rayleigh number, which describes a relationship between heat transported by buoyancy and conduction, and the effect of the layers thickness and bulk viscosity.
 
