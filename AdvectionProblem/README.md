@@ -45,7 +45,7 @@ $\Delta t \le \frac{\Delta x}{max(|v|)}$<br>
 ### Passive tracers
 
    Here, one assumes that the model domain is completely filled with so-called *tracers* or *markers*. These tracers are then advected by solving the *ODE* of a particle advection using a certain method (e.g., Euler or Runge Kutta) and they transport any property stored on them. However, care needs to be taken when interpolating those properties from the regular grid onto the tracers and back. This is even more complex if the property advected does have an effect on parameters controlling the governing equations (e.g., the viscosity in continuum euqation).<br>
-   Here, I advect the tracers using Runge-Kutta fourth order; the tracers can transport the absolute temperature and the composition (so far only for two compositions with a constant viscosity and density). The property is then interpolated back to the regular grid points every time step. 
+   &emsp;Here, I advect the tracers using Runge-Kutta fourth order; the tracers can transport the absolute temperature and the composition (so far only for two compositions with a constant viscosity and density). The property is then interpolated back to the regular grid points every time step. 
 
 ### Examples 
    For the [thermal convection](https://github.com/LukasFuchs/FDCSGm/tree/main/MixedHeatedSystems) code or in the [Blankenbach benchmark](https://github.com/LukasFuchs/FDCSGm/tree/main/Benchmark/Blanckenbach) I do prefer, so far, the semi-lagrangian method. However, I only advect the total temperature and not the increments, so far. <br>
