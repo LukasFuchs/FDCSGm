@@ -20,7 +20,7 @@ where i is the coordinate index and x<sub>i</sub> is a spatial coordinate.
 
 ## Discretization Schemes
 
-&emsp;As simple as the advection problem sounds, it is rather difficult to properly solve advection without some kind of numerical diffusion or inaccuracies due to interpolation of properties between the tracers and the regular grid. The particle advection is used for the *tracer/marker in cell* method (either passive or active) and can be solved using different numerical methods, e.g. Euler integration or Runge-Kutta. The Eulerian form of the advection equation can also be solved in different ways. In the following, I would like to focus on *four* different methods to advect material. Different advection methods are used within the individual benchmarks and all can be tested in the *Rigid Body Rotation* benchmark. 
+&emsp;As simple as the advection problem sounds, it is rather difficult to properly solve advection without some kind of numerical diffusion or inaccuracies due to interpolation of properties between the tracers and the regular grid. The particle advection is used for the *tracer/marker in cell* method (either passive or active) and can be solved using different numerical methods, e.g. Euler integration or Runge-Kutta. The Eulerian form of the advection equation can also be solved in different ways. In the following, I would like to focus on *four* different methods to advect material. Different advection methods are used within the individual benchmarks and all can be tested in the [*Rigid Body Rotation*](https://github.com/LukasFuchs/FDCSGm/tree/main/Benchmark/RigidBodyRotation) benchmark. 
 
 ### The upwind scheme
 
