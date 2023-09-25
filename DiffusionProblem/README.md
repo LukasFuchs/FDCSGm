@@ -1,12 +1,15 @@
 # General Information
 
-Needs:
-- discretization of
-     - explicit (variable thermal parameters, at some point!)
+Needs, in detail:
+- discretization of     
      - implicit
      - ADI
      - CNV
-     - Poisson solution, constant and variable, 
+     - Poisson solution, constant and variable,
+     - explicit (variable thermal parameters, at some point!)
+
+Needs briefly: 
+- boundary conditions
 
 ---------------------
 
