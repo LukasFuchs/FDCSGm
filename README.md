@@ -161,4 +161,8 @@ $-\frac{\partial P}{\partial z} + \eta \frac{\partial^2 v_z}{\partial z^2} + \et
 where *Ra* is the so-called thermal *Rayleigh number* and *P* the *dynamic pressure*. In case of a basally heated thermal convection, the convective vigor is defined by the Rayleigh number, which describes a relationship between heat transported by buoyancy and conduction, and the effect of the layers thickness and bulk viscosity.
 
 # References
+
 *Gerya, T. (2009). Introduction to numerical geodynamic modelling.*
+
+*Becker, T. W. and Kaus, B. J. P (2020 update): Numerical Modeling of Earth Systems: An introduction to computational methods with focus on solid Earth applications of continuum mechanics, The University of Texas at Austin, v. 1.2.2, 2020.*
+
