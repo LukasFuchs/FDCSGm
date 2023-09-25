@@ -1,24 +1,26 @@
 # General Information 
 
-This directory contains several files to calculate the advection of certain property within a two-dimensional domain by the e.g., upwind, semi-lagrangian, or passive tracer method. For the sake of simplicity, I do focus on the advection of the composition in the following, however, in theory, one can chose any kind of property for advection (with some conditions to keep in mind). In general, advection can be described by the Lagrangian time derivative which is in Eulerian form: 
+This directory contains several files to calculate the advection of a certain property within a two-dimensional domain by the e.g., upwind, semi-lagrangian, or passive tracer method. For the sake of simplicity, I do focus on the advection of the absolute temperature in the following, however, in theory, one can chose any kind of property for advection (with some conditions to keep in mind). 
 
-$\frac{D}{Dt} = \frac{\partial}{\partial t} + \overrightarrow{v} \cdot \nabla$.&emsp;&emsp;&emsp;(23)
+In general, advection describes the transport of a property, here the temperature, from one point to another, where one can assume different reference frames for the given point of interest. If we assume a not moving reference frame (that is an Eulerian grid), the change in temperature at a certain point can be described by (*eulerian advective transport equation*): 
 
-Advection can be described by: 
+$\frac{\partial T}{\partial t} = - \overrightarrow{v} \cdot \nabla T$,&emsp;&emsp;&emsp;(1)
 
-$$.&emsp;&emsp;&emsp;(1)
+or in a Lagrangian reference frame (i.e., along a moving point) as: 
 
-Euler form
+$\frac{DT}{Dt}$, where both are related by: $\frac{DT}{Dt} = \frac{\partial T}{\partial t} + \overrightarrow{v} \cdot \nabla T$.&emsp;&emsp;&emsp;(2)
 
-$$. &emsp;&emsp;&emsp;(2)
+For a Lagrangian reference point advection is given by a simple *ODE* particle advection scheme, where changes in its coordinates are related with the material velocities as: 
 
-Lagrangian form: 
+$\frac{Dx}{Dt} = v_i$,&emsp;&emsp;&emsp; (3)
 
-$$. &emsp;&emsp;&emsp; (3)
+where i is the coordinate index and x<sub>i</sub> is a spatial coordinate. 
+
+--------------------------
 
 ## Discretization Schemes
 
-As simple as this problem sounds, it is rather difficult to preserve the initial shape, mainly due to numerical diffusion or due to inaccuracies of an interpolation. Here, I use *four* different advection schemes to advect the temperature: 
+As simple as the advection problem sounds, it is rather difficult to properly solve advection without some kind of numerical diffusion or inaccuracies due to interpolation of properties between the tracers and the regular grid. The particle advection is used for the *tracer/marker in cell* method (either passive or active) and can be solved using different numerical methods, e.g. Euler integration or Runge-Kutta. The Eulerian form of the advection equation can also be solved in different ways. In the following, I would like to focus on *four* different methods to advect material.
 
 ### The upwind scheme
 
