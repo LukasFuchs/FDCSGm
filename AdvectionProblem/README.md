@@ -20,17 +20,25 @@ where i is the coordinate index and x<sub>i</sub> is a spatial coordinate.
 
 ## Discretization Schemes
 
-As simple as the advection problem sounds, it is rather difficult to properly solve advection without some kind of numerical diffusion or inaccuracies due to interpolation of properties between the tracers and the regular grid. The particle advection is used for the *tracer/marker in cell* method (either passive or active) and can be solved using different numerical methods, e.g. Euler integration or Runge-Kutta. The Eulerian form of the advection equation can also be solved in different ways. In the following, I would like to focus on *four* different methods to advect material.
+As simple as the advection problem sounds, it is rather difficult to properly solve advection without some kind of numerical diffusion or inaccuracies due to interpolation of properties between the tracers and the regular grid. The particle advection is used for the *tracer/marker in cell* method (either passive or active) and can be solved using different numerical methods, e.g. Euler integration or Runge-Kutta. The Eulerian form of the advection equation can also be solved in different ways. In the following, I would like to focus on *four* different methods to advect material. Different advection methods are used within the individual benchmarks and all can be tested in the *Rigid Body Rotation* benchmark. 
 
 ### The upwind scheme
 
-A stable and effective way, however, with a certain amount of numerical diffusion if the *courant criteria* is not fulfilled. The courant criteria implies that the time step is smaller than the minimum grid spacing divided by the maximum velocity, that is, a property should not be advected over a distance larger than the grid spacing, or:<br>
+The idea is that the flux into the local cell will only depend on the gradient of temperature in the direction upstream. The upwind scheme is similar to a forward in time and centered in space discretization, however, the central spacial derivative is replaced by single-sided forward and backward finite differences and one needs to consider the advection velocity as well, to ensure that the discretization in space is always upstream. In 2-D the advection equation is then given as: 
+
+![image](https://github.com/LukasFuchs/FDCSGm/assets/25866942/09474b14-e6c8-4cc4-a5c8-d97eb0e84406),
+
+where *i* and *j* are the indices in *z*- and *x*- direction, respectively. 
+
+This is a stable and effective way, however, with a certain amount of numerical diffusion if the *courant criteria* is not fulfilled and only first order accurate in space. The courant criteria implies that the time step is smaller than the minimum grid spacing divided by the maximum velocity, that is, a property should not be advected over a distance larger than the grid spacing, or:<br>
 $\Delta t \le \frac{\Delta x}{max(|v|)}$<br>
-Here, I use a courant criteria of one. The upwind scheme is similar to a forward in time and centered in space discretization, however, one needs to consider the advection velocity as well, to ensure that the discretization in space is always upstream.<br>
    
 ### The Staggered Leap Frog (SLF) scheme 
 
-This method considers a centered in time and centered in space discretization of the partial differentials, thus it has a higher order of error and is suppose to not have any numerical diffusion. As promissing as this scheme sounds it is not properly working here yet (I believe, could also be some boundary condition effects)!<br>
+This method considers a centered in time and centered in space discretization of the partial differentials, thus it has a higher order of accuracy and is suppose to not have any numerical diffusion. In 2-D the advection equation discretizes to:
+
+![image](https://github.com/LukasFuchs/FDCSGm/assets/25866942/6b13c8ad-0ec7-4248-a114-90b1b87d3eaf).
+
    
 ### The semi-lagragian scheme 
 This method assumes that an *imaginary tracer* is located at a certain position and lands directly at a finite difference grid node after advection within one time step. Thus, one needs to calculate the *origin point* from each grid node back in time with a given velocity field (using a central point iteration method) and then interpolate the property from the regular grid points to the determined *origin points*. The method does not have any numerical diffusion but shows inaccuracies due to the interpolation method.<br>
