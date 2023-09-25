@@ -1,8 +1,12 @@
-# Routines to Solve the Diffusion Problem
+# General Information
+
+---------------------
+
+## Routines to Solve the Diffusion Problem
 
    This directory contains all rountines to solve the diffusive part of the *temperature conservation equation* (1- and 2-D) using different numerical discretization methods. The routines are avaible for a dimensional or non-dimensional (files ending with *Sc.m) form of the equation (so far the 1-D routines are only availabe for a dimensional version!). 
 
-## 1-D Geotherms
+### 1-D Geotherms
    The 1-D temperature profile is calculated by solving the diffusive part of the 1-D temperature conservation equation (so far only with a radiogenic heat source) for variable thermal parameters with a proper conserving finite difference scheme. That is, the heat flow is calculated on the centered and the remaining parameters on the regular grid points, respectively. The discretization scheme for variable thermal parameters is picked to solve for a temperature profile of a continental lithosphere with upper, lower crust, and mantle. 
 The 1-D temperature equation is given by: 
 
@@ -106,14 +110,14 @@ The gradient of temperature (and thus the vertical heat flux) can be defined usi
 
    $Q_{top} = -\frac{2\Delta t c_{bottom}}{\rho_{nz} c_{p,nz} \delta z}k_A$. &emsp;&emsp;&emsp; (16)
 
-### Oceanic Geotherms
+#### Oceanic Geotherms
 ![image](https://github.com/LukasFuchs/FDCSGm/assets/25866942/247cb1ca-b0d1-40b0-bfdb-aaac00a66222)
 ***Figure 2. Oceanic Lithosphere.** LEFT: Temperature profile [K]  for an oceanic lithosphere of 60 Ma of age and constant thermal boundary conditions at the top and bottom. The blue line shows the initial temperature profile. The yellow dashed line shows the solution for a half-space cooling model. RIGHT: Heat flux [mW/m<sup>2</sup>] with depth. The parameters of this model are defined as the default values in the routine OceanicGeotherm.m.*
 
 ![image](https://github.com/LukasFuchs/FDCSGm/assets/25866942/6b13a316-ec6f-4ebc-9720-3290881a9b49)
 ***Figure 3. Oceanic Lithosphere II**. Same as Figure 1 but with constant heat flux boundary conditions qbottom =10 mW/m<sup>2</sup> and qtop = 90 mW/m<sup>2</sup>.*
 
-### Continental Geotherms
+#### Continental Geotherms
 ![image](https://github.com/LukasFuchs/FDCSGm/assets/25866942/3e7bdc48-24dc-48d8-a058-49b01cc819da)
 ***Figure 4. Continental Lithosphere.** LEFT: Temperature profile for a continental lithosphere of 1000 Ma of age with constant upper and lower thermal boundary conditions. The blue line shows the initial condition, the red line shows the solution of equation (1), the yellow dashed line shows the solution of the time-independent heat equation (1-D poisson equation), and the magenta dashed line shows the solution of a 2D, staggered finite difference code. MIDDLE: Heat flux with depth. RIGHT: Thermal parameter for the lithosphere setup: thermal conductivity [k], specific heat [c<sub>p</sub>], density [ρ], and volumetric heat generation rate [Q].*
 
