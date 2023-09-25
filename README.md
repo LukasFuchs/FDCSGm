@@ -117,7 +117,7 @@ Equations (20) and (22) enable us to solve for the three unknowns *v<sub>x</sub>
    
    The energy equation can be solved simultaneously with the diffusive and convective part using different discretization methods (interestingly, *FTCS* is stable with some numerical diffusion). However, for the sake of simplicity and a more conveniant way to teach both mechanisms (at least in my opinion), I do prefer, so far, the operator-splitting method, that is, I first solve for the convective part of the energy equation, followed by the conductive part. The conducitve part can be solved by the different discretization methods as described above and the convective part by the e.g., upwind, semi-lagrangian, or passive tracer method. Advection can then generally be described in an Eulerian reference frame as followed: 
 
-$\frac{\partial}{\partial t} = - \overrightarrow{v} \cdot \nabla$.&emsp;&emsp;&emsp;(23)
+$\frac{\partial f}{\partial t} = - \overrightarrow{v} \cdot \nabla f$.&emsp;&emsp;&emsp;(23)
 
 For more details on how to discretize and sovle the advection equation see [*/FDCSGm/AdvectionProblem/*](https://github.com/LukasFuchs/FDCSGm/tree/main/AdvectionProblem). 
 
