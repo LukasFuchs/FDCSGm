@@ -40,7 +40,7 @@ This method considers a centered in time and centered in space discretization of
 ![image](https://github.com/LukasFuchs/FDCSGm/assets/25866942/6b13c8ad-0ec7-4248-a114-90b1b87d3eaf).
 
 ### The semi-lagragian scheme 
-This method assumes that an *imaginary tracer* is located at a certain position and lands directly at a finite difference grid node after advection within one time step. Thus, one needs to calculate the *origin point* from each grid node back in time with a given velocity field (using a central point iteration method) and then interpolate the property from the regular grid points to the determined *origin points*. The method does not have any numerical diffusion but shows inaccuracies due to the interpolation method.<br>
+This method is related to the tracer-based advection by solving *ordinary differential equations*, where it assumes that *imaginary tracers* are located at certain positions and land directly at the finite difference grid nodes after advection within one time step. Thus, one needs to calculate the *origin points* for each grid node back in time (e.g., one Euler time step) with a given velocity field (using an *iterative mid-point scheme*, i.e. one uses the velocity at a point half a time step backward in time) and then interpolate the property from the regular grid points to the determined *origin points*. This scheme assumes that no heat-sources were active during the advection. The method does not have any numerical diffusion but shows inaccuracies due to the interpolation method.<br>
    
 ### Passive tracers
 
