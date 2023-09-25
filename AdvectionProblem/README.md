@@ -35,11 +35,10 @@ $\Delta t \le \frac{\Delta x}{max(|v|)}$<br>
    
 ### The Staggered Leap Frog (SLF) scheme 
 
-This method considers a centered in time and centered in space discretization of the partial differentials, thus it has a higher order of accuracy and is suppose to not have any numerical diffusion. In 2-D the advection equation discretizes to:
+This method considers a centered in time and centered in space discretization of the partial differentials, thus it has a higher order of accuracy in space (second order) and is suppose to not have any numerical diffusion. In 2-D the advection equation discretizes to:
 
 ![image](https://github.com/LukasFuchs/FDCSGm/assets/25866942/6b13c8ad-0ec7-4248-a114-90b1b87d3eaf).
 
-   
 ### The semi-lagragian scheme 
 This method assumes that an *imaginary tracer* is located at a certain position and lands directly at a finite difference grid node after advection within one time step. Thus, one needs to calculate the *origin point* from each grid node back in time with a given velocity field (using a central point iteration method) and then interpolate the property from the regular grid points to the determined *origin points*. The method does not have any numerical diffusion but shows inaccuracies due to the interpolation method.<br>
    
