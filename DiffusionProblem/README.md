@@ -21,7 +21,7 @@ $q_{z} = -k \frac{\partial T}{\partial z}$. &emsp; &emsp; &emsp; (2)
 
 ***Solving the equation***
 
-&emsp;Following the discretization shown in Figure 1 one needs to solve the following equation (in an implicit finite difference formulation):
+&emsp;Following the discretization shown in Figure 1 one needs to solve the following equation (in an [implicit finite difference formulation](https://github.com/LukasFuchs/FDCSGm/blob/main/DiffusionProblem/SolveDiff1Dimplicit_vary.m)):
 
 $\rho_j c_{p,j} \frac{T_{j}^{n+1} - T_{j}^{n}}{\Delta t} = -\frac{q_{z,j+1/2}^{n+1} - q_{z,j-1/2}^{n+1} }{\Delta z} + \rho_j H_j$, &emsp;&emsp;&emsp; (3)
 
