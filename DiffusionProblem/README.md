@@ -54,7 +54,7 @@ where $s_x=\frac{\kappa \Delta t}{\Delta x^2}$ and $s_z=\frac{\kappa \Delta t}{\
 
 &emsp;In steady state, one assumes that the temperature does not vary over time and the temperature equation simplifies to an elliptic partial differential equation (i.e., the *Poission equation*). 
 
-### Poisson solution, constant
+### Poisson solution, constant *k*
 
 &emsp;For constant thermal parameters the diffusive temperature equation is given by (in 2-D): 
 
@@ -77,7 +77,7 @@ $s_zT_{i-1,j}-2(s_x+s_z)T_{i,j}+2s_xT_{i,j+1}+s_zT_{i+1,j} = -\frac{Q}{k}+\frac{
 
 Here, one again uses imaginary points outside of the model domain to define the flux boundary conditions (for more details see the [introduction](https://github.com/LukasFuchs/FDCSGm/tree/main#energy-equation)). The same applies for the remaining boundaries. 
 
-### Poisson solution, variable
+### Poisson solution, variable *k*
 
 &emsp; For variable thermal parameters the diffusive temperature equation is given by (in 2-D): 
 
