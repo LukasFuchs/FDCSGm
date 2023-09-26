@@ -106,7 +106,7 @@ where $\rho, c_{p}, T, t, k, H, z$ are the density [kg/m<sup>3</sup>], the speci
 
 $q_{z} = -k \frac{\partial T}{\partial z}$. &emsp; &emsp; &emsp; (2)
 
-***Solving the equation***
+#### ***Solving the equation***
 
 &emsp;Following the discretization shown in Figure 1 one needs to solve the following equation (in an [implicit finite difference formulation](https://github.com/LukasFuchs/FDCSGm/blob/main/DiffusionProblem/SolveDiff1Dimplicit_vary.m)):
 
@@ -140,7 +140,7 @@ $k_{j-1/2} = \frac{k_{j-1} + k_{j}}{2}$. &emsp;&emsp;&emsp; (10)
 
 An [*explicit*](https://github.com/LukasFuchs/FDCSGm/blob/main/DiffusionProblem/SolveDiff1Dexplicit_vary.m) solver for a 1-D thermal profile with variable thermal parameters and a radiogenic heat source is also available.
 
-***Thermal boundary conditions***
+#### ***Thermal boundary conditions***
 
 The thermal boundary conditions are defined as: 
 
