@@ -68,17 +68,17 @@ For more details check description in the files.
 [*AdvectMarker2D.m*](https://github.com/LukasFuchs/FDCSGm/blob/main/AdvectionProblem/AdvectMarker2D.m)
    -> Script to advect passive tracers within a 2-D environment using Runge-Kutta 4th order.
    
-*Advection.m*
+[*Advection.m*](https://github.com/LukasFuchs/FDCSGm/blob/main/AdvectionProblem/Advection.m)
    -> General function to chose a certain advection scheme, to be used in the main program.
    
-*SLFAdvection2D.m*
+[*SLFAdvection2D.m*](https://github.com/LukasFuchs/FDCSGm/blob/main/AdvectionProblem/SLFAdvection2D.m)
    -> Staggered Leap Frog advection scheme for a 2-D environment. Advected is any kind of field *A*.
 
-*SemiLagAdvection2D.m*
+[*SemiLagAdvection2D.m*](https://github.com/LukasFuchs/FDCSGm/blob/main/AdvectionProblem/SemiLagAdvection2D.m)
    -> Semi-Lagrangian advection scheme for a 2-D environment. Advected is any kind of field *A*.
 
-*TracerInterp.m*
+[*TracerInterp.m*](https://github.com/LukasFuchs/FDCSGm/blob/main/AdvectionProblem/TracerInterp.m)
    -> Script to interpolate certain properties from the grid to the tracers and back. 
    
-*UpwindAdvection2D.m*
+[*UpwindAdvection2D.m*](https://github.com/LukasFuchs/FDCSGm/blob/main/AdvectionProblem/UpwindAdvection2D.m)
    -> Script to advect any kind of field *A* with a 2-D upwind scheme. 
