@@ -2,6 +2,22 @@
 
 &emsp;This directory contains several rountines to solve the diffusive part of the *temperature conservation equation* (1- and 2-D, stationary and time-dependent) using different numerical discretization methods. The routines are avaible for a dimensional or non-dimensional (files ending with *Sc.m) form of the equation (so far the 1-D routines are only availabe for a dimensional version!). 
 
+The general *temperature equation* describes the variation of temperature due to a *conductive* and *convective* process. However, for certain situations, one can consider those terms in a separate manner and the equation simplifies (in 2-D) to (neglecting the convective term):
+
+$\rho c_p \frac{\partial T}{\partial t} = -\frac{\partial q_x}{\partial x} -\frac{\partial q_z}{\partial z} + \rho H$,&emsp;&emsp;&emsp;(1)
+
+or including Fourier’s law (assuming variable thermal parameters):
+
+$\rho c_p \frac{\partial T}{\partial t} = \frac{\partial}{\partial x} k \frac{\partial T}{\partial x} + \frac{\partial}{\partial z} k \frac{\partial T}{\partial z} + \rho H$.&emsp;&emsp;&emsp;(2) 
+
+Assuming that the thermal parameters are constant, equation (2) simplifies to: 
+
+$\frac{\partial T}{\partial t} = \kappa (\frac{\partial^2 T}{\partial x^2} + \frac{\partial^2 T}{\partial z^2}) + \frac{Q}{\rho c_p}$,&emsp;&emsp;&emsp;(3)
+  
+where κ is the thermal diffusivity [m<sup>2</sup>/s] and $Q=\rho H$ is the heat production rate per volume [W/m<sup>3</sup>]. 
+
+&emps;Equation (3) is a *parabolic partial differential equation* which can be solve numerically in different manners, assuming initial and boundary conditions are defined. A detailed description on how to solve equation (3) using an *explicit* finite difference scheme and how to implement the most common boundary conditions (*Dirichlet* and *Neumann*) is given in the [introduction](https://github.com/LukasFuchs/FDCSGm/tree/main#energy-equation) of this code. In the following I would like to show some additional ways to discretize the diffusive part of the energy equation and discuss their advantages and disadvantages a little bit. All discretization methods can be used in the [thermal convection code](https://github.com/LukasFuchs/FDCSGm/tree/main/MixedHeatedSystems) and the [Blankenbach Benchmark](https://github.com/LukasFuchs/FDCSGm/tree/main/Benchmark/Blanckenbach). A more detailed analysis on the accuracy of each discretization scheme and the effect of the grid resolution is given in the [Gaussian Diffusion Benchmark](https://github.com/LukasFuchs/FDCSGm/tree/main/Benchmark/GaussDiffusion). So far, however, variable thermal parameters are only included in the 1-D solutions and the 2-D steady state solution (i.e., $\frac{\partial T}{\partial t}=0$).  
+
 ---------------------
 
 ## Example: Geotherms
