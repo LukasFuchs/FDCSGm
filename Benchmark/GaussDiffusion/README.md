@@ -2,7 +2,7 @@
 
 This directory contains two files: 
 
-1. *GaussianDiffusion.m*<br>
+1. [*GaussianDiffusion.m*](https://github.com/LukasFuchs/FDCSGm/blob/main/Benchmark/GaussDiffusion/GausschenDiffusion.m)<br>
    -> Script to calculate and compare the numerical solution of the diffusion of an initial Gaussian temperature distribution with its analytical solution. The diffusive part of the energy equation can be solved by different finite difference discretization methods (explicit, implicit, Crank-Nicholson, Alternative direct implicit).<br><br>
    The initial Gaussian temperature anomaly is defined by: <br><br>
    $T=T_0 + A exp(-\frac{(x-0.5L)^2 + (z-0.5H)^2}{2\sigma^2 /\pi})$,<br><br>
@@ -10,7 +10,7 @@ This directory contains two files:
    The analytical solution is given by (*reference*?):<br><br>
    $T_{ana} = T_0 + \frac{A}{(1 + 2\pi t \kappa / \sigma^2)} exp(-\frac{(x-0.5L)^2 + (z-0.5H)^2}{2\sigma^2 / \pi + 4t\kappa})$<br>
 
-2. *ResolutionTest.m*<br>
+2. [*ResolutionTest.m*](https://github.com/LukasFuchs/FDCSGm/blob/main/Benchmark/GaussDiffusion/ResolutionTest.m)<br>
    -> Script to run a resolution test for each finite difference discretization scheme (explicit, implicit, CNV, ADI).
 
 ------------------------------------------------------------------------
