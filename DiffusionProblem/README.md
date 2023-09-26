@@ -28,7 +28,7 @@ So far, variable thermal parameters are only included in the 1-D solutions and t
 
 ### Implicit FTCS
 
-The fully implicit finite difference scheme is unconditionally stable and one can use time steps larger than the diffusion time criterion. In 2-D, the diffusion equation is then given as: 
+&emsp;The fully implicit finite difference scheme is unconditionally stable and one can use time steps larger than the diffusion time criterion. In 2-D, the diffusion equation is then given as: 
 
 $\frac{T_{i,j}^{n+1}-T_{i,j}^n}{\Delta t}=\kappa (\frac{T_{i,j+1}^{n+1}-2T_{i,j}^{n+1}+T_{i,j-1}^{n+1}}{\Delta x^2} + \frac{T_{i+1,j}^{n+1}-2T_{i,j}^{n+1}+T_{i-1,j}^{n+1}}{\Delta z^2}) + \frac{Q_{i,j}^n}{\rho c_p}$, &emsp;&emsp;&emsp; (4)
 
@@ -44,9 +44,9 @@ $\frac{\partial^2 T}{\partial x^2} = \frac{T_{(i-1)nx+j+1}-2T_{(i-1)nx+j} + T_{(
 
 $\frac{\partial^2 T}{\partial z^2} = \frac{T_{i \cdot nx+j}-2T_{(i-1)nx+j} + T_{(i-2)nx+j}}{\Delta z^2}$.&emsp;&emsp;&emsp; (7)
 
-Equations (6) and (7) in combination with equation (4) enables to setup the linear system of equations to solve for the temperature at the new time step. 
+&emsp;Equations (6) and (7) in combination with equation (4) enables to setup the linear system of equations to solve for the temperature at the new time step. 
 
-Similar to the *explicit* discretization, one can use fictitious grid points outside the model domain to define Neumann boundary conditions, such that equation (5) results in (e.g., for the left boundary, i.e., *j* = 1): 
+&emsp;Similar to the *explicit* discretization, one can use fictitious grid points outside the model domain to define Neumann boundary conditions, such that equation (5) results in (e.g., for the left boundary, i.e., *j* = 1): 
 
 $-s_zT_{i-1,1}^{n+1}+(1+2s_z+2s_x)T_{i,1}^{n+1}-2s_xT_{i,2}^{n+1}-s_zT_{i+1,1}^{n+1}=T_{i,1}^n+2s_x\Delta xc_{left}+\frac{Q_{i,1}^n \Delta t}{\rho c_p}$, &emsp;&emsp;&emsp; (8)
 
