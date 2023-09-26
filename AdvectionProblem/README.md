@@ -2,25 +2,29 @@
 
 &emsp;This directory contains several files to calculate the advection of a certain property within a two-dimensional domain by the e.g., upwind, semi-lagrangian, or passive tracer method. For the sake of simplicity, I do focus on the advection of the absolute temperature in the following, however, in theory, one can chose any kind of property for advection (with some conditions to keep in mind). 
 
-&emsp;In general, advection describes the transport of a property, here the temperature, from one point to another, where one can assume different reference frames for the given point of interest. If we assume a not moving reference frame (that is an Eulerian grid), the change in temperature at a certain point can be described by (*eulerian advective transport equation*): 
+&emsp;In general, advection describes the transport of a property, here the temperature, from one point to another, where one can assume different reference frames for the given point of interest. If we assume a not moving reference frame (that is an *Eulerian* grid), the change in temperature at a certain point can be described by (i.e. the *eulerian advective transport equation*): 
 
 $\frac{\partial T}{\partial t} = - \overrightarrow{v} \cdot \nabla T$,&emsp;&emsp;&emsp;(1)
 
-or in a Lagrangian reference frame (i.e., along a moving point) as: 
+or in a Lagrangian reference frame (along a moving point; i.e., the *substantive* derivative) as: 
 
-$\frac{DT}{Dt}$, where both are related by: $\frac{DT}{Dt} = \frac{\partial T}{\partial t} + \overrightarrow{v} \cdot \nabla T$.&emsp;&emsp;&emsp;(2)
+$\frac{DT}{Dt}$, &emsp;&emsp;&emsp;(2)
+
+where both are related by: 
+
+$\frac{DT}{Dt} = \frac{\partial T}{\partial t} + \overrightarrow{v} \cdot \nabla T$.&emsp;&emsp;&emsp;(3)
 
 &emsp;For a Lagrangian reference point advection is given by a simple *ordinary differential equation* particle advection scheme, where changes in its coordinates are related with the material velocities as: 
 
-$\frac{Dx_i}{Dt} = v_i$,&emsp;&emsp;&emsp; (3)
+$\frac{Dx_i}{Dt} = v_i$,&emsp;&emsp;&emsp; (4)
 
-where i is the coordinate index and x<sub>i</sub> is a spatial coordinate. 
+where *i* is the coordinate index and *x<sub>i</sub>* is a spatial coordinate. 
 
 --------------------------
 
 ## Discretization Schemes
 
-&emsp;As simple as the advection problem sounds, it is rather difficult to properly solve advection without some kind of numerical diffusion or inaccuracies due to interpolation of properties between the tracers and the regular grid. The particle advection is used for the *tracer/marker in cell* method (either passive or active) and can be solved using different numerical methods, e.g. Euler integration or Runge-Kutta. The Eulerian form of the advection equation can also be solved in different ways. In the following, I would like to focus on *four* different methods to advect material. Different advection methods are used within the individual benchmarks and all can be tested in the [*Rigid Body Rotation*](https://github.com/LukasFuchs/FDCSGm/tree/main/Benchmark/RigidBodyRotation) benchmark. 
+&emsp;As simple as the advection problem sounds, it is rather difficult to properly solve advection without some kind of numerical diffusion or inaccuracies due to interpolation of properties between the tracers and the regular grid. The particle advection is used for the *tracer/marker in cell* method (either passive or active) and can be solved using different numerical methods, e.g., Euler integration or Runge-Kutta. The Eulerian form of the advection equation can also be solved in different ways. In the following, I would like to focus on *four* different methods to advect material. Different advection methods are used within the individual benchmarks and all can be tested in the [*Rigid Body Rotation*](https://github.com/LukasFuchs/FDCSGm/tree/main/Benchmark/RigidBodyRotation) benchmark. 
 
 ### The Upwind Scheme
 
@@ -42,7 +46,7 @@ $\Delta t \le \frac{\Delta x}{max(|v|)}$
 $\frac{T_{i,j}^{n+1} - T_{i,j}^{n+1}}{2\Delta t}=-v_{x;i,j}\frac{T_{i,j+1}^{n} - T_{i,j-1}^{n}}{2\Delta x}-v_{z;i,j}\frac{T_{i+1,j}^{n} - T_{i-1,j}^{n}}{2\Delta z}$
 
 ### The semi-lagragian scheme 
-&emsp;This method is related to the tracer-based advection by solving *ODEs*, where it assumes that *imaginary tracers* are located at certain positions and land directly at the finite difference grid nodes after advection within one time step. Thus, one needs to calculate the *origin points* for each grid node back in time (e.g., one Euler time step) with a given velocity field (using an *iterative mid-point scheme*, i.e. one uses the velocity at a point half a time step backward in time) and then interpolate the property from the regular grid points to the determined *origin points*. This scheme assumes that no heat-sources were active during the advection. The method does not have any numerical diffusion but shows inaccuracies due to the interpolation method.<br>
+&emsp;This method is related to the tracer-based advection by solving *ODEs*, where it assumes that *imaginary tracers* are located at certain positions and land directly at the finite difference grid nodes after advection within one time step. Thus, one needs to calculate the *origin points* for each grid node back in time (e.g., one Euler time step) with a given velocity field (e.g., using an *iterative mid-point scheme*, i.e. one uses the velocity at a point half a time step backward in time) and then interpolate the property from the regular grid points to the determined *origin points*. This scheme assumes that no heat-sources were active during the advection. The method does not have any numerical diffusion but shows inaccuracies due to the interpolation method.<br>
    
 ### Passive tracers
 
@@ -54,7 +58,7 @@ $\frac{T_{i,j}^{n+1} - T_{i,j}^{n+1}}{2\Delta t}=-v_{x;i,j}\frac{T_{i,j+1}^{n} -
 
 &emsp;In case of a temperature independent material (e.g., a [Rayleigh-Taylor Instability](https://github.com/LukasFuchs/FDCSGm/tree/main/Benchmark/RTI) or the [falling block problem](https://github.com/LukasFuchs/FDCSGm/tree/main/Benchmark/FallingBlock)), advection with passive tracers should be used. The tracers advect the composition (so far, expressed by density and viscosity) and are advected using fourth order Runge-Kutta. The advection of composition partly works with a semi-lagrangian advection method, but problems do occur along the compositional boundaries.
 
-&emsp;Besides for advection, the tracers are also very helpful to define a certain model setup, like the in [viscous inclusion model](https://github.com/LukasFuchs/FDCSGm/tree/main/Benchmark/ViscousInclusion). The tracers are only used to define the geometry of the model, where the properties are then interpolated on the regular grid to solve for the steady state solution of the momentum equation.
+&emsp;Besides for advection, the tracers are also very useful to define a certain model setup, like the in [viscous inclusion model](https://github.com/LukasFuchs/FDCSGm/tree/main/Benchmark/ViscousInclusion). The tracers are only used to define the geometry of the model, where the properties are then interpolated on the regular grid to solve for the steady state solution of the momentum equation.
 
 &emsp;For more details and examples see the [benchmark directory](https://github.com/LukasFuchs/FDCSGm/tree/main/Benchmark).
 
