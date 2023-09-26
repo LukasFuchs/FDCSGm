@@ -62,3 +62,23 @@ $\frac{T_{i,j}^{n+1} - T_{i,j}^{n+1}}{2\Delta t}=-v_{x;i,j}\frac{T_{i,j+1}^{n} -
 
 &emsp;For more details and examples see the [benchmark directory](https://github.com/LukasFuchs/FDCSGm/tree/main/Benchmark).
 
+### Directory Content<br>
+For more details check description in the files.
+
+*AdvectMarker2D.m*
+   -> Script to advect passive tracers within a 2-D environment using Runge-Kutta 4th order.
+   
+*Advection.m*
+   -> General function to chose a certain advection scheme, to be used in the main program.
+   
+*SLFAdvection2D.m*
+   -> Staggered Leap Frog advection scheme for a 2-D environment. Advected is any kind of field *A*.
+
+*SemiLagAdvection2D.m*
+   -> Semi-Lagrangian advection scheme for a 2-D environment. Advected is any kind of field *A*.
+
+*TracerInterp.m*
+   -> Script to interpolate certain properties from the grid to the tracers and back. 
+   
+*UpwindAdvection2D.m*
+   -> Script to advect any kind of field *A* with a 2-D upwind scheme. 
