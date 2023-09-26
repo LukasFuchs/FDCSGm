@@ -26,9 +26,10 @@ where i is the coordinate index and x<sub>i</sub> is a spatial coordinate.
 
 &emsp;The idea is that the flux into the local cell will only depend on the gradient of temperature in the direction upstream. The upwind scheme is similar to a forward in time and centered in space discretization, however, the central spacial derivatives are replaced by single-sided forward and backward finite differences and one needs to consider the advection velocity as well, to ensure that the discretization in space is always upstream. In 2-D the advection equation is then given as: 
 
-![image](https://github.com/LukasFuchs/FDCSGm/assets/25866942/09474b14-e6c8-4cc4-a5c8-d97eb0e84406)
+$\frac{T_{i,j}^{n+1}-T_{i,j}^n}{\Delta t}=-v_{x;i,j}\cases{\matrix{\frac{T_{i,j}^{n}-T_{i,j-1}^n}{\Delta x} \quad \text{if} \quad v_{x;i,j} > 0 \\\ \frac{T_{i,j+1}^{n}-T_{i,j}^n}{\Delta x} \quad \text{if} \quad v_{x;i,j}<0}} 
+-v_{z;i,j}\cases{\matrix{\frac{T_{i,j}^{n}-T_{i-1,j}^n}{\Delta z} \quad \text{if} \quad v_{z;i,j} > 0 \\\ \frac{T_{i+1,j}^{n}-T_{i,j}^n}{\Delta z} \quad \text{if} \quad v_{z;i,j}<0}}$, &emsp;&emsp;&emsp;(4)
 
-, where *i* and *j* are the indices in *z*- and *x*- direction, respectively. 
+where *T* is the temperature, *v* the velocity, *n* is the current time step, $\Delta t$ the time step increment, and *i* and *j* are the indices in *z*- and *x*- direction, respectively. 
 
 &emsp;This is a stable and effective way, however, with a certain amount of numerical diffusion if the *courant criteria* is not fulfilled and only first order accurate in space. The courant criteria implies that the time step is smaller than the minimum grid spacing divided by the maximum velocity, that is, a property should not be advected over a distance larger than the grid spacing, or:
 
