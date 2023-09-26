@@ -15,26 +15,26 @@ Needs briefly:
 
 ## Routines to Solve the Diffusion Problem
 
-   This directory contains all rountines to solve the diffusive part of the *temperature conservation equation* (1- and 2-D) using different numerical discretization methods. The routines are avaible for a dimensional or non-dimensional (files ending with *Sc.m) form of the equation (so far the 1-D routines are only availabe for a dimensional version!). 
+&emsp;This directory contains all rountines to solve the diffusive part of the *temperature conservation equation* (1- and 2-D) using different numerical discretization methods. The routines are avaible for a dimensional or non-dimensional (files ending with *Sc.m) form of the equation (so far the 1-D routines are only availabe for a dimensional version!). 
 
 ### 1-D Geotherms
 
 ... also as an explicit solver ...
 
-   The 1-D temperature profile is calculated by solving the diffusive part of the 1-D temperature conservation equation (so far only with a radiogenic heat source) for variable thermal parameters with a proper conserving finite difference scheme. That is, the heat flow is calculated on the centered and the remaining parameters on the regular grid points, respectively. The discretization scheme for variable thermal parameters is picked to solve for a temperature profile of a continental lithosphere with upper, lower crust, and mantle. 
+&emsp;The 1-D temperature profile is calculated by solving the diffusive part of the 1-D temperature conservation equation (so far only with a radiogenic heat source) for variable thermal parameters with a proper conserving finite difference scheme. That is, the heat flow is calculated on the centered and the remaining parameters on the regular grid points, respectively. The discretization scheme for variable thermal parameters is picked to solve for a temperature profile of a continental lithosphere with upper, lower crust, and mantle. 
 The 1-D temperature equation is given by: 
 
 $\rho c_{p} \frac{\partial T}{\partial t} = \frac{\partial}{\partial z}(k \frac{\partial T}{\partial z}) + \rho H$, &emsp; &emsp; &emsp; (1)
 
 where $\rho, c_{p}, T, t, k, H, z$ are the density [kg/m<sup>3</sup>], the specific heat capacity [J/kg/K], the temperature [K], the time [s], the thermal conductivity [W/m/K], the heat generation rate per mass [W/kg], and the depth [m] respectively. 
 
-   Here, a proper conservative finite difference scheme means that the heat flux is calculated on the centered grid points (A, B, etc.). The 1-D vertical heat flux is given by the Fourier’s law:
+&emsp;Here, a proper conservative finite difference scheme means that the heat flux is calculated on the centered grid points (A, B, etc.). The 1-D vertical heat flux is given by the Fourier’s law:
 
 $q_{z} = -k \frac{\partial T}{\partial z}$. &emsp; &emsp; &emsp; (2)
 
-*Solving the equation* 
+***Solving the equation***
 
-   Following the discretization shown in Figure 1 we need to solve the following equation (in an implicit finite difference formulation):
+&emsp;Following the discretization shown in Figure 1 we need to solve the following equation (in an implicit finite difference formulation):
 
 $\rho_j c_{p,j} \frac{T_{j}^{n+1} - T_{j}^{n}}{\Delta t} = -\frac{q_{z,j+1/2}^{n+1} - q_{z,j-1/2}^{n+1} }{\Delta z} + \rho_j H_j$, &emsp;&emsp;&emsp; (3)
 
@@ -64,7 +64,7 @@ $k_{j+1/2} = \frac{k_j + k_{j+1}}{2}$
 
 $k_{j-1/2} = \frac{k_{j-1} + k_{j}}{2}$. &emsp;&emsp;&emsp; (10)
 
-*Thermal boundary conditions*
+***Thermal boundary conditions***
 
 The thermal boundary conditions are defined as: 
 
