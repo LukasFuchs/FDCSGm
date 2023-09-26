@@ -1,25 +1,12 @@
 # General Information
 
-Needs, in detail:
-- discretization of     
-     - implicit
-     - ADI
-     - CNV
-     - Poisson solution, constant and variable,
-     - explicit (variable thermal parameters, at some point!)
-
-Needs briefly: 
-- boundary conditions
+&emsp;This directory contains several rountines to solve the diffusive part of the *temperature conservation equation* (1- and 2-D, stationary and time-dependent) using different numerical discretization methods. The routines are avaible for a dimensional or non-dimensional (files ending with *Sc.m) form of the equation (so far the 1-D routines are only availabe for a dimensional version!). 
 
 ---------------------
 
-## Routines to Solve the Diffusion Problem
-
-&emsp;This directory contains all rountines to solve the diffusive part of the *temperature conservation equation* (1- and 2-D) using different numerical discretization methods. The routines are avaible for a dimensional or non-dimensional (files ending with *Sc.m) form of the equation (so far the 1-D routines are only availabe for a dimensional version!). 
+## Example: Geotherms
 
 ### 1-D Geotherms
-
-... also as an explicit solver ...
 
 &emsp;The 1-D temperature profile is calculated by solving the diffusive part of the 1-D temperature conservation equation (so far only with a radiogenic heat source) for variable thermal parameters with a proper conserving finite difference scheme. That is, the heat flow is calculated on the centered and the remaining parameters on the regular grid points, respectively. The discretization scheme for variable thermal parameters is picked to solve for a temperature profile of a continental lithosphere with upper, lower crust, and mantle. 
 The 1-D temperature equation is given by: 
@@ -34,7 +21,7 @@ $q_{z} = -k \frac{\partial T}{\partial z}$. &emsp; &emsp; &emsp; (2)
 
 ***Solving the equation***
 
-&emsp;Following the discretization shown in Figure 1 we need to solve the following equation (in an implicit finite difference formulation):
+&emsp;Following the discretization shown in Figure 1 one needs to solve the following equation (in an implicit finite difference formulation):
 
 $\rho_j c_{p,j} \frac{T_{j}^{n+1} - T_{j}^{n}}{\Delta t} = -\frac{q_{z,j+1/2}^{n+1} - q_{z,j-1/2}^{n+1} }{\Delta z} + \rho_j H_j$, &emsp;&emsp;&emsp; (3)
 
@@ -63,6 +50,8 @@ and
 $k_{j+1/2} = \frac{k_j + k_{j+1}}{2}$
 
 $k_{j-1/2} = \frac{k_{j-1} + k_{j}}{2}$. &emsp;&emsp;&emsp; (10)
+
+An [*explicit*]() solver for a 1-D thermal profile with variable thermal parameters and a radiogenic heat source is also available.
 
 ***Thermal boundary conditions***
 
@@ -142,3 +131,16 @@ The gradient of temperature (and thus the vertical heat flux) can be defined usi
 
 ## Discretization Methods
 ...
+
+
+Needs, in detail:
+- discretization of     
+     - implicit
+     - ADI
+     - CNV
+     - Poisson solution, constant and variable,
+     - explicit (variable thermal parameters, at some point!)
+
+Needs briefly: 
+- boundary conditions
+
