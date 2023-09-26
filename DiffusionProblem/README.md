@@ -24,11 +24,31 @@ So far, variable thermal parameters are only included in the 1-D solutions and t
 
 ## Discretization Methods
 
+&emsp;In the introduction of the code, I described the explicit finite difference discretization scheme, which is stable in case the diffusion time criterion is not violated. While it seems to be the most accurate finite difference approximation scheme for the time-dependent diffusion euqation (see [Gaussian Diffusion Benchmark](https://github.com/LukasFuchs/FDCSGm/tree/main/Benchmark/GaussDiffusion), the dependency of the time stepping on the grid resolution might become a problem in models with a high resolution and would could significantly slow down the model calculations. In the following I will present some alternative discretization methods, which might help to resolve this issue. 
+
 ### Implicit FTCS
+
+The fully implicit finite difference scheme is unconditionally stable and one can use time steps larger than the diffusion time criterion. In 2-D, the diffusion equation is then given as: 
+
+$\frac{T_{i,j}^{n+1}-T_{i,j}^n}{\Delta t}=\kappa (\frac{T_{i,j+1}^{n+1}-2T_{i,j}^{n+1}+T_{i,j-1}^{n+1}}{\Delta x^2} + \frac{T_{i+1,j}^{n+1}-2T_{i,j}^{n+1}+T_{i-1,j}^{n+1}}{\Delta z^2}) + \frac{Q_{i,j}^n}{\rho c_p}$, &emsp;&emsp;&emsp; (4)
+
+where n is the current and n+1 the next time step, $\Delta t$ is the time step length, $\Delta x$ and $\Delta z$ are the horizontal and vertical grid spacing, and *i* and *j* are the vertical and horizontal indices, respectively. Rearanging equation (4) into known and unknown variables, one obtains a linear system of equations in the form of: 
+
+$-s_zT_{i-1,j}^{n+1}-s_xT_{i,j-1}^{n+1}+(1+2s_z+2s_x)T_{i,j}^{n+1}-s_xT_{i,j+1}^{n+1}-s_zT_{i+1,j}^{n+1}=T_{i,j}^n+\frac{Q_{i,j}^n \Delta t}{\rho c_p}$, &emsp;&emsp;&emsp; (5)
+
+where $s_x=\frac{\kappa \Delta t}{\Delta x^2}$ and $s_z=\frac{\kappa \Delta t}{\Delta z^2}$. This is a linear system of equation in the form of *A*x=rhs*, where *A* is a coefficient matrix (here with five non-zero diagonals), *x* the unknown vector, and *rhs* the known right hand side. ... *solving method* ...
+
+... *Indices* ... 
+
+... *Boundary conditions* ...
 
 ### Cranck-Nicholson approach (CNV)
 
+...*Idea* ... *Equation* ...
+
 ### Alternating Direct Implicit (ADI)
+
+...*Idea* ... *equation*...
 
 ## Steady State Solution
 
@@ -67,7 +87,7 @@ To properly solve equation (), one needs to apply a conservative finite differen
 
 $\frac{k_D}{\Delta z^2}T_{i-1,j}+\frac{k_A}{\Delta x^2}T_{i,j-1}+(-\frac{1}{\Delta x^2}(k_A+k_B)-\frac{1}{\Delta z^2}(k_c+k_D))T_{i,j}+\frac{k_B}{\Delta x^2}T_{i,j+1}+\frac{k_C}{\Delta z^2}T_{i+1,j} = -Q_{i,j}$, &emsp;&emsp;&emsp; ()
 
-where $k_A = \frac{k_{i,j+1}+k_{i,j}}{2}$, $k_B = \frac{k_{i,j-1}+k_{i,j}}{2}$, $k_C = \frac{k_{i+1,j}+k_{i,j}}{2}$, and $k_D = \frac{k_{i-1,j}+k_{i,j}}{2}$
+where $k_A = \frac{k_{i,j+1}+k_{i,j}}{2}$, $k_B = \frac{k_{i,j-1}+k_{i,j}}{2}$, $k_C = \frac{k_{i+1,j}+k_{i,j}}{2}$, and $k_D = \frac{k_{i-1,j}+k_{i,j}}{2}$.
 
 ---------------------
 
