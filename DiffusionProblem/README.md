@@ -62,7 +62,7 @@ $\frac{T_{i,j}^{n+1} - T_{i,j}^{n}}{\Delta t} = \frac{\kappa}{2}\frac{(T_{i,j+1}
 
 However, the band-width of the coefficient matrix increases as in the fully implicit case. Thus, the method becomes memory intensiv for models with a high resoltuion. 
 
-### Alternating Direct Implicit (ADI)
+### Alternating Direction Implicit (ADI)
 
 ...*Idea* ... 
 
