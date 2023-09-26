@@ -12,7 +12,7 @@ $\frac{DT}{Dt}$, where both are related by: $\frac{DT}{Dt} = \frac{\partial T}{\
 
 &emsp;For a Lagrangian reference point advection is given by a simple *ordinary differential equation* particle advection scheme, where changes in its coordinates are related with the material velocities as: 
 
-$\frac{Dx}{Dt} = v_i$,&emsp;&emsp;&emsp; (3)
+$\frac{Dx_i}{Dt} = v_i$,&emsp;&emsp;&emsp; (3)
 
 where i is the coordinate index and x<sub>i</sub> is a spatial coordinate. 
 
@@ -37,6 +37,8 @@ $\Delta t \le \frac{\Delta x}{max(|v|)}$
 ### The Staggered Leap Frog (SLF) Scheme 
 
 &emsp;This method considers a centered in time and centered in space discretization of the partial differentials, thus it has a higher order of accuracy in space (second order) and is suppose to not have any numerical diffusion. In 2-D the advection equation discretizes to:
+
+$\frac{T^{n+1}_{i,j} - T^{n+1}_{i,j}}{2\Delta t}$
 
 ![image](https://github.com/LukasFuchs/FDCSGm/assets/25866942/6b13c8ad-0ec7-4248-a114-90b1b87d3eaf).
 
