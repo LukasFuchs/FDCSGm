@@ -51,7 +51,7 @@ $k_{j+1/2} = \frac{k_j + k_{j+1}}{2}$
 
 $k_{j-1/2} = \frac{k_{j-1} + k_{j}}{2}$. &emsp;&emsp;&emsp; (10)
 
-An [*explicit*]() solver for a 1-D thermal profile with variable thermal parameters and a radiogenic heat source is also available.
+An [*explicit*](https://github.com/LukasFuchs/FDCSGm/blob/main/DiffusionProblem/SolveDiff1Dexplicit_vary.m) solver for a 1-D thermal profile with variable thermal parameters and a radiogenic heat source is also available.
 
 ***Thermal boundary conditions***
 
