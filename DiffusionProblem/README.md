@@ -54,11 +54,13 @@ where *c<sub>left</sub>* needs to fulfil the following condition at the left bou
 
 $\frac{\partial T}{\partial x} = c_{left} = \frac{T_{i,2}-T_{i,0}}{2\Delta x}$. &emsp;&emsp;&emsp; (9) 
 
-### Cranck-Nicholson approach (CNV)
+### Cranck-Nicolson approach (CNV)
 
-...*Idea* ... 
+&emsp;The fully implicit method works wel, but is only first order accuratein time. A way to modify this is to employ a Crank-Nicolson time step discretization, which implicit and thus second order accurate in time. In 2-D, equation (3) is then discritized as: 
 
-$\frac{T_{i,j}^{n+1} - T_{i,j}^{n}}{\Delta t} = \frac{\kappa}{2}\frac{(T_{i,j+1}^{n+1}-2T_{i,j}^{n+1}+T_{i,j-1}^{n+1})+(T_{i,j+1}^{n}-2T_{i,j}^{n}+T_{i,j-1}^{n})}{\Delta x^2} + \frac{\kappa}{2}\frac{(T_{i+1,j}^{n+1}-2T_{i,j}^{n+1}+T_{i-1,j}^{n+1})+(T_{i+1,j}^{n}-2T_{i,j}^{n}+T_{i-1,j}^{n})}{\Delta z^2}$, &emsp; &emsp; &emsp;  ()
+$\frac{T_{i,j}^{n+1} - T_{i,j}^{n}}{\Delta t} = \frac{\kappa}{2}\frac{(T_{i,j+1}^{n+1}-2T_{i,j}^{n+1}+T_{i,j-1}^{n+1})+(T_{i,j+1}^{n}-2T_{i,j}^{n}+T_{i,j-1}^{n})}{\Delta x^2} + \frac{\kappa}{2}\frac{(T_{i+1,j}^{n+1}-2T_{i,j}^{n+1}+T_{i-1,j}^{n+1})+(T_{i+1,j}^{n}-2T_{i,j}^{n}+T_{i-1,j}^{n})}{\Delta z^2}$. &emsp; &emsp; &emsp;  (10)
+
+However, the band-width of the coefficient matrix increases as in the fully implicit case. Thus, the method becomes memory intensiv for models with a high resoltuion. 
 
 ### Alternating Direct Implicit (ADI)
 
