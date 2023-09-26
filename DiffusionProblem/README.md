@@ -32,13 +32,17 @@ The fully implicit finite difference scheme is unconditionally stable and one ca
 
 $\frac{T_{i,j}^{n+1}-T_{i,j}^n}{\Delta t}=\kappa (\frac{T_{i,j+1}^{n+1}-2T_{i,j}^{n+1}+T_{i,j-1}^{n+1}}{\Delta x^2} + \frac{T_{i+1,j}^{n+1}-2T_{i,j}^{n+1}+T_{i-1,j}^{n+1}}{\Delta z^2}) + \frac{Q_{i,j}^n}{\rho c_p}$, &emsp;&emsp;&emsp; (4)
 
-where n is the current and n+1 the next time step, $\Delta t$ is the time step length, $\Delta x$ and $\Delta z$ are the horizontal and vertical grid spacing, and *i* and *j* are the vertical and horizontal indices, respectively. Rearanging equation (4) into known and unknown variables, one obtains a linear system of equations in the form of: 
+where *n* is the current and *n+1* the next time step, $\Delta t$ is the time step length, $\Delta x$ and $\Delta z$ are the horizontal and vertical grid spacing, and *i* and *j* are the vertical and horizontal indices, respectively. Rearranging equation (4) into known and unknown variables, one obtains a linear system of equations in the form of: 
 
 $-s_zT_{i-1,j}^{n+1}-s_xT_{i,j-1}^{n+1}+(1+2s_z+2s_x)T_{i,j}^{n+1}-s_xT_{i,j+1}^{n+1}-s_zT_{i+1,j}^{n+1}=T_{i,j}^n+\frac{Q_{i,j}^n \Delta t}{\rho c_p}$, &emsp;&emsp;&emsp; (5)
 
-where $s_x=\frac{\kappa \Delta t}{\Delta x^2}$ and $s_z=\frac{\kappa \Delta t}{\Delta z^2}$. This is a linear system of equation in the form of *A*x=rhs*, where *A* is a coefficient matrix (here with five non-zero diagonals), *x* the unknown vector, and *rhs* the known right hand side. ... *solving method* ...
+where $s_x=\frac{\kappa \Delta t}{\Delta x^2}$ and $s_z=\frac{\kappa \Delta t}{\Delta z^2}$. This is a linear system of equation in the form of *A*x=rhs*, where *A* is a coefficient matrix (here with five non-zero diagonals), *x* the unknown vector, and *rhs* the known right hand side. THe main advantage of the implicit method is that there are no restrictions on the time step, but this does not mean that it is accurate. Taking to large time steps may result in an accurate solution for features with small spatial scales. Here, I do solve the linear system of equations in MATLAB with a right-array divison (but other solver method might be applied). 
 
-... *Indices* ... 
+&emsp;As promising as the implicit method is, one needs to be careful in setting up the coefficient matrix and the corresponding unknown and *rhs* vectors (especially in 2-D). Here, one needs to do a proper indexing of the regular grid points by using a global index variable, which goes from 1 to *nx* x *nz*. This global index replaces the local *i* and *j* indices in equation (4), such that the spatial derivatives at a point *i*, *j* are given as: 
+
+$\frac{\partial^2 T}{\partial x^2} = \frac{T_{(i-1)nx+j+1} - 2T_{(i-1)nx+j} + T_{(i-1)nx+j+1}{\Delta x^2}$,&emsp;&emsp;&emsp; (6)
+
+... *Indices* ... in
 
 ... *Boundary conditions* ...
 
