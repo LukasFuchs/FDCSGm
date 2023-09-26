@@ -2,17 +2,17 @@
 
 This directory contains two files: 
 
-1. *BlanckenbachBenchmark.m*<br>
+1. [*BlanckenbachBenchmark.m*](https://github.com/LukasFuchs/FDCSGm/blob/main/Benchmark/Blanckenbach/BlanckenbachBenchmark.m)<br>
      -> Main script to calculate one benchmark model (define *Ra* and viscosity). 
    
-2. *Blanckenbach_Res_Test.m*<br>
+2. [*Blanckenbach_Res_Test.m*](https://github.com/LukasFuchs/FDCSGm/blob/main/Benchmark/Blanckenbach/Blanckenbach_Res_Test.m)<br>
      -> Script to run a resolution test for a given *Ra* and viscosity. See below for more details. 
 
 -------------------------------------------------------------
 
-The Blankenbach benchmark is an effective benchmark to test and compare a code for isoviscous and temperature-dependent viscosity thermal convection. Blankenbach et al. (1989) tested different two dimensional thermal convection codes with a broad variety of numerical techniques and reported steady-state values for a number of model parameters. 
+&emsp;The Blankenbach benchmark is an effective benchmark to test and compare a code for isoviscous and temperature-dependent viscosity thermal convection. Blankenbach et al. (1989) tested different two dimensional thermal convection codes with a broad variety of numerical techniques and reported steady-state values for a number of model parameters. 
 
-Convection is studied in a rectangular box of height *H* and width *L*. The kinematic boundary conditions are free slip along all boundaries, a specified temperature on the top (T<sub>top</sub>) and at the bottom (T<sub>bottom</sub>) and thermal insulation along the lateral boundaries. The difference between T<sub>top</sub> and T<sub>bottom</sub> in all experiments is 1000 K. The following formulation for temperature- and depth-dependent viscosity of the mantle is used: 
+&emsp;Convection is studied in a rectangular box of height *H* and width *L*. The kinematic boundary conditions are free slip along all boundaries, a specified temperature on the top (T<sub>top</sub>) and at the bottom (T<sub>bottom</sub>) and thermal insulation along the lateral boundaries. The difference between T<sub>top</sub> and T<sub>bottom</sub> in all experiments is 1000 K. The following formulation for temperature- and depth-dependent viscosity of the mantle is used: 
 
 $\eta=\eta_0 exp(-b \frac{T-T_{top}}{T_{bottom}-T{top}} + c\frac{y}{H})$, &emsp; &emsp; &emsp; (1)
 
@@ -53,9 +53,9 @@ Resolution (nx x nz): 51 x 51<br>
 
 ## Isoviscous Convection
 
-The temperature and velocity patterns are resolved well and the steady state values for the Nusselt number and the root mean square velocity are nearly reached, too. Variations from the benchmark values might be due to a rather coarse resolution (51x51) and the given solving methods, that is the explicit diffusion solver, the semi-lagrangian advection method, and the operator splitting method. 
+&emsp;The temperature and velocity patterns are resolved well and the steady state values for the Nusselt number and the root mean square velocity are nearly reached, too. Variations from the benchmark values might be due to a rather coarse resolution (51x51) and the given solving methods, that is the explicit diffusion solver, the semi-lagrangian advection method, and the operator splitting method. 
 
-This becomes even more obvious for higher Rayleigh number (*Ra* = 10<sup>6</sup>) calculations for which the deviations of the Nusselt number are quite significant as well as for a temperature-dependend thermal convection. For the latter, a higher resolution (101x101) is necessary to obtain a stable solution of the temperature field. A higher resolution significantly increases the computation time (at least to reach the same final time as in the previous calculations; steady state seems to be reached rather early within the computations), which should be compansated using a variable grid size, which needs to be implemented first. 
+&emsp;This becomes even more obvious for higher Rayleigh number (*Ra* = 10<sup>6</sup>) calculations for which the deviations of the Nusselt number are quite significant as well as for a temperature-dependend thermal convection. For the latter, a higher resolution (101x101) is necessary to obtain a stable solution of the temperature field. A higher resolution significantly increases the computation time (at least to reach the same final time as in the previous calculations; steady state seems to be reached rather early within the computations), which should be compansated using a variable grid size, which needs to be implemented first. 
 
 *Resolution test for higher Ra*
 
