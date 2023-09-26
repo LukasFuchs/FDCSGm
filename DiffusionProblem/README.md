@@ -20,6 +20,18 @@ where *κ* is the thermal diffusivity [m<sup>2</sup>/s] and $Q=\rho H$ is the he
 
 &emps;Equation (3) is a *parabolic partial differential equation* which can be solve numerically in different manners, assuming initial and boundary conditions are defined. A detailed description on how to solve equation (3) using an *explicit* finite difference scheme and how to implement the most common boundary conditions (*Dirichlet* and *Neumann*) is given in the [introduction](https://github.com/LukasFuchs/FDCSGm/tree/main#energy-equation) of this code. In the following I would like to show some additional ways to discretize the diffusive part of the energy equation and discuss their advantages and disadvantages a little bit. All discretization methods can be used in the [thermal convection code](https://github.com/LukasFuchs/FDCSGm/tree/main/MixedHeatedSystems) and the [Blankenbach Benchmark](https://github.com/LukasFuchs/FDCSGm/tree/main/Benchmark/Blanckenbach). A more detailed analysis on the accuracy of each discretization scheme and the effect of the grid resolution is given in the [Gaussian Diffusion Benchmark](https://github.com/LukasFuchs/FDCSGm/tree/main/Benchmark/GaussDiffusion). So far, however, variable thermal parameters are only included in the 1-D solutions and the 2-D steady state solution (i.e., $\frac{\partial T}{\partial t}=0$).  
 
+## Discretization Methods
+
+### Implicit FTCS
+
+### Cranck-Nicholson approach (CNV)
+
+### Alternating Direct Implicit (ADI)
+
+## Steady State Solution
+### Poisson solution, constant
+### Poisson solution, variable
+
 ---------------------
 
 ## Example: Geotherms
@@ -145,18 +157,8 @@ The gradient of temperature (and thus the vertical heat flux) can be defined usi
 ![image](https://github.com/LukasFuchs/FDCSGm/assets/25866942/98e9da70-f343-4ed9-be71-a44299116c72)
 ***Figure 5. Continental Lithosphere II**. Same as Figure 3 but with constant upper and lower heat flux boundary conditions, q<sub>top</sub> = 40 mW/m<sup>2</sup> and q<sub>bottom</sub> = 10 mW/m<sup>2</sup>.*
 
-## Steady State Solution
-
-## Discretization Methods
-...
-
-
 Needs, in detail:
 - discretization of     
-     - implicit
-     - ADI
-     - CNV
-     - Poisson solution, constant and variable,
      - explicit (variable thermal parameters, at some point!)
 
 Needs briefly: 
