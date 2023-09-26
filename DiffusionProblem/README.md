@@ -1,6 +1,6 @@
 # General Information
 
-&emsp;This directory contains several rountines to solve the diffusive part of the *temperature conservation equation* (1- and 2-D, stationary and time-dependent) using different numerical discretization methods. The routines are avaible in a dimensional or non-dimensional (files ending with *Sc.m; see the [introduction part](https://github.com/LukasFuchs/FDCSGm/tree/main#scaling-and-equation-of-state) regarding the scaling) form of the equation (so far the 1-D routines are only availabe for a dimensional version!). 
+&emsp;This directory contains several rountines to solve the diffusive part of the *temperature conservation equation* (1- and 2-D, steady state and time-dependent) using different numerical discretization methods. The routines are avaible in a dimensional or non-dimensional (files ending with *Sc.m; see the [introduction part](https://github.com/LukasFuchs/FDCSGm/tree/main#scaling-and-equation-of-state) regarding the scaling) form of the equation (so far the 1-D routines are only availabe for a dimensional version!). 
 
 -------------
 
@@ -24,7 +24,7 @@ So far, variable thermal parameters are only included in the 1-D solutions and t
 
 ## Discretization Methods
 
-&emsp;In the introduction of the code, I described the explicit finite difference discretization scheme, which is stable in case the diffusion time criterion is not violated. While it seems to be the most accurate finite difference approximation scheme for the time-dependent diffusion euqation (see [Gaussian Diffusion Benchmark](https://github.com/LukasFuchs/FDCSGm/tree/main/Benchmark/GaussDiffusion), the dependency of the time stepping on the grid resolution might become a problem in models with a high resolution and would could significantly slow down the model calculations. In the following I will present some alternative discretization methods, which might help to resolve this issue. 
+&emsp;In the introduction of the code, I describ the explicit finite difference discretization scheme, which is stable in case the diffusion time criterion is not violated. While it seems to be the most accurate finite difference approximation scheme for the time-dependent diffusion equation (see [Gaussian Diffusion Benchmark](https://github.com/LukasFuchs/FDCSGm/tree/main/Benchmark/GaussDiffusion)), the dependency of the time stepping on the grid resolution might become problematic in models with a high resolution and could significantly slow down the model calculations. In the following I will present some well-know alternative discretization methods, which help to resolve this issue. 
 
 ### Implicit FTCS
 
