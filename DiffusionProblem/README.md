@@ -1,14 +1,14 @@
 # General Information
 
-&emsp;This directory contains several rountines to solve the diffusive part of the *temperature conservation equation* (1- and 2-D, stationary and time-dependent) using different numerical discretization methods. The routines are avaible for a dimensional or non-dimensional (files ending with *Sc.m) form of the equation (so far the 1-D routines are only availabe for a dimensional version!). 
+&emsp;This directory contains several rountines to solve the diffusive part of the *temperature conservation equation* (1- and 2-D, stationary and time-dependent) using different numerical discretization methods. The routines are avaible in a dimensional or non-dimensional (files ending with *Sc.m; see the [introduction part](https://github.com/LukasFuchs/FDCSGm/tree/main#scaling-and-equation-of-state) regarding the scaling) form of the equation (so far the 1-D routines are only availabe for a dimensional version!). 
 
 -------------
 
-The general *temperature equation* describes the variation of temperature due to a *conductive* and *convective* process. However, for certain situations, one can consider those terms in a separate manner and the equation simplifies (in 2-D) to (neglecting the convective term):
+&emsp;The general *temperature conservation equation* describes the variation of temperature due to a *conductive* and *convective* process. However, for certain situations, one can consider those terms in a separate manner and the equation simplifies (in 2-D) to (neglecting the convective term):
 
 $\rho c_p \frac{\partial T}{\partial t} = -\frac{\partial q_x}{\partial x} -\frac{\partial q_z}{\partial z} + \rho H$,&emsp;&emsp;&emsp;(1)
 
-or including Fourier’s law (assuming variable thermal parameters):
+where *c<sub>p</sub>* is the specific heat capacity [J/kg/K], *ρ* is a reference density [kg/m<sup>3</sup>], *T* is the temperature [K], *t* is the time [s], *q<sub>i</sub>* is the heat flux in direction of *i*  [W/m<sup>2</sup>], and *H* the heat production rate per mass [W/kg]. Including Fourier’s law equation (1) is given as (assuming variable thermal parameters):
 
 $\rho c_p \frac{\partial T}{\partial t} = \frac{\partial}{\partial x} k \frac{\partial T}{\partial x} + \frac{\partial}{\partial z} k \frac{\partial T}{\partial z} + \rho H$.&emsp;&emsp;&emsp;(2) 
 
@@ -18,7 +18,9 @@ $\frac{\partial T}{\partial t} = \kappa (\frac{\partial^2 T}{\partial x^2} + \fr
   
 where *κ* is the thermal diffusivity [m<sup>2</sup>/s] and $Q=\rho H$ is the heat production rate per volume [W/m<sup>3</sup>]. 
 
-&emps;Equation (3) is a *parabolic partial differential equation* which can be solve numerically in different manners, assuming initial and boundary conditions are defined. A detailed description on how to solve equation (3) using an *explicit* finite difference scheme and how to implement the most common boundary conditions (*Dirichlet* and *Neumann*) is given in the [introduction](https://github.com/LukasFuchs/FDCSGm/tree/main#energy-equation) of this code. In the following I would like to show some additional ways to discretize the diffusive part of the energy equation and discuss their advantages and disadvantages a little bit. All discretization methods can be used in the [thermal convection code](https://github.com/LukasFuchs/FDCSGm/tree/main/MixedHeatedSystems) and the [Blankenbach Benchmark](https://github.com/LukasFuchs/FDCSGm/tree/main/Benchmark/Blanckenbach). A more detailed analysis on the accuracy of each discretization scheme and the effect of the grid resolution is given in the [Gaussian Diffusion Benchmark](https://github.com/LukasFuchs/FDCSGm/tree/main/Benchmark/GaussDiffusion). So far, however, variable thermal parameters are only included in the 1-D solutions and the 2-D steady state solution (i.e., $\frac{\partial T}{\partial t}=0$).  
+&emsp;Equation (3) is a *parabolic partial differential equation* which can be solve numerically in different manners, assuming initial and boundary conditions are defined. A detailed description on how to solve equation (3) using an *explicit* finite difference scheme and how to implement the most common boundary conditions (*Dirichlet* and *Neumann*) is given in the [introduction](https://github.com/LukasFuchs/FDCSGm/tree/main#energy-equation) of this code. In the following I would like to show some additional ways to discretize the diffusive part of the temperature equation and discuss their advantages and disadvantages. All discretization methods can be used in the [thermal convection code](https://github.com/LukasFuchs/FDCSGm/tree/main/MixedHeatedSystems) and the [Blankenbach Benchmark](https://github.com/LukasFuchs/FDCSGm/tree/main/Benchmark/Blanckenbach). A more detailed analysis on the accuracy of each discretization scheme and the effect of the grid resolution is given in the [Gaussian Diffusion Benchmark](https://github.com/LukasFuchs/FDCSGm/tree/main/Benchmark/GaussDiffusion). 
+
+So far, variable thermal parameters are only included in the 1-D solutions and the 2-D steady state solution (i.e., $\frac{\partial T}{\partial t}=0$).  
 
 ## Discretization Methods
 
@@ -29,8 +31,43 @@ where *κ* is the thermal diffusivity [m<sup>2</sup>/s] and $Q=\rho H$ is the he
 ### Alternating Direct Implicit (ADI)
 
 ## Steady State Solution
+
+&emsp;In steady state, one assumes that the temperature does not vary over time and the temperature equation simplifies to an elliptic partial differential equation (i.e., the *Poission equation*). 
+
 ### Poisson solution, constant
+
+&emsp;For constant thermal parameters the diffusive temperature equation is given by (in 2-D): 
+
+$0=(\frac{\partial^2 T}{\partial x^2}+\frac{\partial^2 T}{\partial z^2}) + \frac{Q}{k}$.&emsp;&emsp;&emsp; ()
+
+For the approximation of the spacial partial derivatives with finite difference expressions, I chose a central finite difference and equation () is then given as: 
+
+$0=(\frac{T_{i,j+1} - 2T_{i,j} + T_{i,j-1}}{\Delta x^2} + \frac{T_{i+1,j} - 2T_{i,j} + T_{i-1,j}}{\Delta z^2}) + \frac{Q}{k}$,&emsp;&emsp;&emsp; ()
+
+where *i* and *j* are the indices for the *z*- and *x*-direction, respectively. Now, one can rearange the equation by known (*Q*, *k*) and unknown (*T*) variables, wich results in a 
+linear system of equations in the form of: 
+
+$s_zT_{i-1,j}+s_xT_{i,j-1}-2(s_x+s_z)T_{i,j}+s_xT_{i,j+1}+s_zT_{i+1,j}=-\frac{Q}{k}$, &emsp;&emsp;&emsp; ()
+
+where $s_x = \frac{1}{\Delta x^2}$ and $s_z = \frac{1}{\Delta z^2}$. 
+
+&emsp;Here, one can again assume Dirichlet or Neumann boundary conditions, where for Dirichlet the temperature along the boundary is kept constant and for Neumann equation () is given by (e.g., along the left boundary): 
+
+$s_zT_{i-1,j}-2(s_x+s_z)T_{i,j}+2s_xT_{i,j+1}+s_zT_{i+1,j} = -\frac{Q}{k}+\frac{2c_{left}}{\Delta x}$.&emsp;&emsp;&emsp; ()
+
+Here, one again uses imaginary points outside of the model domain to define the flux boundary conditions (for more details see the [introduction](https://github.com/LukasFuchs/FDCSGm/tree/main#energy-equation)). The same applies for the remaining boundaries. 
+
 ### Poisson solution, variable
+
+&emsp; For variable thermal parameters the diffusive temperature equation is given by (in 2-D): 
+
+$0=\frac{\partial}{\partial x}(k\frac{\partial T}{\partial x})+\frac{\partial}{\partial z}(k\frac{\partial T}{\partial z})+Q$.&emsp;&emsp;&emsp; ()
+
+To properly solve equation (), one needs to apply a conservative finite difference scheme again, such that the heat flux $(q_i = k\frac{\partial T}{\partial i})$ is defined between the regular grid nodes (e.g., points A,B,C, and D) and the temperature on the regular grid nodes. Therefore one needs to average the conductivity and equation () results in: 
+
+$\frac{k_D}{\Delta z^2}T_{i-1,j}+\frac{k_A}{\Delta x^2}T_{i,j-1}+(-\frac{1}{\Delta x^2}(k_A+k_B)-\frac{1}{\Delta z^2}(k_c+k_D))T_{i,j}+\frac{k_B}{\Delta x^2}T_{i,j+1}+\frac{k_C}{\Delta z^2}T_{i+1,j} = -Q_{i,j}$, &emsp;&emsp;&emsp; ()
+
+where $k_A = \frac{k_{i,j+1}+k_{i,j}}{2}$, $k_B = \frac{k_{i,j-1}+k_{i,j}}{2}$, $k_C = \frac{k_{i+1,j}+k_{i,j}}{2}$, and $k_D = \frac{k_{i-1,j}+k_{i,j}}{2}$
 
 ---------------------
 
