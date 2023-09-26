@@ -40,11 +40,19 @@ where $s_x=\frac{\kappa \Delta t}{\Delta x^2}$ and $s_z=\frac{\kappa \Delta t}{\
 
 &emsp;As promising as the implicit method is, one needs to be careful in setting up the coefficient matrix and the corresponding unknown and *rhs* vectors (especially in 2-D). Here, one needs to do a proper indexing of the regular grid points by using a global index variable, which goes from 1 to *nx* x *nz*. This global index replaces the local *i* and *j* indices in equation (4), such that the spatial derivatives at a point *i*, *j* are given as: 
 
-$\frac{\partial^2 T}{\partial x^2} = \frac{T_{(i-1)nx+j+1} - 2T_{(i-1)nx+j} + T_{(i-1)nx+j+1}{\Delta x^2}$,&emsp;&emsp;&emsp; (6)
+$\frac{\partial^2 T}{\partial x^2} = \frac{T_{(i-1)nx+j+1}-2T_{(i-1)nx+j} + T_{(i-1)nx+j+1}}{\Delta x^2}$,&emsp;&emsp;&emsp; (6)
 
-... *Indices* ... in
+$\frac{\partial^2 T}{\partial z^2} = \frac{T_{i \cdot nx+j}-2T_{(i-1)nx+j} + T_{(i-2)nx+j}}{\Delta z^2}$.&emsp;&emsp;&emsp; (7)
 
-... *Boundary conditions* ...
+Equations (6) and (7) in combination with equation (4) enables to setup the linear system of equations to solve for the temperature at the new time step. 
+
+Similar to the *explicit* discretization, one can use fictitious grid points outside the model domain to define Neumann boundary conditions, such that equation (5) results in (e.g., for the left boundary, i.e., *j* = 1): 
+
+$-s_zT_{i-1,1}^{n+1}+(1+2s_z+2s_x)T_{i,1}^{n+1}-2s_xT_{i,2}^{n+1}-s_zT_{i+1,1}^{n+1}=T_{i,1}^n+2s_x\Delta xc_{left}+\frac{Q_{i,1}^n \Delta t}{\rho c_p}$, &emsp;&emsp;&emsp; (8)
+
+where *c<sub>left</sub>* needs to fulfil the following condition at the left boundary: 
+
+$\frac{\partial T}{\partial x} = c_{left} = \frac{T_{i,2}-T_{i,0}}{2\Delta x}$. &emsp;&emsp;&emsp; (9) 
 
 ### Cranck-Nicholson approach (CNV)
 
