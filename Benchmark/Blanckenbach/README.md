@@ -55,9 +55,23 @@ Resolution (nx x nz): 51 x 51<br>
 
 &emsp;The temperature and velocity patterns are resolved well (Figure 1) and the steady state values for the Nusselt number and the root mean square velocity are nearly reached (Figure 2), too. Variations from the benchmark values might be due to a rather coarse resolution (51x51) and the given solving methods, that is the explicit diffusion solver, the semi-lagrangian advection method, and the operator splitting method. 
 
-&emsp;This becomes even more obvious for higher Rayleigh number (*Ra* = 10<sup>6</sup>) calculations for which the deviations of the Nusselt number are quite significant as well as for a temperature-dependent thermal convection (Figures 3 & 4). ... *resulution test* ... (Figure 5) ...
+![Field3150](https://github.com/LukasFuchs/FDCSGm/assets/25866942/115d5bb6-3c3d-44a6-992a-b6606d7d5144)<br>
+**Figure 1.** Steady-state temperautre (top) and velcoity field (bottom). The arrows whos the velocity vectors at certain grid points. The reference viscosity is 10<sup>23</sup> [Pa s] and *Ra* = 10<sup>4</sup>.
 
-&emsp;For a temperature-dependent thermal convection, a higher resolution (101x101) is necessary to even obtain a stable solution of the temperature field (Figures 6 & 7). A higher resolution significantly increases the computation time (at least to reach the same final time as in the previous calculations; steady state seems to be reached rather early within the computations), which should be compansated using a variable grid size, which needs to be implemented first. 
+![TimeSeries](https://github.com/LukasFuchs/FDCSGm/assets/25866942/7e7863a1-9360-41af-94a9-58f26065bb37)<br>
+**Figure 2.** Time series of Nusselt number and root mean square velocity as well as the vertical temperautre profile in the middle of the model domain and the temperautre differences at the corners of the model (in the following order: top left (1), top right (2), bottom right (3), and bottom left (4)).
+
+![Evolution_small](https://github.com/LukasFuchs/FDCSGm/assets/25866942/fb4f6e36-29d7-4f2a-affa-3bca238ae59d)<br>
+
+&emsp;This becomes even more obvious for higher Rayleigh number (*Ra* = 10<sup>6</sup>) calculations for which the deviations of the Nusselt number are quite significant as well as for a temperature-dependent thermal convection (Figures 3 & 4).
+
+![Field_SS](https://github.com/LukasFuchs/FDCSGm/assets/25866942/24db94dd-0c7d-4566-aac3-49a995cd3ff0)<br>
+**Figure 3.** Steady-state temperautre and velcoity field. For more details see captions Figure 1. The reference viscosity is 10<sup>21</sup> [Pa s] and *Ra* = 10<sup>6</sup>.
+
+![TimeSeries](https://github.com/LukasFuchs/FDCSGm/assets/25866942/0d87a365-3347-40a6-83d1-150ea76f34cd)<br>
+**Figure 4.** Time series, temperature profile, and corner heat fluxes. For more details see captions of Figure 2.
+
+![Evolution_small](https://github.com/LukasFuchs/FDCSGm/assets/25866942/2cf47636-250b-4494-9f8c-c27fb24aac47)<br>
 
 ***Resolution test for higher Ra***
 
@@ -69,41 +83,7 @@ Assuming that we want to use *n* grid points within the upper thermal boundary l
 
 $nz = (n-1)\sqrt[3]{\frac{Ra}{4}}+1$, &emsp; &emsp; &emsp; (3)
 
-### Low Rayleigh Number Calculations
-
-***Ra* = 10<sup>4</sup>**
-
-Reference viscosity [Pa s]: 10<sup>23</sup>
-![Field3150](https://github.com/LukasFuchs/FDCSGm/assets/25866942/115d5bb6-3c3d-44a6-992a-b6606d7d5144)<br>
-**Figure 1.** Steady-state temperautre (top) and velcoity field (bottom). The arrows whos the velocity vectors at certain grid points.
-
-**Time series**
-
-![TimeSeries](https://github.com/LukasFuchs/FDCSGm/assets/25866942/7e7863a1-9360-41af-94a9-58f26065bb37)<br>
-**Figure 2.** Time series of Nusselt number and root mean square velocity as well as the vertical temperautre profile in the middle of the model domain and the temperautre differences at the corners of the model (in the following order: top left (1), top right (2), bottom right (3), and bottom left (4)).
-
-***Evolution***
-
-![Evolution_small](https://github.com/LukasFuchs/FDCSGm/assets/25866942/fb4f6e36-29d7-4f2a-affa-3bca238ae59d)<br>
-
-### 'High' Rayleigh Number Calculations
-
-***Ra* = 10<sup>6</sup>**
-
-Reference viscosity [Pa s]: 10<sup>21</sup>
-![Field_SS](https://github.com/LukasFuchs/FDCSGm/assets/25866942/24db94dd-0c7d-4566-aac3-49a995cd3ff0)<br>
-**Figure 3.** Steady-state temperautre and velcoity field. For more details see captions Figure 1. 
-
-**Time series**
-
-![TimeSeries](https://github.com/LukasFuchs/FDCSGm/assets/25866942/0d87a365-3347-40a6-83d1-150ea76f34cd)<br>
-**Figure 4.** Time series, temperature profile, and corner heat fluxes. For more details see captions of Figure 2.
-
-***Evolution***
-
-![Evolution_small](https://github.com/LukasFuchs/FDCSGm/assets/25866942/2cf47636-250b-4494-9f8c-c27fb24aac47)<br>
-
-**Resolution Test**
+... *resulution test* ... (Figure 5) ...
 
 **Figure 3.** Resolution test for high Rayleigh number calculations. 
 
@@ -115,19 +95,13 @@ nz = 101<br>
 a = log(1000)<br>
 b = 0
 
-### Low Rayleigh Number Calculations
+&emsp;For a temperature-dependent thermal convection, a higher resolution (101x101) is necessary to even obtain a stable solution of the temperature field (Figures 6 & 7). A higher resolution significantly increases the computation time (at least to reach the same final time as in the previous calculations; steady state seems to be reached rather early within the computations), which should be compansated using a variable grid size, which needs to be implemented first. 
 
-***Ra* = 10<sup>4</sup>**<br>
-Reference viscosity [Pa s]: 10<sup>23</sup><br>
 ![Field43800](https://github.com/LukasFuchs/FDCSGm/assets/25866942/d0c64608-e208-4ac3-912b-890e939a1644)<br>
-**Figure 6.**  Steady-state temperautre and velcoity field. For more details see captions Figure 1. 
+**Figure 6.**  Steady-state temperautre and velcoity field. For more details see captions Figure 1. The reference viscosity is 10<sup>23</sup><br> [Pa s] and *Ra* = 10<sup>4</sup>.
 
-**Time Series**<br>
 ![TimeSeries](https://github.com/LukasFuchs/FDCSGm/assets/25866942/a8d16cfe-739b-4233-be88-e06bb98a753f)<br>
 **Figure 7.** Time series, temperature profile, and corner heat fluxes. For more details see captions of Figure 2.
 
 ***Evolution***<br>
 ![Evolution_small](https://github.com/LukasFuchs/FDCSGm/assets/25866942/6dd49bc4-258c-4334-8d90-513984750067)<br>
-
-
-
