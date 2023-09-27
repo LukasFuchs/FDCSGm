@@ -89,7 +89,8 @@ $nz = (n-1)\sqrt[3]{\frac{Ra}{4}}+1$, &emsp; &emsp; &emsp; (3)
 
 --------------------------------------------------------------
 
-## Temperature Dependent Thermal Convection<br>
+## Temperature-Dependent Thermal Convection
+
 nx = 101<br>
 nz = 101<br>
 a = log(1000)<br>
