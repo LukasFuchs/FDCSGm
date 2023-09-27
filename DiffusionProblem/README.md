@@ -1,6 +1,6 @@
 # General Information
 
-&emsp;This directory contains several rountines to solve the diffusive part of the *temperature conservation equation* (1- and 2-D, steady state and time-dependent) using different numerical discretization methods. The routines are avaible in a dimensional or non-dimensional form (files ending with *Sc.m; see the [introduction part](https://github.com/LukasFuchs/FDCSGm/tree/main#scaling-and-equation-of-state) or [*FDCSGm/ScaleParam*](https://github.com/LukasFuchs/FDCSGm/tree/main/ScaleParam) regarding the scaling) of the equation (so far the 1-D routines are only availabe for a dimensional version!). 
+&emsp;This directory contains several rountines to solve the diffusive part of the *temperature conservation equation* (1- and 2-D, steady state and time-dependent) using different numerical discretization methods. The routines are avaible in a dimensional or non-dimensional form (files ending with *Sc.m; see the [introduction part](https://github.com/LukasFuchs/FDCSGm/tree/main#scaling-and-equation-of-state) or [*FDCSGm/ScaleParam*](https://github.com/LukasFuchs/FDCSGm/tree/main/ScaleParam) regarding the scaling; so far the 1-D routines are only availabe for a dimensional version!). 
 
 -------------
 
@@ -36,15 +36,15 @@ where *n* is the current and *n+1* the next time step, $\Delta t$ is the time st
 
 $-s_zT_{i-1,j}^{n+1}-s_xT_{i,j-1}^{n+1}+(1+2s_z+2s_x)T_{i,j}^{n+1}-s_xT_{i,j+1}^{n+1}-s_zT_{i+1,j}^{n+1}=T_{i,j}^n+\frac{Q_{i,j}^n \Delta t}{\rho c_p}$, &emsp;&emsp;&emsp; (5)
 
-where $s_x=\frac{\kappa \Delta t}{\Delta x^2}$ and $s_z=\frac{\kappa \Delta t}{\Delta z^2}$. This is a linear system of equation in the form of $\boldsymbol{A}\cdot x = rhs$, where ***A*** is a coefficient matrix (here with five non-zero diagonals), *x* the unknown vector, and *rhs* the known right-hand side. The main advantage of the implicit method is that there are no restrictions on the time step, but this does not mean that it is accurate. Taking too large time steps may result in an inaccurate solution for features with small spatial scales. Here, I do solve the linear system of equations in MATLAB with a right-array divison (but other solver method might be applicable, too). 
+where $s_x=\frac{\kappa \Delta t}{\Delta x^2}$ and $s_z=\frac{\kappa \Delta t}{\Delta z^2}$. This is a linear system of equation in the form of $\boldsymbol{A}\cdot x = rhs$, where ***A*** is a coefficient matrix (here with five non-zero diagonals), *x* the unknown vector, and *rhs* the known right-hand side. The main advantage of the implicit method is that there are no restrictions on the time step, but this does not mean that it is accurate. Taking too large time steps may result in an inaccurate solution for features with small spatial scales. Here, I do solve the linear system of equations in MATLAB with a right-array divison (but other solver method are applicable, too). 
 
-&emsp;As promising as the implicit method is, the band-width of the coefficient matrix could be problematic in models with a very high resoltuion. In addition, one needs to be careful in setting up the coefficient matrix and the corresponding unknown and *rhs* vectors (especially in 2-D). Here, one needs to do a proper indexing of the regular grid points by using a global index variable, which goes from 1 to *nx* x *nz*. This global index replaces the local *i* and *j* indices in equation (4), such that the spatial derivatives at a point *i*, *j* are given as: 
+&emsp;As promising as the implicit method is, the band-width of the coefficient matrix could be problematic in models with a very high resoltuion. In addition, one needs to be careful in setting up the coefficient matrix and the corresponding unknown and *rhs* vectors (especially in 2-D and even more in 3-D). Here, one needs to do a proper indexing of the regular grid points by using a global index variable, which goes from 1 to *nx* x *nz*. This global index replaces the local *i* and *j* indices in equation (4), such that the spatial derivatives at a point *i*, *j* are given as: 
 
-$\frac{\partial^2 T}{\partial x^2} = \frac{T_{(i-1)nx+j+1}-2T_{(i-1)nx+j} + T_{(i-1)nx+j+1}}{\Delta x^2}$,&emsp;&emsp;&emsp; (6)
+$\frac{\partial^2 T}{\partial x^2} \vert_{i,j} = \frac{T_{(i-1)nx+j+1}-2T_{(i-1)nx+j} + T_{(i-1)nx+j+1}}{\Delta x^2}$,&emsp;&emsp;&emsp; (6)
 
-$\frac{\partial^2 T}{\partial z^2} = \frac{T_{i \cdot nx+j}-2T_{(i-1)nx+j} + T_{(i-2)nx+j}}{\Delta z^2}$.&emsp;&emsp;&emsp; (7)
+$\frac{\partial^2 T}{\partial z^2} \vert_{i,j} = \frac{T_{i \cdot nx+j}-2T_{(i-1)nx+j} + T_{(i-2)nx+j}}{\Delta z^2}$.&emsp;&emsp;&emsp; (7)
 
-&emsp;Equations (6) and (7) in combination with equation (4) enables to setup the linear system of equations to solve for the temperature at the new time step. 
+&emsp;Equations (6) and (7) in combination with equation (4) enables to setup the linear system of equations to solve for the temperature at the new time step. For more details on how this is implemented in MATLAB see [*SolveDiff2Dimplicit.m*](https://github.com/LukasFuchs/FDCSGm/blob/main/DiffusionProblem/SolveDiff2Dimplicit.m).
 
 &emsp;Similar to the *explicit* discretization, one can use fictitious grid points outside the model domain to define Neumann boundary conditions, such that equation (5) results in (e.g., for the left boundary, i.e., *j* = 1): 
 
@@ -54,7 +54,7 @@ where *c<sub>left</sub>* needs to fulfil the following condition at the left bou
 
 $\frac{\partial T}{\partial x} = c_{left} = \frac{T_{i,2}-T_{i,0}}{2\Delta x}$. &emsp;&emsp;&emsp; (9) 
 
-### Cranck-Nicolson approach (CNV)
+### Cranck-Nicolson approach (CNA)
 
 &emsp;The fully implicit method works well, but is only first order accurate in time. A way to modify this is to employ a Crank-Nicolson time step discretization, which is implicit and thus second order accurate in time. In 2-D, equation (3) is then discritized as: 
 
@@ -65,7 +65,7 @@ $\frac{T_{i,j}^{n+1} - T_{i,j}^{n}}{\Delta t} = \frac{\kappa}{2}\frac{(T_{i,j+1}
 
 ### Alternating Direction Implicit (ADI)
 
-&emsp; Withing the ADI method, one basically decomposes the calculation of one time step into two half-steps. For the first step $(n \ \text{to}\ n+1/2)$, the *x*-direction is solved explicitly and the *z*-direction implicitly and, for the second step $(n+1/2 \ \text{to}\ n+1)$, the *x*-direction is solved implicitly and the *z*-direction explicitly. The advantage of the ADI method is that the equation in each step has a simpler structure and can be solved more efficiently (e.g., with the tridiagonal matrix algorithm). Equation (3) for each half-step is then given as: 
+&emsp; Within the ADI method, one basically decomposes the calculation of one time step into two half-steps. For the first step $(n \ \text{to}\ n+1/2)$, the *x*-direction is solved explicitly and the *z*-direction implicitly and, for the second step $(n+1/2 \ \text{to}\ n+1)$, the *x*-direction is solved implicitly and the *z*-direction explicitly. The advantage of the ADI method is that the equation in each step has a simpler structure and can be solved more efficiently (e.g., with the tridiagonal matrix algorithm). Equation (3) for each half-step is then given as: 
 
 $\frac{T_{i,j}^{n+1/2}-T_{i,j}^n}{\Delta t/2}=\kappa (\frac{T_{i+1,j}^n-2T_{i,j}^n+T_{i-1,j}^n}{\Delta x^2} + \frac{T_{i,j+1}^{n+1/2}-2T_{i,j}^{n+1/2}+T_{i,j-1}^{n+1/2}}{\Delta z^2})$; &emsp; &emsp; &emsp; (11)
 
@@ -83,15 +83,15 @@ For more details on how this is implemented in MATLAB, see [*SolveDiff2DADI.m*](
 
 $0=(\frac{\partial^2 T}{\partial x^2}+\frac{\partial^2 T}{\partial z^2}) + \frac{Q}{k}$.&emsp;&emsp;&emsp; (13)
 
-&emsp;For the approximation of the spacial partial derivatives with finite difference expressions, I chose a central finite difference and equation (13) is then given as: 
+&emsp;For the approximation of the spatial partial derivatives with finite difference expressions, I chose a central finite difference and equation (13) is then given as: 
 
 $0=(\frac{T_{i,j+1} - 2T_{i,j} + T_{i,j-1}}{\Delta x^2} + \frac{T_{i+1,j} - 2T_{i,j} + T_{i-1,j}}{\Delta z^2}) + \frac{Q}{k}$,&emsp;&emsp;&emsp; (14)
 
-where *i* and *j* are the indices for the *z*- and *x*-direction, respectively. Now, one can rearange the equation by known (*Q*, *k*) and unknown (*T*) variables, wich results in a linear system of equations in the form of: 
+where *i* and *j* are the indices for the *z*- and *x*-direction, respectively. Now, one can rearrange the equation by known (*Q*, *k*) and unknown (*T*) variables, wich results in a linear system of equations in the form of: 
 
 $s_zT_{i-1,j}+s_xT_{i,j-1}-2(s_x+s_z)T_{i,j}+s_xT_{i,j+1}+s_zT_{i+1,j}=-\frac{Q}{k}$, &emsp;&emsp;&emsp; (15)
 
-where $s_x = \frac{1}{\Delta x^2}$ and $s_z = \frac{1}{\Delta z^2}$. 
+where $s_x = \frac{1}{\Delta x^2}$ and $s_z = \frac{1}{\Delta z^2}$. For more details on how this is implemented in MATLAB see [*SolvePoisson2D.m*](https://github.com/LukasFuchs/FDCSGm/blob/main/DiffusionProblem/SolvePoisson2D.m).
 
 &emsp;Here, one can again assume Dirichlet or Neumann boundary conditions, where for Dirichlet the temperature along the boundary is kept constant and for Neumann equation (15) is given by (e.g., along the left boundary): 
 
@@ -105,11 +105,11 @@ $s_zT_{i-1,j}-2(s_x+s_z)T_{i,j}+2s_xT_{i,j+1}+s_zT_{i+1,j} = -\frac{Q}{k}+\frac{
 
 $0=\frac{\partial}{\partial x}(k\frac{\partial T}{\partial x})+\frac{\partial}{\partial z}(k\frac{\partial T}{\partial z})+Q$.&emsp;&emsp;&emsp; (17)
 
-&emsp;To properly solve equation (17), one needs to apply a conservative finite difference scheme again, such that the heat flux $(q_i = k\frac{\partial T}{\partial i})$ is defined between the regular grid nodes (e.g., points A,B,C, and D) and the temperature on the regular grid nodes. Therefore one needs to average the conductivity and equation (17) results in a linear system of equations in the form of: 
+&emsp;To properly solve equation (17), one needs to apply a conservative finite difference scheme, such that the heat flux $(q_i = k\frac{\partial T}{\partial i})$ is defined between the regular grid nodes (e.g., points A,B,C, and D) and the temperature on the regular grid nodes. Therefore, one needs to average the conductivity and equation (17) results in a linear system of equations in the form of: 
 
 $\frac{k_D}{\Delta z^2}T_{i-1,j}+\frac{k_A}{\Delta x^2}T_{i,j-1}+(-\frac{1}{\Delta x^2}(k_A+k_B)-\frac{1}{\Delta z^2}(k_c+k_D))T_{i,j}+\frac{k_B}{\Delta x^2}T_{i,j+1}+\frac{k_C}{\Delta z^2}T_{i+1,j} = -Q_{i,j}$, &emsp;&emsp;&emsp; (18)
 
-where $k_A = \frac{k_{i,j+1}+k_{i,j}}{2}$, $k_B = \frac{k_{i,j-1}+k_{i,j}}{2}$, $k_C = \frac{k_{i+1,j}+k_{i,j}}{2}$, and $k_D = \frac{k_{i-1,j}+k_{i,j}}{2}$.
+where $k_A = \frac{k_{i,j+1}+k_{i,j}}{2}$, $k_B = \frac{k_{i,j-1}+k_{i,j}}{2}$, $k_C = \frac{k_{i+1,j}+k_{i,j}}{2}$, and $k_D = \frac{k_{i-1,j}+k_{i,j}}{2}$. For more details on how this is implemented in MATLAB see [*SolvePoisson2Dvaryk.m*](https://github.com/LukasFuchs/FDCSGm/blob/main/DiffusionProblem/SolvePoisson2Dvaryk.m).
 
 ---------------------
 
@@ -121,7 +121,7 @@ where $k_A = \frac{k_{i,j+1}+k_{i,j}}{2}$, $k_B = \frac{k_{i,j-1}+k_{i,j}}{2}$, 
 
 $\rho c_{p} \frac{\partial T}{\partial t} = \frac{\partial}{\partial z}(k \frac{\partial T}{\partial z}) + \rho H$, &emsp; &emsp; &emsp; (19)
 
-where $\rho, c_{p}, T, t, k, H, z$ are the density [kg/m<sup>3</sup>], the specific heat capacity [J/kg/K], the temperature [K], the time [s], the thermal conductivity [W/m/K], the heat generation rate per mass [W/kg], and the depth [m] respectively. 
+where $\rho, c_{p}, T, t, k, H, z$ are the density [kg/m<sup>3</sup>], the specific heat capacity [J/kg/K], the temperature [K], the time [s], the thermal conductivity [W/m/K], the heat generation rate per mass [W/kg], and the depth [m] respectively. For values and references of the given thermal parameters see [*OceanicGeotherm_1D.m*](https://github.com/LukasFuchs/FDCSGm/blob/main/DiffusionProblem/OceanicGeotherm_1D.m) and [*ContinentalGeotherm_1D.m*](https://github.com/LukasFuchs/FDCSGm/blob/main/DiffusionProblem/ContinentalGeotherm_1D.m).
 
 &emsp;Here, a proper conservative finite difference scheme means that the heat flux is calculated on the centered grid points (A, B, etc.). The 1-D vertical heat flux is given by the Fourier’s law:
 
@@ -131,33 +131,33 @@ $q_{z} = -k \frac{\partial T}{\partial z}$. &emsp; &emsp; &emsp; (20)
 
 &emsp;Following the discretization as described above, one needs to solve the following equation (in an [implicit finite difference formulation](https://github.com/LukasFuchs/FDCSGm/blob/main/DiffusionProblem/SolveDiff1Dimplicit_vary.m)):
 
-$\rho_j c_{p,j} \frac{T_{j}^{n+1} - T_{j}^{n}}{\Delta t} = -\frac{q_{z,j+1/2}^{n+1} - q_{z,j-1/2}^{n+1} }{\Delta z} + \rho_j H_j$, &emsp;&emsp;&emsp; (21)
+$\rho_j c_{p,j} \frac{T_{j}^{n+1} - T_{j}^{n}}{\Delta t} = -\frac{q_{z,B}^{n+1} - q_{z,A}^{n+1} }{\Delta z} + \rho_j H_j$, &emsp;&emsp;&emsp; (21)
 
-$\rho_j c_{p,j} \frac{T_{j}^{n+1} - T_{j}^{n}}{\Delta t} = \frac{ k_{j+1/2} \frac{T_{j+1}^{n+1} - T_{j}^{n+1}}{\Delta z} - k_{j-1/2} \frac{T_{j}^{n+1} - T_{j-1}^{n+1}}{\Delta z} }{\Delta z} + \rho_j H_j$. &emsp;&emsp;&emsp; (22)
+$\rho_j c_{p,j} \frac{T_{j}^{n+1} - T_{j}^{n}}{\Delta t} = \frac{ k_{B} \frac{T_{j+1}^{n+1} - T_{j}^{n+1}}{\Delta z} - k_{A} \frac{T_{j}^{n+1} - T_{j-1}^{n+1}}{\Delta z} }{\Delta z} + \rho_j H_j$. &emsp;&emsp;&emsp; (22)
 
 Sorting the variables (known variables on the right-hand side, unknown on the left-hand side): 
 
-$\frac{k_{j+1/2}}{\Delta z^2} T_{j+1}^{n+1} - \frac{k_{j+1/2}}{\Delta z^2} T_{j}^{n+1} - \frac{k_{j-1/2}}{\Delta z^2} T_{j}^{n+1} + \frac{k_{j-1/2}}{\Delta z^2} T_{j-1}^{n+1} = \frac{\rho_j c_{p,j}}{\Delta t} T_{j}^{n+1} - \frac{\rho_j c_{p,j}}{\Delta t} T_{j}^{n} - \rho_j H_j$, &emsp;&emsp;&emsp;(23)
+$\frac{k_{B}}{\Delta z^2} T_{j+1}^{n+1} - \frac{k_{B}}{\Delta z^2} T_{j}^{n+1} - \frac{k_{A}}{\Delta z^2} T_{j}^{n+1} + \frac{k_{A}}{\Delta z^2} T_{j-1}^{n+1} = \frac{\rho_j c_{p,j}}{\Delta t} T_{j}^{n+1} - \frac{\rho_j c_{p,j}}{\Delta t} T_{j}^{n} - \rho_j H_j$, &emsp;&emsp;&emsp;(23)
 
-$\frac{k_{j+1/2}}{\Delta z^2} \frac{\Delta t}{\rho_j c_{p,j}} T_{j+1}^{n+1} - \frac{\Delta t}{\rho_j c_{p,j}} (\frac{k_{j+1/2} + k_{j-1/2}}{\Delta z^2}) T_{j}^{n+1} - T_{j}^{n+1} + \frac{k_{j-1/2}}{\Delta z^2}\frac{\Delta t}{\rho_j c_{p,j}} T_{j-1}^{n+1} = -T_{j}^{n} - \frac{H_j \Delta t}{c_{p,j}}$, &emsp;&emsp;&emsp;(24)
+$\frac{k_{B}}{\Delta z^2} \frac{\Delta t}{\rho_j c_{p,j}} T_{j+1}^{n+1} - \frac{\Delta t}{\rho_j c_{p,j}} (\frac{k_{B} + k_{A}}{\Delta z^2}) T_{j}^{n+1} - T_{j}^{n+1} + \frac{k_{A}}{\Delta z^2}\frac{\Delta t}{\rho_j c_{p,j}} T_{j-1}^{n+1} = -T_{j}^{n} - \frac{H_j \Delta t}{c_{p,j}}$, &emsp;&emsp;&emsp;(24)
 
-$-\frac{k_{j+1/2}}{\Delta z^2}\frac{\Delta t}{\rho_j c_{p,j}}T_{j+1}^{n+1} + (1 + \frac{\Delta t}{\rho_j c_{p,j}} (\frac{k_{j+1/2} + k_{j-1/2}}{\Delta z^2}))T_{j}^{n+1} - \frac{k_{j-1/2}}{\Delta z^2}\frac{\Delta t}{\rho_j c_{p,j}} T_{j-1}^{n+1} = T_j^n + \frac{H_j \Delta t}{c_{p,j}}$, &emsp;&emsp;&emsp;(25)
+$-\frac{k_{B}}{\Delta z^2}\frac{\Delta t}{\rho_j c_{p,j}}T_{j+1}^{n+1} + (1 + \frac{\Delta t}{\rho_j c_{p,j}} (\frac{k_{B} + k_{A}}{\Delta z^2}))T_{j}^{n+1} - \frac{k_{A}}{\Delta z^2}\frac{\Delta t}{\rho_j c_{p,j}} T_{j-1}^{n+1} = T_j^n + \frac{H_j \Delta t}{c_{p,j}}$, &emsp;&emsp;&emsp;(25)
 
 $aT_{j-1}^{n+1} + bT_{j}^{n+1} + cT_{j+1}^{n+1} = T_j^n + \frac{H_j \Delta t}{c_{p,j}}$, &emsp;&emsp;&emsp;(26)
 
 with
 
-$a = -\frac{k_{j-1/2}}{\Delta z^2}\frac{\Delta t}{\rho_j c_{p,j}}$
+$a = -\frac{k_{A}}{\Delta z^2}\frac{\Delta t}{\rho_j c_{p,j}}$
 
-$b = (1 + \frac{\Delta t}{\rho_j c_{p,j}} (\frac{k_{j+1/2} + k_{j-1/2}}{\Delta z^2}))$, &emsp;&emsp;&emsp; (27) 
+$b = (1 + \frac{\Delta t}{\rho_j c_{p,j}} (\frac{k_{B} + k_{A}}{\Delta z^2}))$, &emsp;&emsp;&emsp; (27) 
 
-$c = - \frac{k_{j+1/2}}{\Delta z^2}\frac{\Delta t}{\rho_j c_{p,j}}$
+$c = - \frac{k_{B}}{\Delta z^2}\frac{\Delta t}{\rho_j c_{p,j}}$
 
 and
 
-$k_{j+1/2} = \frac{k_j + k_{j+1}}{2}$
+$k_{A} = \frac{k_{j-1} + k_{j}}{2}$
 
-$k_{j-1/2} = \frac{k_{j-1} + k_{j}}{2}$. &emsp;&emsp;&emsp; (28)
+$k_{B} = \frac{k_j + k_{j+1}}{2}$. &emsp;&emsp;&emsp; (28)
 
 An [*explicit*](https://github.com/LukasFuchs/FDCSGm/blob/main/DiffusionProblem/SolveDiff1Dexplicit_vary.m) solver for a 1-D thermal profile with variable thermal parameters and a radiogenic heat source is also available.
 
@@ -165,17 +165,17 @@ An [*explicit*](https://github.com/LukasFuchs/FDCSGm/blob/main/DiffusionProblem/
 
 The thermal boundary conditions are defined as: 
 
-1. **Constant temperature** (*Dirichlet*)
+1. **Constant temperature** (*Dirichlet*)<br>
 The temperature at the top or bottom can just be set as constant to *T<sub>top</sub>* or *T<sub>bot</sub>*, respectively.
       
-2. **Constant temperature gradient** (*Neumann*)
-The gradient of temperature (and thus the vertical heat flux) can be defined using so called ghost nodes at the top and the bottom of the profile. Therefore we define the condition at the top and bottom as:
+2. **Constant temperature gradient** (*Neumann*)<br>
+The gradient of temperature (and thus the vertical heat flux) can be defined using so called ghost nodes at the top and the bottom of the profile. Therefore, we define the condition at the top and bottom as:
 
    $\frac{\partial T}{\partial z} \vert_{j=1} = c_{top} = \frac{T_2-T_0}{2\Delta z}$
 
    $\frac{\partial T}{\partial z} \vert_{j=nz} = c_{bottom} = \frac{T_{nz+1}-T_{nz-1}}{2\Delta z}$, &emsp;&emsp;&emsp; (29)
 
-   Where T<sub>0</sub> and T<sub>nz+1</sub> are the ghost nodes for temperature at the top and bottom, respectively. The constants *c<sub>top</sub>* and *c<sub>bottom</sub>* are defined as:
+   Where *T<sub>0</sub>* and *T<sub>nz+1</sub>* are the ghost nodes for temperature at the top and bottom, respectively. The constants *c<sub>top</sub>* and *c<sub>bottom</sub>* are defined as:
 
    $c_{top,bottom} = -\frac{q_{top,bottom}}{2\Delta z}$
    
