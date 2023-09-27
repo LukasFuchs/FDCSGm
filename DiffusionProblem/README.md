@@ -271,7 +271,5 @@ The gradient of temperature (and thus the vertical heat flux) can be defined usi
 [SolvePoisson2D](https://github.com/LukasFuchs/FDCSGm/blob/main/DiffusionProblem/SolvePoisson2D.m)[(varyk).m](https://github.com/LukasFuchs/FDCSGm/blob/main/DiffusionProblem/SolvePoisson2Dvaryk.m)<br>
 &emsp;-> Functions to solve the 2-D steady state diffusive temperature equation for constant and variable thermal parameters.
 
-[comment]: <> (Needs, in detail:
-- discretization of     
-     - explicit (variable thermal parameters, at some point!))
+[comment]: <> (Needs, in detail:- discretization of explicit variable thermal parameters, at some point!)
 
