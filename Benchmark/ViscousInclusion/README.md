@@ -15,7 +15,8 @@ This directory contains three scripts:
 
 ## Example of a spherical inclusion model
 
-### **Constants**<br>
+### **Constants**<
+
 Model height **H** [m]: 1000
 
 Model Width **W** [m]: 1000
@@ -36,14 +37,16 @@ Minor half axis **b** [m]: 200
 
 ... Calculation of the deviation of the numerical solution from the analytical one ...
 
-## Pure Shear <br>
+## Pure Shear
+
 ![ViscousInclusionFields_PureShear](https://github.com/LukasFuchs/FDCSGm/assets/25866942/cd39d4ee-4a5a-4ce8-93dd-0961baba62c3)
 **Figure 1.** Instantaneous solution of the stokes equation. **Top Left:** Logarithm of the viscosity. **Top Right:** Logartihm of the dissipative energy $\psi$. **Bottom Left:** Logarithm of the second invariant of the strain-rate tensor. **Bottom Right:** Logartihm of the second invariant of the deviatoric stress tensor. 
 
 ![ViscousInclusionCompAna_PureShear](https://github.com/LukasFuchs/FDCSGm/assets/25866942/e13fdff3-522c-4545-9d62-fea1bf1888db)
 **Figure 2.** Comparison with the analytical solution. **Top Row:** Analytical and numerical solution of the horizontal velocity and their deviation (in ?). **Middle Row:** Analytical and numerical solution of the vertical velocity and their deviation (in ?). **Bottom Row:** Analytical and numerical solution of the dynamic pressure and their deviation (in ?).
 
-## Simple Shear <br>
+## Simple Shear
+
 ![ViscousInclusionFields_SimpleShear](https://github.com/LukasFuchs/FDCSGm/assets/25866942/541fff64-28bf-42de-b7e9-fef9efc10d0d)
 **Figure 3.** Same as in **Figure 1.** but for a simple shear background deformation field. See caption of **Figure 1.** for more detail.
 
@@ -52,9 +55,10 @@ Minor half axis **b** [m]: 200
 
 -----------------------------------------------------------------
 
-## Example of an elliptical inclusion model<br>
+## Example of an elliptical inclusion model
 
-### **Constants** <br>
+### **Constants**
+
 Model height **H** [m]: 1000
 
 Model Width **W** [m]: 1000
