@@ -33,7 +33,7 @@ where *i* is the coordinate index and *x<sub>i</sub>* is a spatial coordinate.
 $\frac{T_{i,j}^{n+1}-T_{i,j}^n}{\Delta t}=-v_{x;i,j}\cases{\matrix{\frac{T_{i,j}^{n}-T_{i,j-1}^n}{\Delta x} \quad \text{if} \quad v_{x;i,j} > 0 \\\ \frac{T_{i,j+1}^{n}-T_{i,j}^n}{\Delta x} \quad \text{if} \quad v_{x;i,j}<0}} 
 -v_{z;i,j}\cases{\matrix{\frac{T_{i,j}^{n}-T_{i-1,j}^n}{\Delta z} \quad \text{if} \quad v_{z;i,j} > 0 \\\ \frac{T_{i+1,j}^{n}-T_{i,j}^n}{\Delta z} \quad \text{if} \quad v_{z;i,j}<0}}$, &emsp;&emsp;&emsp;(5)
 
-where *T* is the temperature, *v* the velocity, *n* is the current time step, $\Delta t$ the time step increment, and *i* and *j* are the indices in *z*- and *x*- direction, respectively. 
+where *T* is the temperature, *v* the velocity, *n* is the current time step, $\Delta t$ the time step increment, and *i* and *j* are the indices in *z*- and *x*- direction, respectively. For more details see [*UpwindAdvection2D.m*](https://github.com/LukasFuchs/FDCSGm/blob/main/AdvectionProblem/UpwindAdvection2D.m).
 
 &emsp;This is a stable and effective way, however, with a certain amount of numerical diffusion if the *courant criteria* is not fulfilled and only first order accurate in space. The courant criteria implies that the time step is smaller than the minimum grid spacing divided by the maximum velocity, that is, a property should not be advected over a distance larger than the grid spacing, or:
 
@@ -45,13 +45,15 @@ $\Delta t \le \frac{\Delta x}{max(|v|)}$.&emsp;&emsp;&emsp; (6)
 
 $\frac{T_{i,j}^{n+1} - T_{i,j}^{n+1}}{2\Delta t}=-v_{x;i,j}\frac{T_{i,j+1}^{n} - T_{i,j-1}^{n}}{2\Delta x}-v_{z;i,j}\frac{T_{i+1,j}^{n} - T_{i-1,j}^{n}}{2\Delta z}$. &emsp;&emsp;&emsp; (7)
 
+For more details see [*SLFAdvection2D.m*](https://github.com/LukasFuchs/FDCSGm/blob/main/AdvectionProblem/SLFAdvection2D.m).
+
 ### The semi-lagragian scheme 
-&emsp;This method is related to the tracer-based advection by solving *ODEs*, where it assumes that *imaginary tracers* are located at certain positions and land directly at the finite difference grid nodes after advection within one time step. Thus, one needs to calculate the *origin points* for each grid node back in time (e.g., one Euler time step) with a given velocity field (e.g., using an *iterative mid-point scheme*, i.e. one uses the velocity at a point half a time step backward in time) and then interpolate the property from the regular grid points to the determined *origin points*. This scheme assumes that no heat-sources were active during the advection. The method does not have any numerical diffusion but shows inaccuracies due to the interpolation method.<br>
+&emsp;This method is related to the tracer-based advection by solving *ODEs*, where it assumes that *imaginary tracers* are located at certain positions and land directly at the finite difference grid nodes after advection within one time step. Thus, one needs to calculate the *origin points* for each grid node back in time (e.g., one Euler time step) with a given velocity field (e.g., using an *iterative mid-point scheme*, i.e. one uses the velocity at a point half a time step backward in time) and then interpolate the property from the regular grid points to the determined *origin points*. This scheme assumes that no heat-sources were active during the advection. The method does not have any numerical diffusion but shows inaccuracies due to the interpolation method. For more details see [*SemiLagAdvection2D.m*](https://github.com/LukasFuchs/FDCSGm/blob/main/AdvectionProblem/SemiLagAdvection2D.m).
    
 ### Passive tracers
 
 &emsp;Here, one assumes that the model domain is completely filled with so-called *tracers* or *markers*. These tracers are then advected by solving the *ODE* of a particle advection using a certain method (e.g., Euler or Runge Kutta) and they transport any property stored on them. However, care needs to be taken when interpolating those properties from the regular grid onto the tracers and back. This is even more complex if the property advected does have an effect on parameters controlling the governing equations (e.g., the viscosity in continuum euqation).<br>
-&emsp;Here, I advect the tracers using Runge-Kutta fourth order; the tracers can transport the absolute temperature and the composition (so far only for two compositions with a constant viscosity and density). The property is then interpolated back to the regular grid points every time step. 
+&emsp;Here, I advect the tracers using Runge-Kutta fourth order; the tracers can transport the absolute temperature and the composition (so far only for two compositions with a constant viscosity and density). The property is then interpolated back to the regular grid points every time step. For more details see [*AdvectMarker2D.m*](https://github.com/LukasFuchs/FDCSGm/blob/main/AdvectionProblem/AdvectMarker2D.m) and [*TracerInterp.m*](https://github.com/LukasFuchs/FDCSGm/blob/main/AdvectionProblem/TracerInterp.m).
 
 ### Examples 
 &emsp;For the [thermal convection](https://github.com/LukasFuchs/FDCSGm/tree/main/MixedHeatedSystems) code or in the [Blankenbach benchmark](https://github.com/LukasFuchs/FDCSGm/tree/main/Benchmark/Blanckenbach) I do prefer, so far, the semi-lagrangian method. However, I only advect the total temperature and not the increments, so far.
@@ -65,20 +67,20 @@ $\frac{T_{i,j}^{n+1} - T_{i,j}^{n+1}}{2\Delta t}=-v_{x;i,j}\frac{T_{i,j+1}^{n} -
 ### Directory Content
 For more details check description in the files.
 
-[*AdvectMarker2D.m*](https://github.com/LukasFuchs/FDCSGm/blob/main/AdvectionProblem/AdvectMarker2D.m)
-   -> Script to advect passive tracers within a 2-D environment using Runge-Kutta 4th order.
+[*AdvectMarker2D.m*](https://github.com/LukasFuchs/FDCSGm/blob/main/AdvectionProblem/AdvectMarker2D.m)<br>
+&emsp;-> Script to advect passive tracers within a 2-D environment using Runge-Kutta 4th order.
    
-[*Advection.m*](https://github.com/LukasFuchs/FDCSGm/blob/main/AdvectionProblem/Advection.m)
-   -> General function to chose a certain advection scheme, to be used in the main program.
+[*Advection.m*](https://github.com/LukasFuchs/FDCSGm/blob/main/AdvectionProblem/Advection.m)<br>   
+&emsp;-> General function to chose a certain advection scheme, to be used in the main program.
    
-[*SLFAdvection2D.m*](https://github.com/LukasFuchs/FDCSGm/blob/main/AdvectionProblem/SLFAdvection2D.m)
-   -> Staggered Leap Frog advection scheme for a 2-D environment. Advected is any kind of field *A*.
+[*SLFAdvection2D.m*](https://github.com/LukasFuchs/FDCSGm/blob/main/AdvectionProblem/SLFAdvection2D.m)<br>   
+&emsp;-> Staggered Leap Frog advection scheme for a 2-D environment. Advected is any kind of field *A*.
 
-[*SemiLagAdvection2D.m*](https://github.com/LukasFuchs/FDCSGm/blob/main/AdvectionProblem/SemiLagAdvection2D.m)
-   -> Semi-Lagrangian advection scheme for a 2-D environment. Advected is any kind of field *A*.
+[*SemiLagAdvection2D.m*](https://github.com/LukasFuchs/FDCSGm/blob/main/AdvectionProblem/SemiLagAdvection2D.m)<br>
+&emsp;-> Semi-Lagrangian advection scheme for a 2-D environment. Advected is any kind of field *A*.
 
-[*TracerInterp.m*](https://github.com/LukasFuchs/FDCSGm/blob/main/AdvectionProblem/TracerInterp.m)
-   -> Script to interpolate certain properties from the grid to the tracers and back. 
+[*TracerInterp.m*](https://github.com/LukasFuchs/FDCSGm/blob/main/AdvectionProblem/TracerInterp.m)<br>
+&emsp;-> Script to interpolate certain properties from the grid to the tracers and back. 
    
-[*UpwindAdvection2D.m*](https://github.com/LukasFuchs/FDCSGm/blob/main/AdvectionProblem/UpwindAdvection2D.m)
-   -> Script to advect any kind of field *A* with a 2-D upwind scheme. 
+[*UpwindAdvection2D.m*](https://github.com/LukasFuchs/FDCSGm/blob/main/AdvectionProblem/UpwindAdvection2D.m)<br>
+&emsp;-> Script to advect any kind of field *A* with a 2-D upwind scheme. 
