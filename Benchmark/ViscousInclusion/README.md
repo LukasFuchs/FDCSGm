@@ -15,7 +15,7 @@ This directory contains three scripts:
 
 ## Example of a spherical inclusion model
 
-### **Constants**<
+### **Constants**
 
 Model height **H** [m]: 1000
 
