@@ -70,10 +70,10 @@ For more details check description in the files.
 [*AdvectMarker2D.m*](https://github.com/LukasFuchs/FDCSGm/blob/main/AdvectionProblem/AdvectMarker2D.m)<br>
 &emsp;-> Script to advect passive tracers within a 2-D environment using Runge-Kutta 4th order.
    
-[*Advection.m*](https://github.com/LukasFuchs/FDCSGm/blob/main/AdvectionProblem/Advection.m)<br>   
+[*Advection.m*](https://github.com/LukasFuchs/FDCSGm/blob/main/AdvectionProblem/Advection.m)<br>
 &emsp;-> General function to chose a certain advection scheme, to be used in the main program.
    
-[*SLFAdvection2D.m*](https://github.com/LukasFuchs/FDCSGm/blob/main/AdvectionProblem/SLFAdvection2D.m)<br>   
+[*SLFAdvection2D.m*](https://github.com/LukasFuchs/FDCSGm/blob/main/AdvectionProblem/SLFAdvection2D.m)<br>
 &emsp;-> Staggered Leap Frog advection scheme for a 2-D environment. Advected is any kind of field *A*.
 
 [*SemiLagAdvection2D.m*](https://github.com/LukasFuchs/FDCSGm/blob/main/AdvectionProblem/SemiLagAdvection2D.m)<br>
