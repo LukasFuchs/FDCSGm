@@ -30,7 +30,7 @@ T<sub>0</sub> = 1000 [K]. <br>
 
 ## Resolution Test
 
-For the resolution test, we compared the RMS between the analytical and numerical solution, the maximum, and mean of the temperature of the analytical and numerical solution for each finite differnece scheme after a period of 10 Million years. The resolution is 21, 41, 61, 81, 101, 121, 141, 161, respectively.
+&emsp;For the resolution test, we compared the RMS between the analytical and numerical solution, the maximum, and mean of the temperature of the analytical and numerical solution for each finite differnece scheme after a period of 10 Million years. The resolution is 21, 41, 61, 81, 101, 121, 141, 161, respectively.
 
 ![Comparison](https://github.com/LukasFuchs/FDCSGm/assets/25866942/b4bfe7a0-96e1-43b5-8656-02269bf06e67)<br>
 **Figure 2.** RMS, *T*<sub>max</sub>, and *T*<sub>mean</sub> for each finite difference discretization scheme. 
