@@ -53,6 +53,8 @@ Resolution (nx x nz): 51 x 51<br>
 
 ## Isoviscous Convection
 
+### Low Rayleigh number cases
+
 &emsp;The temperature and velocity patterns are resolved well (Figure 1) and the steady state values for the Nusselt number and the root mean square velocity are nearly reached (Figure 2), too. Variations from the benchmark values might be due to a rather coarse resolution (51x51) and the given solving methods, that is the explicit diffusion solver, the semi-lagrangian advection method, and the operator splitting method. 
 
 ![Field3150](https://github.com/LukasFuchs/FDCSGm/assets/25866942/115d5bb6-3c3d-44a6-992a-b6606d7d5144)<br>
@@ -62,6 +64,8 @@ Resolution (nx x nz): 51 x 51<br>
 **Figure 2.** Time series of Nusselt number and root mean square velocity as well as the vertical temperautre profile in the middle of the model domain and the temperautre differences at the corners of the model (in the following order: top left (1), top right (2), bottom right (3), and bottom left (4)).
 
 ![Evolution_small](https://github.com/LukasFuchs/FDCSGm/assets/25866942/fb4f6e36-29d7-4f2a-affa-3bca238ae59d)<br>
+
+### High Rayleigh number cases
 
 &emsp;This becomes even more obvious for higher Rayleigh number (*Ra* = 10<sup>6</sup>) calculations for which the deviations of the Nusselt number are quite significant as well as for a temperature-dependent thermal convection (Figures 3 & 4).
 
