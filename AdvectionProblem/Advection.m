@@ -1,4 +1,7 @@
 function [D,Ma,ID] = Advection(it,N,B,D,ID,Py,dt,M,Ma)
+% ======================================================================= %
+% Generell function to call the different advection schemes.              %
+% ======================================================================= %
 switch lower(B.AdvMethod)   
     case 'upwind'
                 D.T             =   UpwindAdvection2D(ID.vx,ID.vz,D.T,...

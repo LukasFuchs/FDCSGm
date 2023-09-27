@@ -59,9 +59,9 @@ if nargin==0
     T.T     =   T.Tpot + abs(M.z/1e3)*T.dTadi;      % Initial T-profile [ K ]
     T.T(1)  =   T.T0;
     T.Tini  =   T.T;
-    T.ubound    =   'flux';
+    T.ubound    =   'const';
     T.utbf      =   -0.03;          % c     =   -k/q -> 90 mW/m^2
-    T.lbound    =   'flux';
+    T.lbound    =   'const';
     T.ltbf      =   -0.0033;        % c     =   -k/q -> 10 mW/m^2
     % Time stability criterion ------------------------------------------ %
     t.dtfac =   0.8;                % Courant criterion
