@@ -60,11 +60,12 @@ $\frac{\partial T}{\partial x} = c_{left} = \frac{T_{i,2}-T_{i,0}}{2\Delta x}$. 
 
 $\frac{T_{i,j}^{n+1} - T_{i,j}^{n}}{\Delta t} = \frac{\kappa}{2}\frac{(T_{i,j+1}^{n+1}-2T_{i,j}^{n+1}+T_{i,j-1}^{n+1})+(T_{i,j+1}^{n}-2T_{i,j}^{n}+T_{i,j-1}^{n})}{\Delta x^2} + \frac{\kappa}{2}\frac{(T_{i+1,j}^{n+1}-2T_{i,j}^{n+1}+T_{i-1,j}^{n+1})+(T_{i+1,j}^{n}-2T_{i,j}^{n}+T_{i-1,j}^{n})}{\Delta z^2}$. &emsp; &emsp; &emsp;  (10)
 
-&emsp;However, the band-width of the coefficient matrix increases as in the fully implicit case. Thus, the method becomes memory intensiv for models with a high resoltuion. 
+&emsp;However, the band-width of the coefficient matrix increases as in the fully implicit case. Thus, the method becomes memory intensiv for models with a high resoltuion. For more details on how this is implemented in MATLAB, see [*SolveDiff2DCNV.m*](https://github.com/LukasFuchs/FDCSGm/blob/main/DiffusionProblem/SolveDiff2DCNV.m).
+
 
 ### Alternating Direction Implicit (ADI)
 
-&emsp; Withing the ADI method, one basically decomposes the calculation of one time step into two half-steps. For the first step $(n \ \text{to}\ n+1/2)$, the *x*-direction is solved explicitly and the *z*-direction implicitly and, for the second step $(n+1/2 \ \text{to}\ n+1)$, the *x*-direction is solved implicitly and the *z*-direction explicity. The advantage of the ADI method is that the equation in each step has a simpler structure and can be solved more efficiently (e.g., with the tridiagonal matrix algorithm). Equation (3) for each half-step is then given as: 
+&emsp; Withing the ADI method, one basically decomposes the calculation of one time step into two half-steps. For the first step $(n \ \text{to}\ n+1/2)$, the *x*-direction is solved explicitly and the *z*-direction implicitly and, for the second step $(n+1/2 \ \text{to}\ n+1)$, the *x*-direction is solved implicitly and the *z*-direction explicitly. The advantage of the ADI method is that the equation in each step has a simpler structure and can be solved more efficiently (e.g., with the tridiagonal matrix algorithm). Equation (3) for each half-step is then given as: 
 
 $\frac{T_{i,j}^{n+1/2}-T_{i,j}^n}{\Delta t/2}=\kappa (\frac{T_{i+1,j}^n-2T_{i,j}^n+T_{i-1,j}^n}{\Delta x^2} + \frac{T_{i,j+1}^{n+1/2}-2T_{i,j}^{n+1/2}+T_{i,j-1}^{n+1/2}}{\Delta z^2})$; &emsp; &emsp; &emsp; (11)
 
