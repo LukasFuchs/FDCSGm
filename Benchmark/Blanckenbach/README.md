@@ -71,7 +71,7 @@ Resolution (nx x nz): 51 x 51<br>
 ![TimeSeries](https://github.com/LukasFuchs/FDCSGm/assets/25866942/0d87a365-3347-40a6-83d1-150ea76f34cd)<br>
 **Figure 4.** Time series, temperature profile, and corner heat fluxes. For more details see captions of Figure 2.
 
-![Evolution_small](https://github.com/LukasFuchs/FDCSGm/assets/25866942/2cf47636-250b-4494-9f8c-c27fb24aac47)<br>
+![Evolution_small](https://github.com/LukasFuchs/FDCSGm/assets/25866942/2cf47636-250b-4494-9f8c-c27fb24aac47)
 
 ***Resolution test for higher Ra***
 
