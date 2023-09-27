@@ -1,6 +1,6 @@
 # General Information
 
-&emsp;This directory contains several rountines to solve the diffusive part of the *temperature conservation equation* (1- and 2-D, steady state and time-dependent) using different numerical discretization methods. The routines are avaible in a dimensional or non-dimensional (files ending with *Sc.m; see the [introduction part](https://github.com/LukasFuchs/FDCSGm/tree/main#scaling-and-equation-of-state) regarding the scaling) form of the equation (so far the 1-D routines are only availabe for a dimensional version!). 
+&emsp;This directory contains several rountines to solve the diffusive part of the *temperature conservation equation* (1- and 2-D, steady state and time-dependent) using different numerical discretization methods. The routines are avaible in a dimensional or non-dimensional form (files ending with *Sc.m; see the [introduction part](https://github.com/LukasFuchs/FDCSGm/tree/main#scaling-and-equation-of-state) or [*FDCSGm/ScaleParam*](https://github.com/LukasFuchs/FDCSGm/tree/main/ScaleParam) regarding the scaling) of the equation (so far the 1-D routines are only availabe for a dimensional version!). 
 
 -------------
 
@@ -8,7 +8,7 @@
 
 $\rho c_p \frac{\partial T}{\partial t} = -\frac{\partial q_x}{\partial x} -\frac{\partial q_z}{\partial z} + \rho H$,&emsp;&emsp;&emsp;(1)
 
-where *c<sub>p</sub>* is the specific heat capacity [J/kg/K], *ρ* is a reference density [kg/m<sup>3</sup>], *T* is the temperature [K], *t* is the time [s], *q<sub>i</sub>* is the heat flux in direction of *i*  [W/m<sup>2</sup>], and *H* the heat production rate per mass [W/kg]. Including Fourier’s law equation (1) is given as (assuming variable thermal parameters):
+where *c<sub>p</sub>* is the specific heat capacity [J/kg/K], *ρ* is a reference density [kg/m<sup>3</sup>], *T* is the temperature [K], *t* is the time [s], *q<sub>i</sub>* is the heat flux [W/m<sup>2</sup>] in direction of *i*, and *H* the heat production rate per mass [W/kg]. Including Fourier’s law equation (1) is given as (assuming variable thermal parameters):
 
 $\rho c_p \frac{\partial T}{\partial t} = \frac{\partial}{\partial x} k \frac{\partial T}{\partial x} + \frac{\partial}{\partial z} k \frac{\partial T}{\partial z} + \rho H$.&emsp;&emsp;&emsp;(2) 
 
@@ -18,13 +18,13 @@ $\frac{\partial T}{\partial t} = \kappa (\frac{\partial^2 T}{\partial x^2} + \fr
   
 where *κ* is the thermal diffusivity [m<sup>2</sup>/s] and $Q=\rho H$ is the heat production rate per volume [W/m<sup>3</sup>]. 
 
-&emsp;Equation (3) is a *parabolic partial differential equation* which can be solve numerically in different manners, assuming initial and boundary conditions are defined. A detailed description on how to solve equation (3) using an *explicit* finite difference scheme and how to implement the most common boundary conditions (*Dirichlet* and *Neumann*) is given in the [introduction](https://github.com/LukasFuchs/FDCSGm/tree/main#energy-equation) of this code. In the following I would like to show some additional ways to discretize the diffusive part of the temperature equation and discuss their advantages and disadvantages. All discretization methods can be used in the [thermal convection code](https://github.com/LukasFuchs/FDCSGm/tree/main/MixedHeatedSystems) and the [Blankenbach Benchmark](https://github.com/LukasFuchs/FDCSGm/tree/main/Benchmark/Blanckenbach). A more detailed analysis on the accuracy of each discretization scheme and the effect of the grid resolution is given in the [Gaussian Diffusion Benchmark](https://github.com/LukasFuchs/FDCSGm/tree/main/Benchmark/GaussDiffusion). 
+&emsp;Equation (3) is a *parabolic partial differential equation* which can be solve numerically in different manners, assuming initial and boundary conditions are defined. A detailed description on how to solve equation (3) using an *explicit* finite difference scheme and how to implement the most common boundary conditions (*Dirichlet* and *Neumann*) is given in the [introduction](https://github.com/LukasFuchs/FDCSGm/tree/main#energy-equation) of this code. In the following I would like to show some additional ways to discretize the diffusive part of the temperature equation and briefly discuss their advantages and disadvantages. All discretization methods can be used in the [thermal convection code](https://github.com/LukasFuchs/FDCSGm/tree/main/MixedHeatedSystems) and the [Blankenbach Benchmark](https://github.com/LukasFuchs/FDCSGm/tree/main/Benchmark/Blanckenbach). A more detailed analysis on the accuracy of each discretization scheme and the effect of the grid resolution is given in the [Gaussian Diffusion Benchmark](https://github.com/LukasFuchs/FDCSGm/tree/main/Benchmark/GaussDiffusion). 
 
 So far, variable thermal parameters are only included in the 1-D solutions and the 2-D steady state solution (i.e., $\frac{\partial T}{\partial t}=0$).  
 
 ## Discretization Methods
 
-&emsp;In the introduction of the code, I describ the explicit finite difference discretization scheme, which is stable in case the diffusion time criterion is not violated. While it seems to be the most accurate finite difference approximation scheme for the time-dependent diffusion equation (see [Gaussian Diffusion Benchmark](https://github.com/LukasFuchs/FDCSGm/tree/main/Benchmark/GaussDiffusion)), the dependency of the time stepping on the grid resolution might become problematic in models with a high resolution and could significantly slow down the model calculations. In the following I will present some well-know alternative discretization methods, which help to resolve this issue. 
+&emsp;In the introduction of the code, I describe the explicit finite difference discretization scheme, which is stable in case the diffusion time criterion is not violated. While it seems to be the most accurate finite difference approximation scheme for the time-dependent diffusion equation I implemented (see [Gaussian Diffusion Benchmark](https://github.com/LukasFuchs/FDCSGm/tree/main/Benchmark/GaussDiffusion)), the dependency of the time stepping on the grid resolution might become problematic in models with a high resolution and could significantly slow down the model calculations. In the following I will present some well-know alternative discretization methods, which help to resolve this issue. 
 
 ### Implicit FTCS
 
@@ -36,9 +36,9 @@ where *n* is the current and *n+1* the next time step, $\Delta t$ is the time st
 
 $-s_zT_{i-1,j}^{n+1}-s_xT_{i,j-1}^{n+1}+(1+2s_z+2s_x)T_{i,j}^{n+1}-s_xT_{i,j+1}^{n+1}-s_zT_{i+1,j}^{n+1}=T_{i,j}^n+\frac{Q_{i,j}^n \Delta t}{\rho c_p}$, &emsp;&emsp;&emsp; (5)
 
-where $s_x=\frac{\kappa \Delta t}{\Delta x^2}$ and $s_z=\frac{\kappa \Delta t}{\Delta z^2}$. This is a linear system of equation in the form of *A*x=rhs*, where *A* is a coefficient matrix (here with five non-zero diagonals), *x* the unknown vector, and *rhs* the known right hand side. THe main advantage of the implicit method is that there are no restrictions on the time step, but this does not mean that it is accurate. Taking to large time steps may result in an accurate solution for features with small spatial scales. Here, I do solve the linear system of equations in MATLAB with a right-array divison (but other solver method might be applied). 
+where $s_x=\frac{\kappa \Delta t}{\Delta x^2}$ and $s_z=\frac{\kappa \Delta t}{\Delta z^2}$. This is a linear system of equation in the form of *A*x=rhs*, where *A* is a coefficient matrix (here with five non-zero diagonals), *x* the unknown vector, and *rhs* the known right-hand side. The main advantage of the implicit method is that there are no restrictions on the time step, but this does not mean that it is accurate. Taking to large time steps may result in an inaccurate solution for features with small spatial scales. Here, I do solve the linear system of equations in MATLAB with a right-array divison (but other solver method might be applicable, too). 
 
-&emsp;As promising as the implicit method is, one needs to be careful in setting up the coefficient matrix and the corresponding unknown and *rhs* vectors (especially in 2-D). Here, one needs to do a proper indexing of the regular grid points by using a global index variable, which goes from 1 to *nx* x *nz*. This global index replaces the local *i* and *j* indices in equation (4), such that the spatial derivatives at a point *i*, *j* are given as: 
+&emsp;As promising as the implicit method is, the band width of the coefficient matrix could be problematic in models with a very high resoltuion. In addition, one needs to be careful in setting up the coefficient matrix and the corresponding unknown and *rhs* vectors (especially in 2-D). Here, one needs to do a proper indexing of the regular grid points by using a global index variable, which goes from 1 to *nx* x *nz*. This global index replaces the local *i* and *j* indices in equation (4), such that the spatial derivatives at a point *i*, *j* are given as: 
 
 $\frac{\partial^2 T}{\partial x^2} = \frac{T_{(i-1)nx+j+1}-2T_{(i-1)nx+j} + T_{(i-1)nx+j+1}}{\Delta x^2}$,&emsp;&emsp;&emsp; (6)
 
@@ -56,7 +56,7 @@ $\frac{\partial T}{\partial x} = c_{left} = \frac{T_{i,2}-T_{i,0}}{2\Delta x}$. 
 
 ### Cranck-Nicolson approach (CNV)
 
-&emsp;The fully implicit method works wel, but is only first order accuratein time. A way to modify this is to employ a Crank-Nicolson time step discretization, which implicit and thus second order accurate in time. In 2-D, equation (3) is then discritized as: 
+&emsp;The fully implicit method works wel, but is only first order accurate in time. A way to modify this is to employ a Crank-Nicolson time step discretization, which is implicit and thus second order accurate in time. In 2-D, equation (3) is then discritized as: 
 
 $\frac{T_{i,j}^{n+1} - T_{i,j}^{n}}{\Delta t} = \frac{\kappa}{2}\frac{(T_{i,j+1}^{n+1}-2T_{i,j}^{n+1}+T_{i,j-1}^{n+1})+(T_{i,j+1}^{n}-2T_{i,j}^{n}+T_{i,j-1}^{n})}{\Delta x^2} + \frac{\kappa}{2}\frac{(T_{i+1,j}^{n+1}-2T_{i,j}^{n+1}+T_{i-1,j}^{n+1})+(T_{i+1,j}^{n}-2T_{i,j}^{n}+T_{i-1,j}^{n})}{\Delta z^2}$. &emsp; &emsp; &emsp;  (10)
 
@@ -64,11 +64,13 @@ However, the band-width of the coefficient matrix increases as in the fully impl
 
 ### Alternating Direction Implicit (ADI)
 
-...*Idea* ... 
+&emsp; Withing the ADI method, one basically decomposes the calculation of one time step into two half-steps. For the first step $(t \ \text{to}\ t+\Delta t/2)$, the *x*-direction is solved explicitly and the *z*-direction implicitly and, for the second step $(t+\Delta t/2 \ \text{to}\ t+\Delta t)$, the *x*-direction is solved implicitly and the *z*-direction explicity. The advantage of the ADI method is that the equation in each step has a simpler structure and can be solved more efficiently (e.g., with the tridiagonal matrix algorithm). Equation (3) for each half-step is then given as: 
 
-$\frac{T_{i,j}^{n+1/2}-T_{i,j}^n}{\Delta t/2}=\kappa (\frac{T_{i+1,j}^n-2T_{i,j}^n+T_{i-1,j}^n}{\Delta x^2} + \frac{T_{i,j+1}^{n+1/2}-2T_{i,j}^{n+1/2}+T_{i,j-1}^{n+1/2}}{\Delta z^2})$; &emsp; &emsp; &emsp; ()
+$\frac{T_{i,j}^{n+1/2}-T_{i,j}^n}{\Delta t/2}=\kappa (\frac{T_{i+1,j}^n-2T_{i,j}^n+T_{i-1,j}^n}{\Delta x^2} + \frac{T_{i,j+1}^{n+1/2}-2T_{i,j}^{n+1/2}+T_{i,j-1}^{n+1/2}}{\Delta z^2})$; &emsp; &emsp; &emsp; (11)
 
-$\frac{T_{i,j}^{n+1}-T_{i,j}^{n+1/2}}{\Delta t/2}=\kappa (\frac{T_{i+1,j}^{n+1}-2T_{i,j}^{n+1}+T_{i-1,j}^{n+1}}{\Delta x^2} + \frac{T_{i,j+1}^{n+1/2}-2T_{i,j}^{n+1/2}+T_{i,j-1}^{n+1/2}}{\Delta z^2})$; &emsp; &emsp; &emsp; ()
+$\frac{T_{i,j}^{n+1}-T_{i,j}^{n+1/2}}{\Delta t/2}=\kappa (\frac{T_{i+1,j}^{n+1}-2T_{i,j}^{n+1}+T_{i-1,j}^{n+1}}{\Delta x^2} + \frac{T_{i,j+1}^{n+1/2}-2T_{i,j}^{n+1/2}+T_{i,j-1}^{n+1/2}}{\Delta z^2})$; &emsp; &emsp; &emsp; (12)
+
+For more details on how this is implemented in MATLAB, see [*SolveDiff2DADI.m*](https://github.com/LukasFuchs/FDCSGm/blob/main/DiffusionProblem/SolveDiff2DADI.m).
 
 ## Steady State Solution
 
@@ -233,6 +235,8 @@ The gradient of temperature (and thus the vertical heat flux) can be defined usi
 
 ![image](https://github.com/LukasFuchs/FDCSGm/assets/25866942/98e9da70-f343-4ed9-be71-a44299116c72)
 ***Figure 5. Continental Lithosphere II**. Same as Figure 3 but with constant upper and lower heat flux boundary conditions, q<sub>top</sub> = 40 mW/m<sup>2</sup> and q<sub>bottom</sub> = 10 mW/m<sup>2</sup>.*
+
+# Directory Content
 
 Needs, in detail:
 - discretization of     
