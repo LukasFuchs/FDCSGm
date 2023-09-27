@@ -62,7 +62,7 @@ $\frac{T_{i,j}^{n+1} - T_{i,j}^{n+1}}{2\Delta t}=-v_{x;i,j}\frac{T_{i,j+1}^{n} -
 
 &emsp;For more details and examples see the [benchmark directory](https://github.com/LukasFuchs/FDCSGm/tree/main/Benchmark).
 
-### Directory Content<br>
+### Directory Content
 For more details check description in the files.
 
 [*AdvectMarker2D.m*](https://github.com/LukasFuchs/FDCSGm/blob/main/AdvectionProblem/AdvectMarker2D.m)
