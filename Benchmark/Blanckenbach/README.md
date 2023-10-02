@@ -87,9 +87,8 @@ Assuming that we want to use *n* grid points within the upper thermal boundary l
 
 $nz = (n-1)\sqrt[3]{\frac{Ra}{4}}+1$, &emsp; &emsp; &emsp; (3)
 
-... *resulution test* ... (Figure 5) ...
-
-**Figure 3.** Resolution test for high Rayleigh number calculations. 
+![ResTest_eta_constRa1e6](https://github.com/LukasFuchs/FDCSGm/assets/25866942/29b92c83-ddb2-498b-a0fb-c3ca3da6f24a)<br>
+**Figure 5.** Resolution test for high Rayleigh number calculations. Needs some further exploration, why the rms is not propergating towards the benchmark value!
 
 --------------------------------------------------------------
 
