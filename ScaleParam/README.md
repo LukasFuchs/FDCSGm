@@ -1,6 +1,5 @@
 # General Information
 
-## Scaling
 &emsp;To better compare different kinds of thermal convection, one can scale the governing equations. The equation can be scaled by the following reference parameters: 
 
 $h_{sc} = h$,&emsp;&emsp;&emsp;(1)
