@@ -21,7 +21,7 @@ else
 end
 % ======================================================================= %
 %% Some initial definitions --------------------------------------------- %
-Pl.savefig      =   'no';
+Pl.savefig      =   'yes';
 Pl.plotfields   =   'yes';
 Py.scale        =   'yes';
 % ======================================================================= %
@@ -64,7 +64,7 @@ Py.kappa    =   Py.k/Py.rho0/Py.cp; % 	Thermische Diffusivitaet [ m^2/s ]
 Py.Q0       =   0;              % Waermeproduktionsrate pro Volumen [W/m^3]
 Py.Q0       =   Py.Q0/Py.rho0;  % Waermeproduktionsrate pro Masse [W/kg]
 
-Py.eta0     =   1e23;           %   Viskositaet [ Pa*s ]
+Py.eta0     =   1e21;           %   Viskositaet [ Pa*s ]
 
 Py.DeltaT   =   1000;           % Temperaturdifferenz
 
@@ -112,8 +112,8 @@ else
     Py.eta0 =   Py.rho0*Py.g*Py.alpha*Py.DeltaT*(-M.H*1e3)^3/Py.Ra/Py.kappa;
 end
 % ======================================================================= %
-n           =   2; %[2,3,4,5,6,7,8,9];
-% n           = 2;
+n           =   [2,3,4,5];
+% n           =   2;
 nz          =   ceil((n-1).*(Py.Ra/4)^(1/3)+1);
 Nus         =   zeros(length(n),1);
 VRMS        =   zeros(length(n),1);
@@ -254,6 +254,14 @@ for i = 1:length(n)
     switch Pl.savefig
         case 'yes'
             saveas(figure(2),[M.ModDir,'/TimeSeries'],'png')
+            save([M.ModDir,'/B.mat'],'B','-mat')
+            save([M.ModDir,'/D.mat'],'D','-mat')
+            save([M.ModDir,'/M.mat'],'M','-mat')
+            save([M.ModDir,'/N.mat'],'N','-mat')
+            save([M.ModDir,'/Pl.mat'],'Pl','-mat')
+            save([M.ModDir,'/Py.mat'],'Py','-mat')
+            save([M.ModDir,'/S.mat'],'S','-mat')
+            save([M.ModDir,'/T.mat'],'T','-mat')
     end
     % =================================================================== %
     T.tend      =   toc(T.tstart);

@@ -5,7 +5,7 @@ answer      = 'no';
 switch lower(Py.scale)
     case 'yes'
         T.tind  =   find(T.time(1:it) >= (T.time(it)-0.02),1,'first');
-        epsC    =   1e-4;
+        epsC    =   1e-1;
     case 'no'
         tspan   =   50;  % [ Ma ]
         tspan   =   tspan*1e6*(60*60*24*365.25);    % [ s ]

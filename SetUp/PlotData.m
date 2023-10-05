@@ -2,7 +2,7 @@ function Pl = PlotData(it,Pl,T,D,M,ID,Py)
 Pl.time     =   ...
     ['@ Iteration: ',sprintf('%i',it),...
     '; Time: ',sprintf('%2.2e',T.time(it))];
-if (mod(it,10)==0||it==1)
+if (mod(it,200)==0||it==1)
     switch Pl.plotfields
         case 'yes'
             figure(1)
