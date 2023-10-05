@@ -43,6 +43,13 @@ Equations (8) and (9) enable us to solve for the three unknowns *v<sub>x</sub>*,
 
 &emsp;The conservation equations of *momentum* and *mass* are solved properly in two dimensions (*x* and *z*, *z* pointing downwards in negative direction) using a staggered finite difference grid, based on the description by *Gerya* (2009), where the viscosity and the density are defined on the regular grid points, the horizontal and vertical velocity in between the regular grid points, and the pressure within a finite difference cell. A staggered grid enables the conservation of the stress between adjacent grid points and one can solve equations (8) and (9) for the unknows. For more details on the discretization and the solving equations see *Gerya* (2009). 
 
+### Equation of State
+&emsp;The buoyance term on the right-hand side of equation (7), that is the density term which is temperature dependent (and pressure, but I do neglect this effect here so far), can be approximated with the so-called *equation of state* for the density. Here, its is a linear approximation of the change of density due to temperature variations and can be defined as:
+
+$\rho = \rho_0 (1-\alpha T)$,&emsp;&emsp;&emsp;(31)
+
+where *ρ<sub>0</sub>* is the reference density and *α* the thermal expansion coefficient [1/K]. 
+
 ## Internal Structure
 
 ### Coefficients Assembly
