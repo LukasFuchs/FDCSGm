@@ -17,7 +17,7 @@ Pl.savefig      =   'no';
 Pl.plotfields   =   'yes';
 % ======================================================================= %
 %% ============ Define method to solve the energy equation ============== %
-B.AdvMethod     =   'tracers';
+B.AdvMethod     =   'semi-lag';
 B.Aparam        =   'temp';
 % ======================================================================= %
 %% ==================== Define viscosity conditions ===================== %
@@ -39,8 +39,8 @@ M.H             =   -1;             % [ km ]
 M.xmax          =   1;              % Aspect ratio
 % ======================================================================= %
 %% ====================== Define the numerical grid ===================== %
-N.nx            =   101;
-N.nz            =   101;
+N.nx            =   51;
+N.nz            =   51;
 % ======================================================================= %
 %% ====================== Define time constants ========================= %
 T.tmaxini       =   6.2869e-1;      % [ Ma ]
@@ -65,7 +65,7 @@ D                       =   rmfield(D,{'Q','rho','P','Nus','eta'});
 T.dt      =     T.dtfac*min(N.dx,abs(N.dz))/...
     (sqrt(max(max(D.vx))^2 + max(max(D.vz))^2));
 %% ========================= Plot parameter ============================= %
-Pl.inc      =   min(N.nz/10,N.nx/10);
+Pl.inc      =   min(N.nz/51,N.nx/51);
 Pl.inc      =   round(Pl.inc);
 Pl.xlab     =   '\bfx [ km ]';
 Pl.zlab     =   '\bfz [ km ]';
