@@ -6,72 +6,7 @@
    
 &emsp;The [*MasterFile.m*](https://github.com/LukasFuchs/FDCSGm/blob/main/MasterFile.m) in the main directory (*FDCSGm/*) contains a list and description of all constants, parameters, and variables, as well as a general structure of the code to solve the equations. Some variables can be removed if not needed, otherwise they need to be defined as *‘none’*. Within the code there are multiple [benchmarks](https://github.com/LukasFuchs/FDCSGm/tree/main/Benchmark) included to test the accuracy and different discretization methods for the energy, advection, and stokes equations. The thermal convection code is based on the routines used in those benchmarks. 
 
-# Energy equation
-&emsp;The conservation of energy is a fundamental principle in physics and defines that the loss and generation of energy needs to be equal within a closed system. In terms of a geodynamical problem, energy can be described by the temperature, which is transported mainly through *conductive* and *convective* processes, such that a general energy equation is defined as followed (assuming only radioactive heat sources):
-
-$(\frac{\partial E}{\partial t} + \overrightarrow{v} \cdot \nabla E) + \frac{\partial q_{i}}{\partial x_{i}} = \rho H$,&emsp;&emsp;&emsp;(1)
-
-where the energy is described as $E=c_{p} \rho T$, and *c<sub>p</sub>* is the specific heat capacity [J/kg/K], *ρ* is a reference density [kg/m<sup>3</sup>], *T* is the temperature [K], *t* is the time [s], $\overrightarrow{v}$ is the velocity vector [m/s], *q<sub>i</sub>* is the heat flux in direction of *i*  [W/m<sup>2</sup>], *∂/∂xi* is a directional derivative in direction of *i*, and *H* the heat production rate per mass [W/kg]. The repeated index means a summation of derivatives. This conservation law contains the variation of the heat flux in a certain direction, where the heat flux is defined by the Fourier’s law as followed: 
-
-$\overrightarrow{q} = - k \nabla T$,&emsp;&emsp;&emsp;(2)
-
-where *k* is the thermal conductivity [W/m/K]. The heat flux is the amount of heat that passes through a unit surface area, per unit time and is positive in the direction of decreasing temperature, that is in the case when the temperature gradient is negative. The *temperature conservation equation* in an Eulerian form can then be written as: 
-
-$\rho c_p (\frac{\partial T}{\partial t} + \overrightarrow{v} \cdot \nabla T) = -\frac{\partial q_i}{\partial x_i} + \rho H$,&emsp;&emsp;&emsp;(3) 
- 
-&emsp;This form of the temperature equation describes the variation of temperature due to a *conductive* (right hand side of the equation) and *convective* (left hand side of the equation) process. For a matter of simplicity, one can consider those terms in a separate manner  to solve the energy equation. Thus, I first focus on the conductive part of equation (3) and the equation simplifies (in 2-D) to (neglecting the convective term):
-
-$\rho c_p \frac{\partial T}{\partial t} = -\frac{\partial q_x}{\partial x} -\frac{\partial q_z}{\partial z} + \rho H$,&emsp;&emsp;&emsp;(4)
-
-or including Fourier’s law (assuming variable thermal parameters):
-
-$\rho c_p \frac{\partial T}{\partial t} = \frac{\partial}{\partial x} k \frac{\partial T}{\partial x} + \frac{\partial}{\partial z} k \frac{\partial T}{\partial z} + \rho H$.&emsp;&emsp;&emsp;(5) 
-
-Assuming that the thermal parameters are constant, equation (5) simplifies to: 
-
-$\frac{\partial T}{\partial t} = \kappa (\frac{\partial^2 T}{\partial x^2} + \frac{\partial^2 T}{\partial z^2}) + \frac{Q}{\rho c_p}$,&emsp;&emsp;&emsp;(6)
-  
-where κ is the thermal diffusivity [m<sup>2</sup>/s] and $Q=\rho H$ is the heat production rate per volume [W/m<sup>3</sup>]. Equation (6) is a *parabolic partial differential equation* which can be solve numerically in different manners, assuming initial and boundary conditions are defined. 
-
-&emsp;Here I would like to discuss a simple, but effective, finite difference method to discretize and solve the equation, that is the forward in time and centered in space (FTCS) method in an explicit manner. This numerical scheme will converge to the exact solution for small $\Delta x$ and $\Delta t$. The advantage of an explicit description is that it is simple to derive and rather fast computationally, however, it is only numerically stable as long as the *heat diffusive stability criterion* is fulfilled. The stability criterion can be determined by a *Von Neumann* stability analysis, which analysis the growth of an eigenmode perturbation for a certain finite difference approach. In case of an explicit 2-D finite difference approach, the heat diffusive stability criterion is defined as $\Delta t < \frac{\Delta x^2}{3 \kappa}$ (assuming equal grid spacing in *x*- and *z*-direction), that is the time step is limited by the model’s resolution. Within the code different discretization methods can be chosen to solve the diffusive part of the temperature conservation equation (i.e., *explicit*, *implicit*, *CNA*, *ADI*). In the following, I would like to focus on the **explicit** method as an example of how to discretize the equation. For the other discretization methods check the [*DiffusionProblem*](https://github.com/LukasFuchs/FDCSGm/tree/main/DiffusionProblem) directory. 
-
-&emsp;Using a general finite difference discretization method to approximate the partial derivatives from equation (6), the temperature equation can be written as:
-
-$\frac{T_{i,j}^{n+1} - T_{i,j}^{n} }{\Delta t} = \kappa (\frac{T_{i,j+1}^{n} - 2T_{i,j}^{n} + T_{i,j-1}^{n}}{(\Delta x)^2} + \frac{T_{i+1,j}^{n} - 2T_{i,j}^{n} + T_{i-1,j}^{n}}{(\Delta z)^2}) + \frac{Q_{i,j}^n}{\rho c_p}$&emsp;&emsp;&emsp;(7)
-
-where *i* and *j* are the vertical and horizontal indices of the numerical finite difference grid, *n* is the time step index, Δ*t* is the time step, and Δ*x* and Δ*z* are the widths of the grid in horizontal and vertical direction. This equation contains know and unknow parameters and one can rearrange them to solve the equation for the unknowns as:
-
-$T_{i,j}^{n+1} = T_{i,j}^{n} + s_x(T_{i,j+1}^{n} - 2T_{i,j}^{n} + T_{i,j-1}^{n}) + s_z(T_{i+1,j}^{n} - 2T_{i,j}^{n} + T_{i-1,j}^{n}) + \frac{Q_{i,j}^n \Delta t}{\rho c_p}$,&emsp;&emsp;&emsp;(8)
-
-where $s_x = \frac{\kappa \Delta t}{(\Delta x)^2}$ and $s_z = \frac{\kappa \Delta t}{(\Delta z)^2}$. Equation (8) can be solved *iteratively* for every inner grid point assuming an initial condition is defined (multiple initial conditions can be set in the code, check [*SetUpInitialConditions.m*](https://github.com/LukasFuchs/FDCSGm/blob/main/SetUp/SetUpInitialConditions.m)). 
-
-&emsp;Different thermal conditions can be set for the boundaries of our model domain. Here, I focus on two fundamental conditions, the *Dirichlet* and *Neumann* boundary conditions. The Dirichlet boundary condition defines a constant temperature along the boundary, such that the temperature, for example, along the *left* boundary can be defined as:
-
-$T_{i,j=1} = T_{left}$, for all i. &emsp;&emsp;&emsp;(9)
-
-&emsp;The same applies to all other boundaries (*right*, *top*, and *bottom*). 
-
-&emsp;The Neumann boundary condition defines that the variation of a certain parameter does not change across the boundary, that is, for example, the temperature across the boundary or thermal heat flux *q* through the boundary. A sophisticated method to describe the heat flux across the boundary using finite differences is assuming the existence of so-called ghost nodes, or fictitious nodes, outside of the model domain, that are nodes one can use to describe the flux across a boundary, but do not actually exist. Therefore, one first needs to define the variation of temperature across the boundary (e.g., the *left*, for *j* = 1 and *i* = 2,*nz*-1) as:
-
- $\frac{\partial T}{\partial x}|_{i,1} = c_{left}$,&emsp;&emsp;&emsp;(10)
-
-or using finite differences: 
-
-$\frac{T_{i,2} - T_{i,0}}{2 \Delta x} = c_{left}$,&emsp;&emsp;&emsp;(11)
- 
-where *c<sub>left</sub>* is a constant defining the flux across the boundary and *T<sub>i,0</sub>* are the ghost nodes outside the left boundary. Now, one can solve for an expression of the temperature at the ghost nodes which fulfils the condition of equation (10) as:
-
-$T_{i,0} + T_{i,2} - 2 \Delta x c_l$.&emsp;&emsp;&emsp;(12)
-
-&emsp;Assuming equation (8) is also valid along the left boundary nodes and using the condition for the ghost nodes outside the numerical domain, that is one assumes Neumann boundary conditions, one can rewrite equation (8) for the left boundary nodes as followed:
-
-$T_{i,1}^{n+1} = T_{i,1}^{n} + s_x(2T_{i,2}^{n} - 2(T_{i,1}^{n} + \Delta x c_l)) + s_z(T_{i+1,1}^{n} - 2T_{i,1}^{n} + T_{i-1,1}^{n}) + \frac{Q_{i,1}^n \Delta t}{\rho c_p}$,&emsp;&emsp;&emsp;(13)
- 
-The same applies for the other boundaries. Caution needs to be taken at the corners of the model. 
-
-&emsp;The routines for the explicit, implicit, and ADI discretization methods are available in a **dimensional** and **non-dimensional** form in the [*DiffusionProblem*](https://github.com/LukasFuchs/FDCSGm/tree/main/DiffusionProblem) directory. For more details on the scaling of the parameters see the scaling [section below](https://github.com/LukasFuchs/FDCSGm/blob/main/README.md#scaling-and-equation-of-state) and [*/FDCSGm/ScaleParam*](https://github.com/LukasFuchs/FDCSGm/tree/main/ScaleParam). 
-
-&emsp;Besides the routines to solve the diffusive part of the 2-D temperature conservation equation using different discretization methods, there are additional routines available within the code. There are two routines to calculate 1-D temperature profiles for a [oceanic](https://github.com/LukasFuchs/FDCSGm/blob/main/DiffusionProblem/OceanicGeotherm_1D.m) and [continental](https://github.com/LukasFuchs/FDCSGm/blob/main/DiffusionProblem/ContinentalGeotherm_1D.m) lithosphere based on an 1-D implicit solver for constant and variable thermal parameters. A 2-D Poisson solver for a [constant](https://github.com/LukasFuchs/FDCSGm/blob/main/DiffusionProblem/SolvePoisson2D.m) and [variable](https://github.com/LukasFuchs/FDCSGm/blob/main/DiffusionProblem/SolvePoisson2Dvaryk.m) *k* is available, to solve the steady-state diffusive equation (i.e. $\frac{\partial T}{\partial t} = 0$). For more details, also on the different discretization schemes, see [*/FDCSGm/DiffusionProblem/*](https://github.com/LukasFuchs/FDCSGm/tree/main/DiffusionProblem).
+-----------------
 
 # Stokes equation 
 &emsp;On geological time scales, Earth’s mantle and lithosphere do behave like a fluid and move and deform. A fluid does generally move due to forces acting on it whereas the forces must be in balance. In general, there are three major forces one might consider, i.e., *inertia*, *surface*, and *volumetric* forces. A common equation to describes such motion is given by: 
