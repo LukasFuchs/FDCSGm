@@ -1,11 +1,11 @@
 # General Information
 
-&emsp;This directory contains several rountines to solve the diffusive part of the *temperature conservation equation* (1- and 2-D, steady state and time-dependent) using different numerical discretization methods. The routines are avaible in a dimensional or non-dimensional form (files ending with *Sc.m; see [*FDCSGm/ScaleParam*](https://github.com/LukasFuchs/FDCSGm/tree/main/ScaleParam) regarding the scaling; so far the 1-D routines are only availabe for a dimensional version!). 
+&emsp;This directory contains several rountines to solve the diffusive part of the *temperature conservation equation* (1- and 2-D, steady state and time-dependent) using different numerical discretization methods. The routines are avaible in a dimensional or non-dimensional form (files ending with *Sc.m; see [*FDCSGm/ScaleParam*](https://github.com/LukasFuchs/FDCSGm/tree/main/ScaleParam) regarding the scaling; so far the 1-D routines are only availabe in a dimensional version!). 
 
 -------------
 
 ## Energy equation
-&emsp;The conservation of energy is a fundamental principle in physics and defines that the loss and generation of energy needs to be equal within a closed system. In terms of a geodynamical problem, energy can be described by the temperature, which is transported mainly through *conductive* and *convective* processes, such that a general energy equation is defined as followed (assuming only radioactive heat sources):
+&emsp;The conservation of energy is a fundamental principle in physics and defines that the loss and generation of energy needs to be equal. In terms of a geodynamical problem, energy can be described by temperature, which is transported mainly through *conductive* and *convective* processes, such that a general energy equation is defined as followed (assuming only radioactive heat sources):
 
 $(\frac{\partial E}{\partial t} + \overrightarrow{v} \cdot \nabla E) + \frac{\partial q_{i}}{\partial x_{i}} = \rho H$,&emsp;&emsp;&emsp;(1)
 
@@ -29,39 +29,41 @@ Assuming that the thermal parameters are constant, equation (5) simplifies to:
 
 $\frac{\partial T}{\partial t} = \kappa (\frac{\partial^2 T}{\partial x^2} + \frac{\partial^2 T}{\partial z^2}) + \frac{Q}{\rho c_p}$,&emsp;&emsp;&emsp;(6)
   
-where κ is the thermal diffusivity [m<sup>2</sup>/s] and $Q=\rho H$ is the heat production rate per volume [W/m<sup>3</sup>]. Equation (6) is a *parabolic partial differential equation* which can be solve numerically in different manners, assuming initial and boundary conditions are defined. 
+where $\kappa = k/\rho /c_p$ is the thermal diffusivity [m<sup>2</sup>/s] and $Q=\rho H$ is the heat production rate per volume [W/m<sup>3</sup>]. Equation (6) is a *parabolic partial differential equation* which can be solved numerically in different manners, assuming initial and boundary conditions are defined. 
 
-&emsp;Here, I first would like to discuss a simple, but effective, finite difference method to discretize and solve the equation, that is the forward in time and centered in space (FTCS) method in an *explicit* manner. This finite difference scheme will converge to the exact solution for small $\Delta x$ and $\Delta t$. The advantage of an explicit description is that it is **simple** to derive and rather **fast** computationally. However, it is only numerically stable as long as the *heat diffusive stability criterion* is fulfilled. The stability criterion can be determined by a *Von Neumann* stability analysis, which analysis the growth of an eigenmode perturbation for a certain finite difference approach. In case of an **explicit 2-D finite difference approach**, the heat diffusive stability criterion is defined as $\Delta t < \frac{\Delta x^2}{3 \kappa}$ (assuming equal grid spacing in *x*- and *z*-direction), that is the time step is limited by the model’s resolution. 
- 
-&emsp;Using an explicit finite difference scheme, centered in space and forward in time, to approximate the partial derivatives from equation (6), the temperature equation can be written as:
+&emsp;Here, I first would like to discuss a simple, but effective, finite difference method to discretize and solve the equation, that is the forward in time and centered in space (FTCS) method in an *explicit* manner. This finite difference scheme will converge to the exact solution for small $\Delta x$ and $\Delta t$. The advantage of an explicit description is that it is **simple** to derive and rather **fast** computationally. However, it is only numerically stable as long as the *heat diffusive stability criterion* is fulfilled. The stability criterion can be determined by a *Von Neumann* stability analysis, which analyzes the growth of an eigenmode perturbation for a certain finite difference approach. In case of an **explicit 2-D finite difference approach**, the heat diffusive stability criterion is defined as $\Delta t < \frac{\Delta x^2}{3 \kappa}$ (assuming equal grid spacing in *x*- and *z*-direction), that is the time step is limited by the model’s resolution. 
+
+### Explicit, FTCS
+
+&emsp;Using an FTCS, explicit finite difference scheme to approximate the partial derivatives from equation (6), the temperature equation can be written as:
 
 $\frac{T_{i,j}^{n+1} - T_{i,j}^{n} }{\Delta t} = \kappa (\frac{T_{i,j+1}^{n} - 2T_{i,j}^{n} + T_{i,j-1}^{n}}{(\Delta x)^2} + \frac{T_{i+1,j}^{n} - 2T_{i,j}^{n} + T_{i-1,j}^{n}}{(\Delta z)^2}) + \frac{Q_{i,j}^n}{\rho c_p}$&emsp;&emsp;&emsp;(7)
 
-where *i* and *j* are the vertical and horizontal indices of the numerical finite difference grid, *n* is the time step index, Δ*t* is the time step, and Δ*x* and Δ*z* are the widths of the grid in horizontal and vertical direction. This equation contains know and unknow parameters and one can rearrange them to solve the equation for the unknowns as:
+where *i* and *j* are the vertical and horizontal indices of the numerical finite difference grid, *n* is the time step index, Δ*t* is the time step, and Δ*x* and Δ*z* are the widths of the grid in horizontal and vertical direction, respectively. This equation contains know and unknow parameters and one can rearrange them to solve the equation for the unknowns as:
 
 $T_{i,j}^{n+1} = T_{i,j}^{n} + s_x(T_{i,j+1}^{n} - 2T_{i,j}^{n} + T_{i,j-1}^{n}) + s_z(T_{i+1,j}^{n} - 2T_{i,j}^{n} + T_{i-1,j}^{n}) + \frac{Q_{i,j}^n \Delta t}{\rho c_p}$,&emsp;&emsp;&emsp;(8)
 
-where $s_x = \frac{\kappa \Delta t}{(\Delta x)^2}$ and $s_z = \frac{\kappa \Delta t}{(\Delta z)^2}$. Equation (8) can be solved *iteratively* for every inner grid point assuming an initial condition is defined (multiple initial conditions can be set in the code, check [*SetUpInitialConditions.m*](https://github.com/LukasFuchs/FDCSGm/blob/main/SetUp/SetUpInitialConditions.m)). 
+where $s_x = \frac{\kappa \Delta t}{(\Delta x)^2}$ and $s_z = \frac{\kappa \Delta t}{(\Delta z)^2}$. Equation (8) can be solved *iteratively* for every inner grid point assuming an initial condition is defined (multiple initial conditions can be set in the code, check [*SetUpInitialConditions.m*](https://github.com/LukasFuchs/FDCSGm/blob/main/SetUp/SetUpInitialConditions.m)). For more details on how this is implemented in MATLAB see [*SolveDiff2Dimplicit.m*](https://github.com/LukasFuchs/FDCSGm/blob/main/DiffusionProblem/SolveDiff2Dexplicit.m).
 
-&emsp;Different thermal conditions can be set for the boundaries of our model domain. Here, I focus on two fundamental conditions, the *Dirichlet* and *Neumann* boundary conditions. The Dirichlet boundary condition defines a constant temperature along the boundary, such that the temperature, for example, along the *left* boundary can be defined as:
+&emsp;For the boundaries of our model domain, different thermal conditions can be set. Here, I focus on two fundamental conditions, the *Dirichlet* and *Neumann* boundary conditions. The Dirichlet boundary condition defines a constant temperature along the boundary, such that the temperature, for example, along the *left* boundary can be defined as:
 
 $T_{i,j=1} = T_{left}$, for all i. &emsp;&emsp;&emsp;(9)
 
-&emsp;The same applies to all other boundaries (*right*, *top*, and *bottom*). 
+The same applies to all other boundaries (*right*, *top*, and *bottom*). 
 
 &emsp;The Neumann boundary condition defines that the variation of a certain parameter does not change across the boundary, that is, for example, the temperature across the boundary or thermal heat flux *q* through the boundary. A sophisticated method to describe the heat flux across the boundary using finite differences is assuming the existence of so-called ghost nodes, or fictitious nodes, outside of the model domain, that are nodes one can use to describe the flux across a boundary, but do not actually exist. Therefore, one first needs to define the variation of temperature across the boundary (e.g., the *left*, for *j* = 1 and *i* = 2,*nz*-1) as:
 
- $\frac{\partial T}{\partial x}|_{i,1} = c_{left}$,&emsp;&emsp;&emsp;(10)
+ $\frac{\partial T}{\partial x}\vert_{i,1} = c_{left}$,&emsp;&emsp;&emsp;(10)
 
 or using finite differences: 
 
 $\frac{T_{i,2} - T_{i,0}}{2 \Delta x} = c_{left}$,&emsp;&emsp;&emsp;(11)
  
-where *c<sub>left</sub>* is a constant defining the flux across the boundary and *T<sub>i,0</sub>* are the ghost nodes outside the left boundary. Now, one can solve for an expression of the temperature at the ghost nodes which fulfils the condition of equation (10) as:
+where *c<sub>left</sub>* is a constant defining the flux through the boundary and *T<sub>i,0</sub>* are the ghost nodes outside the left boundary. Now, one can solve for an expression of the temperature at the ghost nodes which fulfils the condition of equation (10) as:
 
-$T_{i,0} + T_{i,2} - 2 \Delta x c_l$.&emsp;&emsp;&emsp;(12)
+$T_{i,0} = T_{i,2} - 2 \Delta x c_l$.&emsp;&emsp;&emsp;(12)
 
-&emsp;Considering that equation (8) is also valid along the left boundary nodes and using the condition for the ghost nodes outside the numerical domain, that is one assumes Neumann boundary conditions, one can rewrite equation (8) for the left boundary nodes as followed:
+&emsp;Considering that equation (8) is also valid along the left boundary nodes assuming Neuman conditions, one can rewrite equation (8) for the left boundary nodes using the condition for the ghost nodes outside the numerical domain (equation (12)) as followed:
 
 $T_{i,1}^{n+1} = T_{i,1}^{n} + s_x(2T_{i,2}^{n} - 2(T_{i,1}^{n} + \Delta x c_l)) + s_z(T_{i+1,1}^{n} - 2T_{i,1}^{n} + T_{i-1,1}^{n}) + \frac{Q_{i,1}^n \Delta t}{\rho c_p}$,&emsp;&emsp;&emsp;(13)
  
@@ -69,9 +71,9 @@ The same applies for the other boundaries. Caution needs to be taken at the corn
 
 ## Discretization Methods
 
-&emsp; Within the code different discretization methods can be chosen to solve the diffusive part of the temperature conservation equation (i.e., *explicit*, *implicit*, *CNA*, *ADI*). While the explicit scheme seems to be the most accurate finite difference scheme for the time-dependent diffusion equation I implemented (see [Gaussian Diffusion Benchmark](https://github.com/LukasFuchs/FDCSGm/tree/main/Benchmark/GaussDiffusion)), the dependency of the time stepping on the grid resolution might become problematic in models with a high resolution and could significantly slow down the model calculations (that is, smaller time steps are necessary for higher resolutions!). In the following I will present some well-know alternative discretization methods for the diffusive part of the temperature equation, which can help to resolve this issue, and briefly discuss their advantages and disadvantages. All discretization methods can be used in the [thermal convection code](https://github.com/LukasFuchs/FDCSGm/tree/main/MixedHeatedSystems) and the [Blankenbach Benchmark](https://github.com/LukasFuchs/FDCSGm/tree/main/Benchmark/Blanckenbach) and are generally available to pick in the code **FDCSGm**. A more detailed analysis on the accuracy of each discretization scheme and the effect of the grid resolution is given in the [Gaussian Diffusion Benchmark](https://github.com/LukasFuchs/FDCSGm/tree/main/Benchmark/GaussDiffusion). 
+&emsp; Within the code different discretization methods can be chosen to solve the diffusive part of the temperature conservation equation (i.e., *explicit*, *implicit*, *CNA*, *ADI*). While the explicit scheme seems to be the most accurate finite difference scheme for the time-dependent diffusion equation I implemented (see [Gaussian Diffusion Benchmark](https://github.com/LukasFuchs/FDCSGm/tree/main/Benchmark/GaussDiffusion)), the dependency of the time stepping on the grid resolution might become problematic in models with a high resolution and could significantly slow down the model calculations (that is, smaller time steps are necessary for higher resolutions!). In the following, I will present some well-know alternative discretization methods for the diffusive part of the temperature equation, which can help to resolve this issue, and briefly discuss their advantages and disadvantages. All discretization methods can be used in the [thermal convection code](https://github.com/LukasFuchs/FDCSGm/tree/main/MixedHeatedSystems) and the [Blankenbach Benchmark](https://github.com/LukasFuchs/FDCSGm/tree/main/Benchmark/Blanckenbach) and are generally available to chose in the code **FDCSGm**. A more detailed analysis on the accuracy of each discretization scheme and the effect of the grid resolution is given in the [Gaussian Diffusion Benchmark](https://github.com/LukasFuchs/FDCSGm/tree/main/Benchmark/GaussDiffusion). 
 
-### Implicit FTCS
+### Implicit, FTCS
 
 &emsp;The fully implicit finite difference scheme is unconditionally stable and one can use time steps larger than the diffusion time criterion. In 2-D, the diffusion equation is then given as: 
 
@@ -99,6 +101,8 @@ where *c<sub>left</sub>* needs to fulfil the following condition at the left bou
 
 $\frac{\partial T}{\partial x} = c_{left} = \frac{T_{i,2}-T_{i,0}}{2\Delta x}$. &emsp;&emsp;&emsp; (19) 
 
+The same applies for the remaining boundaries. 
+
 ### Cranck-Nicolson approach (CNA)
 
 &emsp;The fully implicit method works well, but is only first order accurate in time. A way to modify this is to employ a Crank-Nicolson time step discretization, which is implicit and thus second order accurate in time. In 2-D, equation (6) is then discritized as: 
@@ -120,7 +124,7 @@ For more details on how this is implemented in MATLAB, see [*SolveDiff2DADI.m*](
 
 ------------------------------------------------------------------------------------------------------------------------------------
 
-&emsp;The routines for the *explicit*, *implicit*, and *ADI* discretization methods are available in a **dimensional** and **non-dimensional** form. For more details on the scaling of the parameters see the scaling [section below](https://github.com/LukasFuchs/FDCSGm/blob/main/README.md#scaling-and-equation-of-state) and [*/FDCSGm/ScaleParam*](https://github.com/LukasFuchs/FDCSGm/tree/main/ScaleParam). 
+&emsp;The routines for the *explicit*, *implicit*, and *ADI* discretization methods are available in a **dimensional** and **non-dimensional** form. For more details on the scaling of the parameters see [*/FDCSGm/ScaleParam*](https://github.com/LukasFuchs/FDCSGm/tree/main/ScaleParam). 
 
 ## Steady State Solution
 
@@ -146,11 +150,11 @@ where $s_x = \frac{1}{\Delta x^2}$ and $s_z = \frac{1}{\Delta z^2}$. For more de
 
 $s_zT_{i-1,j}-2(s_x+s_z)T_{i,j}+2s_xT_{i,j+1}+s_zT_{i+1,j} = -\frac{Q}{k}+\frac{2c_{left}}{\Delta x}$.&emsp;&emsp;&emsp; (26)
 
-&emsp;Here, one again uses imaginary points outside of the model domain to define the flux boundary conditions (for more details see the [introduction](https://github.com/LukasFuchs/FDCSGm/tree/main#energy-equation)). The same applies for the remaining boundaries. 
+&emsp;Here, one again uses imaginary points outside of the model domain to define the flux boundary conditions. The same applies for the remaining boundaries. 
 
 ### Poisson solution, variable *k*
 
-&emsp; For variable thermal parameters the diffusive temperature equation is given by (in 2-D): 
+&emsp; For variable thermal parameters the steady-state temperature equation is given by (in 2-D): 
 
 $0=\frac{\partial}{\partial x}(k\frac{\partial T}{\partial x})+\frac{\partial}{\partial z}(k\frac{\partial T}{\partial z})+Q$.&emsp;&emsp;&emsp; (27)
 
