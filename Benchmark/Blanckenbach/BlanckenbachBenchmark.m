@@ -22,7 +22,7 @@ end
 % ======================================================================= %
 T.tstart        =   tic;
 %% ===================== Some initial definitions ======================= %
-Pl.savefig      =   'yes';
+Pl.savefig      =   'no';
 Pl.plotfields   =   'yes';
 Py.scale        =   'yes';
 % ======================================================================= %
@@ -32,13 +32,15 @@ B.Aparam        =   'temp';
 B.DiffMethod    =   'explicit';
 % ======================================================================= %
 %% ==================== Define viscosity conditions ===================== %
-Py.eparam       =   'variable';
+Py.eparam       =   'const';
 Py.b            =   log(1000);  % log(16384);     % Temperaturabhaengigkeit
 Py.c            =   0;      % log(64);            % Tiefenabhaengigkeit
 B.EtaIni        =   'tdep';
 % ======================================================================= %
 %% ================== Define initial temperature anomaly ================ %
 B.Tini          =   'block';
+B.T0            =   1000;       %   Background temperature [ K ]
+B.TAmpl         =   20;         %   Temperature pertubation [ K ]
 Py.tparam       =   'const';
 % ======================================================================= %
 %% ========================= Define flow field ========================== %
@@ -50,8 +52,8 @@ M.H         =   -1000;          %   Modeltiefe [ in km ]
 M.xmax      =   1;              %   Seitenverhaeltniss
 % ======================================================================= %
 %% ====================== Define the numerical grid ===================== %
-N.nz        =   101;             %   Vertikale Gitteraufloesung
-N.nx        =   101;             %   Horizontale Gitteraufloesung
+N.nz        =   21;             %   Vertikale Gitteraufloesung
+N.nx        =   21;             %   Horizontale Gitteraufloesung
 % ======================================================================= %
 %% ====================== Define physical constants ===================== %
 Py.g        =   10;                 %   Schwerebeschleunigung [m/s^2]
@@ -210,7 +212,7 @@ for it = 1:T.itmax
     Pl              =   PlotData(it,Pl,T,D,M,ID,Py);
     % =================================================================== %
     %% ========================== Advection ============================= %
-    [D,Ma,ID]       =   Advection(it,B,D,ID,Py,T.dt,M,Ma);
+    [D,Ma,ID]       =   Advection(it,N,B,D,ID,Py,T.dt,M,Ma);
     % =================================================================== %
     %% ========================== Diffusion ============================= %
     D.T             =   Diffusion(B,D.T,D.Q,D.rho,Py,T.dt,N);
@@ -265,7 +267,6 @@ else
     rmpath('../../ScaleParam')
 end
 % ======================================================================= %
-
 % ======================================================================= %
 % =============================== END =================================== %
 % ======================================================================= %

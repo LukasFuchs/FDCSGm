@@ -3,13 +3,11 @@ clc
 % profile on
 %% ======================== Add required paths ========================== %
 if strcmp(getenv('OS'),'Windows_NT')
-%     addpath('..\..\DiffusionProblem')
     addpath('..\..\AdvectionProblem')
     addpath('..\..\StokesProblem')
     addpath('..\..\SetUp')
     addpath('..\..\ScaleParam')
 else
-%     addpath('../../DiffusionProblem')
     addpath('../../AdvectionProblem')
     addpath('../../StokesProblem')
     addpath('../../SetUp')
@@ -25,7 +23,6 @@ Py.scale        =   'no';
 %% ============ Define method to solve the energy equation ============== %
 B.AdvMethod     =   'tracers';
 B.Aparam        =   'comp';
-% B.DiffMethod    =   'none';
 % ======================================================================= %
 %% ==================== Define viscosity conditions ===================== %
 Py.eparam       =   'variable';
@@ -33,12 +30,7 @@ B.EtaIni        =   'RTI';
 B.lambda        =   0.5; 		% Wellenlaenge der Perturbation [ km ]
 B.deltaA        =   100;        % Amplitude [ km ]
 % ======================================================================= %
-%% ================== Define initial temperature anomaly ================ %
-% B.Tini          =   'none';
-% Py.tparam       =   'none';
-% ======================================================================= %
 %% ========================= Define flow field ========================== %
-% B.IniFlow       =   'none';
 B.FlowFac       =   10;
 % ======================================================================= %
 %% ==================== Define model geometry constants ================= %
@@ -211,7 +203,7 @@ for it = 1:T.itmax
     end
     % =================================================================== %
     %% ========================== Advection ============================= %
-    [D,Ma,ID]       =   Advection(it,B,D,ID,Py,T.dt,M,Ma);
+    [D,Ma,ID]       =   Advection(it,N,B,D,ID,Py,T.dt,M,Ma);
     % =================================================================== %
 end
 %% ======================== Save final figure =========================== %
@@ -266,7 +258,6 @@ else
     rmpath('../../ScaleParam')
 end
 % ======================================================================= %
-
 % ======================================================================= %
 % =============================== END =================================== %
 % ======================================================================= %

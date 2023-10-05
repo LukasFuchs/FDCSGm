@@ -32,6 +32,8 @@ B.EtaIni        =   'ellipse';
 B.RotAng        =   0;             % positive -> counter clockwise
 B.EllA          =   2e2; % 1.75e3; [m]
 B.EllB          =   2e2; % 0.25e3; [m]
+B.T0            =   1000; 
+B.TAmpl         =   1000; 
 % ======================================================================= %
 %% ================== Define initial temperature anomaly ================ %
 B.Tini          =   'const';
@@ -68,6 +70,7 @@ Py.Q0       =   Py.Q0/Py.rho0;  % Waermeproduktionsrate pro Masse [W/kg]
 
 Py.eta0     =   1e23;           % Viskositaet [ Pa*s ]
 Py.eta1     =   1e21;           % Inclusion viscosity
+Py.rho1     =   Py.rho0;        % Includion density
 
 Py.DeltaT   =   1000;           % Temperaturdifferenz
 % ======================================================================= %

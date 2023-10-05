@@ -40,10 +40,10 @@ Py.scale        =   'no';
 B.AdvMethod     =   'semi-lag';
 
 % Define which property should be advected:                               %
-%   'none' 								  %
-%   'rho' 								  %
+%   'none'                                                                %
+%   'rho'                                                                 %
 %   'comp'                                                                %
-%   'temp' 								  %
+%   'temp'                                                                %
 B.Aparam        =   'comp';
 
 % Choose T-diffusion method:                                              %
@@ -91,14 +91,22 @@ B.lambda        =   0.5;
 B.deltaA        =   100;
 % ======================================================================= %
 %% ================== Define initial temperature anomaly ================ %
-%   'none' 								  %
+%   'none'                                                                %
 %   'ellipse'                                                             %
+%   'circle'                                                              %
 %   'gaussian'                                                            %
 %   'block'                                                               %
 %   'const'                                                               %
 %   'linear'                                                              %
 %   'linano'                                                              %
 B.Tini          =   'block';
+
+% If Tini == 'ellipse' -----------------------
+
+% If Tini == 'circle' ------------------------
+T0 
+TAmple
+Tsigma
 
 % If Tini == 'gaussian' ----------------------                            %
 %   Define parameters for the gaussian temperature distribution:          %
@@ -109,6 +117,11 @@ B.Tini          =   'block';
 B.TAmpl         =   10;
 B.Tsigma        =   10;
 B.T0            =   1000;
+
+% If Tini == 'block'
+% If Tini == 'const'
+% If Tini == 'linear'
+% If Tini == 'linearo'
 
 % Define if thermal parameters are 'const' or 'variable' or 'none'        %
 %   'none' 	- No energy equation solution 				  %
@@ -123,6 +136,8 @@ Py.tparam       =   'const';
 %   'PureShear'                                                           %
 %   'SimpleShear'                                                         %
 B.IniFlow       =   'none';
+
+% If IniFlow == 'RigidBody' || 'ShearCell' 
 
 % If B.IniFlow == 'PureShear' || 'SimpleShear'                            %
 %   Define background strain rate ebg [ s^-1 ]; % < 0 compression         %

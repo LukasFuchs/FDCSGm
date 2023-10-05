@@ -64,7 +64,7 @@ if nargin==0
     T.lbound    =   'const';
     T.ltbf      =   -0.0033;        % c     =   -k/q -> 10 mW/m^2
     % Time stability criterion ------------------------------------------ %
-    t.dtfac =   1.0;                % Courant criterion
+    t.dtfac =   0.8;                % Courant criterion
     t.age   =   60;                 % Lithosphere age [ Ma ]
     t.tfac  =   (60*60*24*365.25);  % Seconds per year
     t.age   =   t.age.*1e6*t.tfac;  % Age in seconds
@@ -72,7 +72,7 @@ if nargin==0
     
     %% Plot Initial condition ------------------------------------------- %
     plotparam   =   1;
-    fig = figure;
+    fig = figure;   
     clf
     subplot(1,2,1)
     plot(T.T,M.z./1e3,'LineWidth',2)
@@ -117,7 +117,8 @@ for i = 1:t.nit
     if i > 1
         t.time(i)   =   t.time(i-1) + t.dt;
     end
-    [T]     =   SolveDiff1Dimplicit_vary(N,T,Py,t);
+%     [T]     =   SolveDiff1Dimplicit_vary(N,T,Py,t);
+    [T]     =   SolveDiff1Dexplicit_vary(N,T,Py,t);
 end
 % ======================================================================= %
 
@@ -169,5 +170,5 @@ if plotparam
     set(gca,'FontWeight','Bold','LineWidth',2,'FontSize',15)
 end
 % ======================================================================= %
-
+% keyboard
 end

@@ -9,7 +9,7 @@ clear
 clc
 clf
 
-DDir        =   'data/Ell_a_3_b_1/';
+DDir        =   'data/Ell_a_300_b_100/';
 
 DefType     =   'PureShear';
 

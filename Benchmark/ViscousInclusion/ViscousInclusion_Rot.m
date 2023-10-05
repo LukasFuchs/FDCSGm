@@ -81,6 +81,7 @@ for i = 1:length(rotAngle)
     
     Py.eta0     =   1e23;           % Viskositaet [ Pa*s ]
     Py.eta1     =   eta2;           % Inclusion viscosity
+    Py.rho1     =   Py.rho0;        % Inclusion density
     
     Py.DeltaT   =   1000;           % Temperaturdifferenz
     % ------------------------------------------------------------------- %
@@ -114,6 +115,8 @@ for i = 1:length(rotAngle)
     B.RotAng        =   rotAngle(i);             % positive -> counter clockwise
     B.EllA          =   2e2;            % [ m ]
     B.EllB          =   1e2;
+    B.T0            =   1000; 
+    B.TAmpl         =   1000; 
     % ------------------------------------------------------------------- %
     
     %% ------------------------ Definition der Zeitkonstanten ----------- %

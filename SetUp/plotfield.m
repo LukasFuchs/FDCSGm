@@ -50,7 +50,7 @@ end
 
 xlabel(Pl.xlab)
 ylabel(Pl.zlab)
-title([{titparam},{Pl.time}])
+title([titparam;{Pl.time}])
 colorbar; shading interp, lighting phong
 axis normal; axis equal, axis tight; caxis([fmin fmax])
 axis([min(X(:)) max(X(:)) min(Z(:)) max(Z(:))])

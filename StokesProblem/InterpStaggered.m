@@ -22,7 +22,7 @@ switch lower(param)
         ID.vz(N.nz,ID.indj) = (D.vz(N.nz,ID.indj-1)+D.vz(N.nz,ID.indj))/2;
         ID.vz(:,N.nx)       = D.vz(:,N.nx1) + (D.vz(:,N.nx1) - D.vz(:,(N.nx1-1))) / 2;       
 
-        ID.v            =   sqrt(ID.vx.^2 + ID.vz.^2);
+        ID.v            =   sqrt(ID.vx.^2 + ID.vz.^2);        
 end
 
 end

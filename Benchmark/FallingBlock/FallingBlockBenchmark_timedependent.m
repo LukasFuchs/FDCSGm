@@ -32,8 +32,8 @@ B.IniFlow       =   'none';
 B.FlowFac       =   10;
 % ======================================================================= %
 eta0            =   1e21;
-eta1            =   [1e20 1e21 1e22 1e23 1e25 1e27];
-tmax            =   [8 9.886 15.446 19.623 20.569 20.589];
+eta1            =   [1e20 1e21 1e22 1e23 1e25 1e27]; % [ Pa s ]
+tmax            =   [8 9.886 15.446 19.623 20.569 20.589]; % { Ma ]
 for k = 1:length(eta1)
     %% ==================== Define model geometry constants ============= %
     M.H         =   -500;          %   Depth [ in km ]
@@ -115,13 +115,7 @@ for k = 1:length(eta1)
             set(figure(2),'position',[1.8,1.8,766.4,780.8]);
             h           =   figure(2);
     end
-    % =================================================================== %
-    %% ========================== Scale Parameters ====================== %
-    switch lower(Py.scale)
-        case 'yes'
-            [M,N,D,T,S]     =   ScaleParameters(M,Py,N,D,T);
-    end
-    % =================================================================== %
+    % =================================================================== %    
     %% ================ Information for the command window ============== %
     fprintf([' Falling Block --------------------- ',...
         '\n Advektion mit: %s',...
@@ -218,7 +212,7 @@ for k = 1:length(eta1)
         end
         % =============================================================== %
         %% ========================== Advection ========================= %
-        [D,Ma,ID]       =   Advection(it,B,D,ID,Py,T.dt,M,Ma);
+        [D,Ma,ID]       =   Advection(it,N,B,D,ID,Py,T.dt,M,Ma);
         % =============================================================== %
         %% ========================== Check break ======================= %
         if (T.time(it) >= T.tmax)
@@ -228,12 +222,8 @@ for k = 1:length(eta1)
             T.indtime   = find(T.time(2:end)==0,1,'first');
             figure(3)
             ax1=subplot(3,2,k);
-            pcolor(M.X./1e3,M.Z./1e3,D.rho)
-            shading interp;
-            hold on
             plotfield(Ma.C,Ma.XM./1e3,Ma.ZM./1e3,Pl,'scatter',...
                 '\itTracers\rm\bf')
-            alpha(0.1)
             colormap(ax1,flipud(Pl.lajolla))                        
             break
         end

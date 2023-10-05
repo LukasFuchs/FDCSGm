@@ -46,7 +46,7 @@ if (T.time(it) >= T.tmax)
                 '\itT\rm\bf','quiver',ID.vx,ID.vz)
             colormap(ax1,flipud(Pl.lajolla))
             ax2=subplot(2,1,2);
-            plotfield(D.eta,M.X,M.Z,Pl,'contourf',...
+            plotfield(log10(D.eta),M.X,M.Z,Pl,'contourf',...
                 '\it\eta\rm\bf','quiver',ID.vx,ID.vz)
             colormap(ax2,flipud(Pl.lapaz))
     end

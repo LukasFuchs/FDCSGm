@@ -84,13 +84,13 @@ if nargin==0
     T.T1    =   T.Tpot + T.dTadi.*abs(M.H./1e3);    % Bottom temperature [ K ]
     T.T     =   T.Tpot + abs(M.z/1e3)*T.dTadi;      % Initial T-profile [ K ]
     T.T(1)  =   T.T0;    
-    T.ubound    =   'const';
+    T.ubound    =   'flux';
     T.utbf      =   -0.0133;                % c     =   -k/q -> 50 mW/m^2
-    T.lbound    =   'const';        
+    T.lbound    =   'flux';        
     T.ltbf      =   -0.0043;                % c     =   -k/q -> 10 mW/m^2
     
     % Time stability criterion ------------------------------------------ %
-    t.dtfac =   1.0;                % Courant criterion
+    t.dtfac =   0.9;                % Courant criterion
     t.age   =   1000;                 % Lithosphere age [ Ma ]
     t.tfac  =   (60*60*24*365.25);  % Seconds per year
     t.age   =   t.age.*1e6*t.tfac;  % Age in seconds
@@ -162,7 +162,8 @@ for i = 1:t.nit
     if i > 1
         t.time(i)   =   t.time(i-1) + t.dt;
     end
-    [T]     =   SolveDiff1Dimplicit_vary(N,T,Py,t);
+%     [T]     =   SolveDiff1Dimplicit_vary(N,T,Py,t);
+    [T]     =   SolveDiff1Dexplicit_vary(N,T,Py,t);
 end
 % ----------------------------------------------------------------------- %
 
@@ -192,7 +193,7 @@ if plotparam
     plot(T.T,M.z./1e3,'r-','LineWidth',2)
     plot(T2,M.z./1e3,'y--','LineWidth',2)
     if nargin == 0
-        plot(T3(:,1)+273.15,T3(:,2),'m-.','LineWidth',2)
+%         plot(T3(:,1)+273.15,T3(:,2),'m-.','LineWidth',2)
         legend('Inital',['T_{',num2str(t.age/1e6/t.tfac),'Ma}'],...
             'T_{stationary}','T_{2D}','Location','SouthWest')
     else
@@ -218,7 +219,7 @@ if plotparam
     set(gca,'xscale','log','FontWeight','Bold','LineWidth',2,'FontSize',15)
 end
 % ======================================================================= %
-
+% keyboard
 end
 
 

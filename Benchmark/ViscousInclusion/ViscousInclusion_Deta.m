@@ -103,11 +103,11 @@ for k = 1:length(angle)
         N.nmz       =   5;
         
         %% -------------- Definition Physikalischer Konstanten ---------- %
-        Py.g        =   10;                 %   Schwerebeschleunigung [m/s^2]
-        Py.rho0     =   3200;               %   Hintergunddichte [kg/m^3]
-        Py.k        =   3;                  %   Thermische Leitfaehigkeit [ W/m/K ]
-        Py.cp       =   1000;               %   Heat capacity [ J/kg/K ]
-        Py.alpha    =   5e-5;               %   Thermischer Expnasionskoef. [ K^-1 ]
+        Py.g        =   10;             %   Schwerebeschleunigung [m/s^2]
+        Py.rho0     =   3200;           %   Hintergunddichte [kg/m^3]
+        Py.k        =   3;              %   Thermische Leitfaehigkeit [ W/m/K ]
+        Py.cp       =   1000;           %   Heat capacity [ J/kg/K ]
+        Py.alpha    =   5e-5;           %   Thermischer Expnasionskoef. [ K^-1 ]
         
         Py.kappa    =   Py.k/Py.rho0/Py.cp; % 	Thermische Diffusivitaet [ m^2/s ]
         
@@ -116,6 +116,7 @@ for k = 1:length(angle)
         
         Py.eta0     =   1e23;           % Viskositaet [ Pa*s ]
         Py.eta1     =   eta2(i);        % Inclusion viscosity
+        Py.rho1     =   Py.rho0; 
         
         Py.DeltaT   =   1000;           % Temperaturdifferenz
         % --------------------------------------------------------------- %
@@ -148,7 +149,9 @@ for k = 1:length(angle)
         B.ebg           =   -1e-14;         % < 0 compression
         B.RotAng        =   Orientation;    % positive -> counter clockwise
         B.EllA          =   3e2;            % [ m ]
-        B.EllB          =   5e1;
+        B.EllB          =   0.5e2;          % [ m ]
+        B.T0            =   1000; 
+        B.TAmpl         =   1000; 
         
         switch Pl.savefig
             case 'yes'
@@ -252,18 +255,22 @@ for k = 1:length(angle)
             if (mod(it,5)==0||it==1)
                 figure(1) % --------------------------------------------- %
                 clf
-                subplot(2,2,1)
+                ax1 = subplot(2,2,1);
                 plotfield(log10(D.eta),M.X,M.Z,Pl,'pcolor',...
                     '\itlog_{10} ( \eta ) \rm\bf','quiver',ID.vx,ID.vz)
-                subplot(2,2,2)
+                colormap(ax1,Pl.lapaz)
+                ax2 = subplot(2,2,2);
                 plotfield(log10(ID.psi),M.X,M.Z,Pl,'pcolor',...
                     '\it log_{10} ( \psi ) \rm\bf')
-                subplot(2,2,3)
+                colormap(ax2,Pl.imola)
+                ax3 = subplot(2,2,3);
                 plotfield(log10(ID.eII),M.X,M.Z,Pl,'pcolor',...
                     '\itlog_{10} ( \epsilon_{II} ) \rm\bf')
-                subplot(2,2,4)
+                colormap(ax3,Pl.batlowW)
+                ax4 = subplot(2,2,4);
                 plotfield(log10(ID.tauII),M.X,M.Z,Pl,'pcolor',...
                     '\it log_{10} ( \tau_{II} ) \rm\bf')
+                colormap(ax4,Pl.nuuk)
             end
             
             switch Pl.savefig

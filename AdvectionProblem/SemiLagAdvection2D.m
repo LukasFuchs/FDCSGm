@@ -1,4 +1,4 @@
-function [Tnew] = SemiLagAdvection2D(D,M,T,dt)
+function [Anew] = SemiLagAdvection2DSc(D,M,A,dt)
 % Funktion zur Loesung der Advektionsgleichung
 %
 %               dA/dt = -vx * ( dA/dx ) - vz * ( dA/dz )
@@ -13,8 +13,8 @@ if isempty(D.vxo)
     % Im Falle das die Geschwindigkeit zeitlich konstant ist, wird die
     % aktuelle Geschwindigkeit auf die alte Geschwindigkeit
     % uebertragen.
-    D.vxo     = D.vx;
-    D.vzo     = D.vz;
+    D.vxo   =   D.vx;
+    D.vzo   =   D.vz;
 end
 
 % Mittlere Geschwindigkeit am Zentralen Punkt in der Zeit --------------- %
@@ -36,11 +36,11 @@ for k = 1:10
     vxi(isnan(vxi)) = vxm(isnan(vxi));
     vzi(isnan(vzi)) = vzm(isnan(vzi));
 end
-xp  = M.X - dt.*vxi;
-zp  = M.Z - dt.*vzi;
+xp      =   M.X - dt.*vxi;
+zp      =   M.Z - dt.*vzi;
 
-Tnew    = interp2(M.X,M.Z,T,xp,zp,'cubic');
+Anew    =   interp2(M.X,M.Z,A,xp,zp,'cubic');
 
-Tnew(isnan(Tnew)) = T(isnan(Tnew));
+Anew(isnan(Anew)) = A(isnan(Anew));
 
 end
