@@ -51,17 +51,6 @@ Equations (20) and (22) enable us to solve for the three unknowns *v<sub>x</sub>
 
 &emsp;The conservation equations of *momentum* and *mass* are solved properly in two dimensions (*x* and *z*, *z* pointing downwards in negative direction) using a staggered finite difference grid, based on the description by *Gerya* (2009), where the viscosity and the density are defined on the regular grid points, the horizontal and vertical velocity in between the regular grid points, and the pressure within a finite difference cell. A staggered grid enables the conservation of the stress between adjacent grid points and one can solve equations (20)-(22) for the unknows. For more details on the discretization and the solving equations see *Gerya* (2009). 
 
-# Advection equation 
-&emsp;In case the material is not moving, one can solve the energy equation only for the diffusive part (e.g., an intrusion problem or a non-deforming lithosphere). Generally, however, the material is moving and certain properties need to be advected with the flow (e.g., the temperature). Thermal mantle convection is a perfect example on how to transport heat with both diffusion (especiall in the thermal boundary layers) and advection (mainly within the interior). 
-   
-&emsp;The energy equation can be solved simultaneously with the diffusive and convective part using different discretization methods (interestingly, *FTCS* is stable with some numerical diffusion). However, for the sake of simplicity and a more conveniant way to teach both mechanisms (at least in my opinion), I do prefer, so far, the operator-splitting method, that is, I first solve for the convective part of the energy equation, followed by the conductive part. The conducitve part can be solved by the different discretization methods as [described above](https://github.com/LukasFuchs/FDCSGm/edit/main/README.md#energy-equation) and the convective part by the e.g., *upwind*, *semi-lagrangian*, or *passive tracer* method. Advection of a certain property *f* can then generally be described in an Eulerian reference frame as followed: 
-
-$\frac{\partial f}{\partial t} = - \overrightarrow{v} \cdot \nabla f$.&emsp;&emsp;&emsp;(23)
-
-For more details on how to discretize and sovle the advection equation see [*/FDCSGm/AdvectionProblem/*](https://github.com/LukasFuchs/FDCSGm/tree/main/AdvectionProblem). 
-
-&emsp;For the [thermal convection](https://github.com/LukasFuchs/FDCSGm/tree/main/MixedHeatedSystems) code I do prefer, so far, the semi-lagrangian method. However, I only advect the **absolut** temperature and not its increments, so far. In case of a temperature independent material (e.g., a [Rayleigh-Taylor Instability](https://github.com/LukasFuchs/FDCSGm/tree/main/Benchmark/RTI)), advection with passive tracers, wich advect different properties (so far, density and viscosity), should be used. For more details and examples see the [benchmark directory](https://github.com/LukasFuchs/FDCSGm/tree/main/Benchmark).
-
 # Scaling and equation of state
 &emsp;To better compare different kinds of thermal convection, one can scale the governing equations. The equation can be scaled by the following reference parameters: 
 
