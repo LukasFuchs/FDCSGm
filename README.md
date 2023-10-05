@@ -8,18 +8,6 @@
 
 -----------------
 
-&emsp;For the given scaling parameters, the non-dimensional governing equations are given as (assuming a constant viscosity; scaling for a variable viscosity is applicable in the same way):
-
-$\frac{\partial v_x}{\partial x} + \frac{\partial v_z}{\partial z} = 0$,&emsp;&emsp;&emsp;(32)
-
-$\frac{\partial T}{\partial t} + v_x \frac{\partial T}{\partial x} + v_z \frac{\partial T}{\partial z} = (\frac{\partial^2 T}{\partial x^2} + \frac{\partial^2 T}{\partial z^2} + H)$,&emsp;&emsp;&emsp;(33)
-
-$-\frac{\partial P}{\partial x} + \eta \frac{\partial^2 v_x}{\partial x^2} + \eta \frac{\partial^2 v_x}{\partial z^2} = 0$,&emsp;&emsp;&emsp;(34)
-
-$-\frac{\partial P}{\partial z} + \eta \frac{\partial^2 v_z}{\partial z^2} + \eta \frac{\partial^2 v_z}{\partial x^2} - RaT = 0$,&emsp;&emsp;&emsp;(35)
-
-where *Ra* is the so-called thermal *Rayleigh number* and *P* the *dynamic pressure*. In case of a basally heated thermal convection, the convective vigor is defined by the Rayleigh number, which describes a relationship between heat transported by buoyancy and conduction, and the effect of the layers thickness and bulk viscosity.
-
 # References
 
 *Gerya, T. (2009). Introduction to numerical geodynamic modelling.*
