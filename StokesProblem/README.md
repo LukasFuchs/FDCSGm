@@ -46,7 +46,7 @@ Equations (8) and (9) enable us to solve for the three unknowns *v<sub>x</sub>*,
 ### Equation of State
 &emsp;The buoyance term on the right-hand side of equation (7), that is the density term which is temperature dependent (and pressure, but I do neglect this effect here so far), can be approximated with the so-called *equation of state* for the density. Here, its is a linear approximation of the change of density due to temperature variations and can be defined as:
 
-$\rho = \rho_0 (1-\alpha T)$,&emsp;&emsp;&emsp;(31)
+$\rho = \rho_0 (1-\alpha T)$,&emsp;&emsp;&emsp;(10)
 
 where *ρ<sub>0</sub>* is the reference density and *α* the thermal expansion coefficient [1/K]. 
 
