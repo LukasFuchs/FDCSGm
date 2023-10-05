@@ -16,7 +16,7 @@ This directory contains two files:
 
 $\eta=\eta_0 exp(-b \frac{T-T_{top}}{T_{bottom}-T{top}} + c\frac{y}{H})$, &emsp; &emsp; &emsp; (1)
 
-where $\eta_0$ is the viscosity at the top of the model and *b* and *c* are coefficients establishing the dependences of viscosity with temperature and depth, respectively. The model constants are listed in the table below. The density depends linearly on temperature (see [*equation of state* formulation](https://github.com/LukasFuchs/FDCSGm/blob/main/README.md)). 
+where $\eta_0$ is the viscosity at the top of the model and *b* and *c* are coefficients establishing the dependences of viscosity with temperature and depth, respectively. The model constants are listed in the table below. The density depends linearly on temperature (see [*equation of state* formulation](https://github.com/LukasFuchs/FDCSGm/tree/main/StokesProblem#equation-of-state)). 
 
 --------------------------------------------------------------
 
