@@ -60,7 +60,7 @@ where *ρ<sub>0</sub>* is the reference density and *α* the thermal expansion c
 
 # References 
 
-Gerya, T. (2019). Introduction to numerical geodynamic modelling. Cambridge University Press.
+*Gerya, T. (2019). Introduction to numerical geodynamic modelling. Cambridge University Press.*
 
 # Directory Content
 [GetStrainRate.m](https://github.com/LukasFuchs/FDCSGm/blob/main/StokesProblem/GetStrainRate.m)<br>
