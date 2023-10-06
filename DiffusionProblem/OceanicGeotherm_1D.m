@@ -69,15 +69,18 @@ if nargin==0
     t.tfac  =   (60*60*24*365.25);  % Seconds per year
     t.age   =   t.age.*1e6*t.tfac;  % Age in seconds
     % =================================================================== %
-    
+
     %% Plot Initial condition ------------------------------------------- %
     plotparam   =   1;
-    fig = figure;   
+    fig = figure;
     clf
     subplot(1,2,1)
     plot(T.T,M.z./1e3,'LineWidth',2)
-    xlabel('T [K]'); ylabel('Depth [km]'); title('T-profile')
-    set(gca,'FontWeight','Bold','LineWidth',2,'FontSize',15)
+    xlabel('$$T\ [K]$$','Interpreter','latex')
+    ylabel('$$Depth\ [km]$$','Interpreter','latex')
+    title('$$T-profile$$','Interpreter','latex')
+    set(gca,'FontWeight','Bold','LineWidth',2,'FontSize',15,...
+        'TickLabelInterpreter','latex')
     % =================================================================== %
 else
     %% =================================================================== %
@@ -92,8 +95,11 @@ else
         clf
         subplot(1,2,1)
         plot(T.T,M.z./1e3,'LineWidth',2)
-        xlabel('T [K]'); ylabel('Depth [km]'); title('T-profile')
-        set(gca,'FontWeight','Bold','LineWidth',2,'FontSize',15)
+        xlabel('$$T\ [K]$$','Interpreter','latex')
+        ylabel('$$Depth\ [km]$$','Interpreter','latex')
+        title('$$T-profile$$','Interpreter','latex')
+        set(gca,'FontWeight','Bold','LineWidth',2,'FontSize',15,...
+            'TickLabelInterpreter','latex')
     end
 end
 %% Setup Fields ========================================================= %
@@ -117,7 +123,7 @@ for i = 1:t.nit
     if i > 1
         t.time(i)   =   t.time(i-1) + t.dt;
     end
-%     [T]     =   SolveDiff1Dimplicit_vary(N,T,Py,t);
+    %     [T]     =   SolveDiff1Dimplicit_vary(N,T,Py,t);
     [T]     =   SolveDiff1Dexplicit_vary(N,T,Py,t);
 end
 % ======================================================================= %
@@ -143,7 +149,7 @@ end
 
 %% Plot profile if requested ============================================ %
 if plotparam
-%     if nargin==0 && strcmp(T.lbound,'const') && strcmp(T.ubound,'const')
+    %     if nargin==0 && strcmp(T.lbound,'const') && strcmp(T.ubound,'const')
     if strcmp(T.lbound,'const') && strcmp(T.ubound,'const')
         T.Tana      =   zeros(N.nz,1);
         T.Tana      =   T.Tini + ...
@@ -154,20 +160,24 @@ if plotparam
     subplot(1,2,1)
     hold on
     plot(T.T,M.z./1e3,'r-','LineWidth',2)
-%     if nargin==0 && strcmp(T.lbound,'const') && strcmp(T.ubound,'const')
+    %     if nargin==0 && strcmp(T.lbound,'const') && strcmp(T.ubound,'const')
     if strcmp(T.lbound,'const') && strcmp(T.ubound,'const')
         plot(T.Tana,M.z/1e3,'--','LineWidth',2)
-        legend('Initial',['T_{',num2str(t.age/1e6/t.tfac),'Ma}'],...
-            'T_{HSCM}','Location','SouthWest')
+        legend('$$Initial$$',['$$T_{',num2str(t.age/1e6/t.tfac),'Ma}$$'],...
+            '$$T_{HSCM}$$','Location','SouthWest','Interpreter','latex')
     else
-        legend('Initial',['T_{',num2str(t.age/1e6/t.tfac),'Ma}'],...
-            'Location','SouthWest')
+        legend('$$Initial$$',['$$T_{',num2str(t.age/1e6/t.tfac),'Ma}$$'],...
+            'Location','SouthWest','Interpreter','latex')
     end
-    xlabel('T [ K ]'); ylabel('Depth [ km ]')
+    xlabel('$$T\ [ K ]$$','Interpreter','latex')
+    ylabel('$$Depth\ [ km ]$$','Interpreter','latex')
     subplot(1,2,2)
     plot(T.q.*1e3,M.zc./1e3,'LineWidth',2)
-    xlabel('q [ mW ]'); ylabel('Depth [ km ]'); title('Heat flux')
-    set(gca,'FontWeight','Bold','LineWidth',2,'FontSize',15)
+    xlabel('$$q\ [ mW ]$$','Interpreter','latex')
+    ylabel('$$Depth\ [ km ]$$','Interpreter','latex')
+    title('$$Heat\ flux$$','Interpreter','latex')
+    set(gca,'FontWeight','Bold','LineWidth',2,'FontSize',15,...
+            'TickLabelInterpreter','latex')
 end
 % ======================================================================= %
 % keyboard

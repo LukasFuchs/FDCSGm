@@ -68,7 +68,7 @@ if ~isempty(T)
     T.time      =   zeros(T.itmax,1);
 end
 
-if isfield(Py,'eparam')
+if isfield(Py,'eparam')    
     D.eta       =   zeros(N.nz,N.nx);
     
     % Interpolierte Parameter auf dem regulaeren Gitter
@@ -79,6 +79,9 @@ if isfield(Py,'eparam')
     ID.vzo      =   [];
     ID.indi     =   2:N.nz1;
     ID.indj     =   2:N.nx1;
+else
+    B.EtaIni    =   'none';
+    D.eta       =   [];
 end
 
 % Visualization stuff --------------------------------------------------- %

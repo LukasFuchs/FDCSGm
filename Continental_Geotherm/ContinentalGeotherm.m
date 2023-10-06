@@ -18,9 +18,10 @@ Py.scale        =   'no';
 B.AdvMethod     =   'none';
 B.Aparam        =   'none';
 B.DiffMethod    =   'none';
+% B.EtaIni        =   'none';
 % ======================================================================= %
 %% ==================== Define viscosity conditions ===================== %
-Py.eparam       =   'none';
+% Py.eparam       =   'none';
 % ======================================================================= %
 %% ================== Define initial temperature anomaly ================ %
 B.Tini          =   'ContGeotherm';
@@ -90,7 +91,7 @@ B.bhf       =   0.01; %Py.Tbot + 273.15;% 0.04;     [ W/m^2 ]
 % ----------------------------------------------------------------------- %
 
 %% ---------------- Definition der Anfangsbedingungen ------------------- %
-[T,D,B,Ma,Py]   =   SetUpInitialConditions(T,D,Py,M,N,B);
+[T,D,B,M,Ma,Py] =   SetUpInitialConditions(T,D,Py,M,N,B);
 
 M.UCind         =   M.Z>=M.zUC;
 M.LCind         =   M.Z>=M.zLC&M.Z<M.zUC;
@@ -118,37 +119,47 @@ set(figure(1),'position',[55.4,125.8,1326.4,636.2]);
 [D.T]           =   SolvePoisson2Dvaryk(D.Q,N,B,D.k);
 % ======================================================================= %
 %% =========================== Plotting data ============================ %
-Pl.xlab     =   'x [ km ]';
-Pl.zlab     =   'z [ km ]';
+Pl.xlab     =   '$$x [ km ]$$';
+Pl.zlab     =   '$$z [ km ]$$';
 Pl.time     =   [];
 
 figure(1)
-subplot(2,3,1)
+ax1 = subplot(2,3,1);
 plotfield(D.Q,M.X./1e3,M.Z./1e3,Pl,'pcolor',...
-    '\itQ \rm\bf')
-subplot(2,3,2)
+    '$$Q$$')
+colormap(ax1,Pl.lapaz)
+ax2 = subplot(2,3,2);
 plotfield(D.rho,M.X./1e3,M.Z./1e3,Pl,'pcolor',...
-    '\it\rho \rm\bf')
-subplot(2,3,4)
+    '$$\rho$$')
+colormap(ax2,Pl.oslo)
+ax3 = subplot(2,3,4);
 plotfield(D.k,M.X./1e3,M.Z./1e3,Pl,'pcolor',...
-    '\itk \rm\bf')
-subplot(2,3,5)
+    '$$k$$')
+colormap(ax3,Pl.nuuk)
+ax4 = subplot(2,3,5);
 plotfield(D.T,M.X./1e3,M.Z./1e3,Pl,'pcolor',...
-    '\itT \rm\bf')
+    '$$T$$');
+colormap(ax4,flipud(Pl.lajolla))
 subplot(1,3,3)
 plot(D.T(:,N.nx1/2)-273.15 ,M.z./1e3,'LineWidth',2)
-xlabel('T [ C ]'); ylabel('Depth [km]')
-set(gca,'FontWeight','Bold','LineWidth',2)
+xlabel('$$T [ C ]$$','Interpreter','latex')
+ylabel('$$Depth [km]$$','Interpreter','latex')
+set(gca,'FontWeight','Bold','LineWidth',2,'FontSize',15,...
+    'TickLabelInterpreter','latex')
 
 figure(2) 
 subplot(3,1,1)
 plot(D.T(:,N.nx1/2)-273.15 ,M.z./1e3,'LineWidth',2)
-xlabel('T [ C ]'); ylabel('Depth [km]')
-set(gca,'FontWeight','Bold','LineWidth',2)
+xlabel('$$T [ C ]$$','Interpreter','latex')
+ylabel('$$Depth [km]$$','Interpreter','latex')
+set(gca,'FontWeight','Bold','LineWidth',2,'FontSize',15,...
+    'TickLabelInterpreter','latex')
 subplot(3,1,2)
 plot(D.Q(:,N.nx1/2)./D.rho(:,N.nx1/2),M.z./1e3,'LineWidth',2)
-xlabel('H [ W/kg ]'); ylabel('Depth [km]')
-set(gca,'FontWeight','Bold','LineWidth',2)
+xlabel('$$H [ W/kg ]$$','Interpreter','latex')
+ylabel('$$Depth [km]$$','Interpreter','latex')
+set(gca,'FontWeight','Bold','LineWidth',2,'FontSize',15,...
+    'TickLabelInterpreter','latex')
 q           = zeros(N.nz-1,1);
 for j=1:N.nz-1
     q(j) = -(D.k(j+1,N.nx1/2) + D.k(j,N.nx1/2))/2 * ...
@@ -158,8 +169,10 @@ q(1,1)      = -D.k(1,N.nx1/2)*(D.T(2,N.nx1/2)-D.T(1,N.nx1/2))/N.dz;
 q(N.nz,1)   = -D.k(N.nz,N.nx1/2)*(D.T(N.nz,N.nx1/2)-D.T(N.nz-1,N.nx1/2))/N.dz; 
 subplot(3,1,3)
 plot(q.*1e3,M.z./1e3,'LineWidth',2)
-xlabel('q [ mW/m^2 ]'); ylabel('Depth [km]')
-set(gca,'FontWeight','Bold','LineWidth',2)
+xlabel('$$q [ mW/m^2 ]$$','Interpreter','latex')
+ylabel('$$Depth [km]$$','Interpreter','latex')
+set(gca,'FontWeight','Bold','LineWidth',2,'FontSize',15,...
+    'TickLabelInterpreter','latex')
 % ======================================================================= %
 %% ============================= Save data ============================== %
 % DATA    = [D.T(:,N.nx1/2)-273.15,(M.z'./1e3)];

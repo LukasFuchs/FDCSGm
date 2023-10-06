@@ -84,9 +84,9 @@ if nargin==0
     T.T1    =   T.Tpot + T.dTadi.*abs(M.H./1e3);    % Bottom temperature [ K ]
     T.T     =   T.Tpot + abs(M.z/1e3)*T.dTadi;      % Initial T-profile [ K ]
     T.T(1)  =   T.T0;    
-    T.ubound    =   'flux';
+    T.ubound    =   'const';
     T.utbf      =   -0.0133;                % c     =   -k/q -> 50 mW/m^2
-    T.lbound    =   'flux';        
+    T.lbound    =   'const';        
     T.ltbf      =   -0.0043;                % c     =   -k/q -> 10 mW/m^2
     
     % Time stability criterion ------------------------------------------ %
@@ -104,8 +104,11 @@ if nargin==0
     clf
     subplot(1,3,1)
     plot(T.T,M.z./1e3,'LineWidth',2)
-    xlabel('T [K]'); ylabel('Depth [km]'); title('T-profile')
-    set(gca,'FontWeight','Bold','LineWidth',2,'FontSize',15)
+    xlabel('$$T [K]$$','Interpreter','latex')
+    ylabel('$$Depth [km]$$','Interpreter','latex')
+    title('$$T-profile$$','Interpreter','latex')
+    set(gca,'FontWeight','Bold','LineWidth',2,'FontSize',15,...
+        'TickLabelInterpreter','latex')
     % =================================================================== %
 else
     %% ================================================================== %
@@ -119,8 +122,11 @@ else
         clf
         subplot(1,3,1)
         plot(T.T,M.z./1e3,'LineWidth',2)
-        xlabel('T [K]'); ylabel('Depth [km]'); title('T-profile')
-        set(gca,'FontWeight','Bold','LineWidth',2,'FontSize',15)
+        xlabel('$$T [K]$$','Interpreter','latex')
+        ylabel('$$Depth [km]$$','Interpreter','latex')
+        title('$$T-profile$$','Interpreter','latex')
+        set(gca,'FontWeight','Bold','LineWidth',2,'FontSize',15,...
+            'TickLabelInterpreter','latex')
     end
 end
 %% Setup fields ========================================================= %
@@ -192,31 +198,40 @@ if plotparam
     hold on
     plot(T.T,M.z./1e3,'r-','LineWidth',2)
     plot(T2,M.z./1e3,'y--','LineWidth',2)
-    if nargin == 0
-%         plot(T3(:,1)+273.15,T3(:,2),'m-.','LineWidth',2)
-        legend('Inital',['T_{',num2str(t.age/1e6/t.tfac),'Ma}'],...
-            'T_{stationary}','T_{2D}','Location','SouthWest')
+    if nargin == 0 && (strcmp(T.ubound,'const') || strcmp(T.lbound,'const'))
+        plot(T3(:,1)+273.15,T3(:,2),'m-.','LineWidth',2)
+        legend('$$Inital$$',['$$T_{',num2str(t.age/1e6/t.tfac),'Ma}$$'],...
+            '$$T_{stationary}$$','$$T_{2D}$$','Location','SouthWest',...
+            'Interpreter','latex')
     else
-        legend('Inital',['T_{',num2str(t.age/1e6/t.tfac),'Ma}'],...
-            'T_{stationary}','Location','SouthWest')
+        legend('$$Inital$$',['$$T_{',num2str(t.age/1e6/t.tfac),'Ma}$$'],...
+            '$$T_{stationary}$$','Location','SouthWest',...
+            'Interpreter','latex')
     end
-    xlabel(' T [K] '); ylabel(' Depth [km] '); title('T-profile')
-    set(gca,'FontWeight','Bold','LineWidth',2,'FontSize',15)
+    xlabel('$$T\ [ K ]$$','Interpreter','latex')
+    ylabel('$$Depth\ [ km ]$$','Interpreter','latex')
+    set(gca,'FontWeight','Bold','LineWidth',2,'FontSize',15,...
+            'TickLabelInterpreter','latex')
     subplot(1,3,2)
     plot(T.q.*1e3,M.zc./1e3,'LineWidth',2)
-    xlabel('q [ mW ]'); ylabel('Depth [ km ]'); title('Heat Flux')
-    set(gca,'FontWeight','Bold','LineWidth',2,'FontSize',15)
+    xlabel('$$q\ [ mW ]$$','Interpreter','latex')
+    ylabel('$$Depth\ [ km ]$$','Interpreter','latex')
+    title('$$Heat\ flux$$','Interpreter','latex')
+    set(gca,'FontWeight','Bold','LineWidth',2,'FontSize',15,...
+            'TickLabelInterpreter','latex')
     subplot(1,3,3)
     hold on
     plot(Py.k,M.z./1e3,'LineWidth',2)
     plot(Py.cp./1e3,M.z./1e3,'LineWidth',2)
     plot(Py.rho,M.z./1e3,'LineWidth',2)
     plot(Py.H.*Py.rho./1e3,M.z./1e3,'LineWidth',2)
-    xlabel('k; \rho; c_{p}; Q'); ylabel('Depth [ km ]'); box on
-    title('Thermal parameters')
-    legend('k [W/m/K]','c_{p} [kJ/kg/K]','\rho [kg/m^3]','Q [ mW/m^3 ]',...
-        'Location','SouthWest')
-    set(gca,'xscale','log','FontWeight','Bold','LineWidth',2,'FontSize',15)
+    xlabel('$$k; \rho; c_{p}; Q$$','Interpreter','latex')
+    ylabel('$$Depth\ [ km ]$$','Interpreter','latex'); box on
+    title('$$Thermal\ parameters$$','Interpreter','latex')
+    legend('$$k\ [W/m/K]$$','$$c_{p}\ [kJ/kg/K]$$','$$\rho\ [kg/m^3]$$',...
+        '$$Q\ [ mW/m^3 ]$$','Location','SouthWest','Interpreter','latex')
+    set(gca,'xscale','log','FontWeight','Bold','LineWidth',2,...
+        'FontSize',15,'TickLabelInterpreter','latex')
 end
 % ======================================================================= %
 % keyboard

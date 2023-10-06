@@ -48,13 +48,15 @@ switch lower(plparam2)
         hold off
 end
 
-xlabel(Pl.xlab)
-ylabel(Pl.zlab)
-title([titparam;{Pl.time}])
-colorbar; shading interp, lighting phong
+xlabel(Pl.xlab,'Interpreter','latex')
+ylabel(Pl.zlab,'Interpreter','latex')
+title([titparam;{Pl.time}],'Interpreter','latex')
+cb = colorbar; cb.TickLabelInterpreter = 'latex';
+shading interp, lighting phong
 axis normal; axis equal, axis tight; caxis([fmin fmax])
 axis([min(X(:)) max(X(:)) min(Z(:)) max(Z(:))])
-set(gca,'FontWeight','Bold')
+set(gca,'FontWeight','Bold','FontSize',15,...
+    'TickLabelInterpreter','latex')
 box on
 
 end
