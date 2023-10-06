@@ -16,4 +16,4 @@
 
 *Becker, T. W. and Kaus, B. J. P (2020 update): Numerical Modeling of Earth Systems: An introduction to computational methods with focus on solid Earth applications of continuum mechanics, The University of Texas at Austin, v. 1.2.2, 2020.*
 
-*...additional references are added here from time to time...*
+*...additional references will be added from time to time...*
