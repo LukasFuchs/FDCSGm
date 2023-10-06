@@ -8,9 +8,13 @@
    
 &emsp;The [*MasterFile.m*](https://github.com/LukasFuchs/FDCSGm/blob/main/MasterFile.m) in the main directory (**FDCSGm/**) contains a list and description of all constants, parameters, and variables, as well as a general structure of the code to solve the equations. Some variables can be removed if not needed, otherwise they need to be defined as *‘none’*. Within the code there are multiple [benchmarks](https://github.com/LukasFuchs/FDCSGm/tree/main/Benchmark) included to test the accuracy and different discretization methods for the energy, advection, and stokes equations. The thermal convection code is based on the routines used in those benchmarks. 
 
+For the colormaps I use the scientific colormaps by *Crameri (2021)*.
+
 -----------------
 
 # References
+
+*Crameri, Fabio. (2021). Scientific colour maps (7.0.1). Zenodo. https://doi.org/10.5281/zenodo.5501399*
 
 *Gerya, T. (2009). Introduction to numerical geodynamic modelling.*
 
