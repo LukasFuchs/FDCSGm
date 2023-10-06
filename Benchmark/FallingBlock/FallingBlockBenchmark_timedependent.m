@@ -5,12 +5,10 @@ if strcmp(getenv('OS'),'Windows_NT')
     addpath('..\..\AdvectionProblem')
     addpath('..\..\StokesProblem')
     addpath('..\..\SetUp')
-    addpath('..\..\ScaleParam')
 else
     addpath('../../AdvectionProblem')
     addpath('../../StokesProblem')
     addpath('../../SetUp')
-    addpath('../../ScaleParam')
 end
 % ======================================================================= %
 T.tstart        =   tic;
@@ -89,8 +87,8 @@ for k = 1:length(eta1)
     %% ========================= Plot parameter ========================= %
     Pl.inc      =   min(N.nz/10,N.nx/5);
     Pl.inc      =   round(Pl.inc);
-    Pl.xlab     =   '\bfx';
-    Pl.zlab     =   '\bfz';
+    Pl.xlab     =   '$$x$$';
+    Pl.zlab     =   '$$z$$';
     switch Pl.plotfields
         case 'yes'
             if strcmp(getenv('OS'),'Windows_NT')
@@ -166,7 +164,7 @@ for k = 1:length(eta1)
         Pl.time     =   ...
             ['@ Iteration: ',sprintf('%i',it),...
             '; Time: ',sprintf('%2.2e',T.time(it))];
-        if (mod(it,1)==0||it==1)
+        if (mod(it,10)==0||it==1)
             switch Pl.plotfields
                 case 'yes'
                     figure(2)
@@ -175,20 +173,20 @@ for k = 1:length(eta1)
                         case 'const'
                             ax1=subplot(2,1,1);
                             plotfield(D.rho,M.X./1e3,M.Z./1e3,Pl,'contourf',...
-                                '\it\rho \rm\bf','quiver',ID.vx,ID.vz)
+                                '$$\rho$$','quiver',ID.vx,ID.vz)
                             colormap(ax1,flipud(Pl.lajolla))
                             ax2=subplot(2,1,2);
                             plotfield(ID.v,M.X./1e3,M.Z/1e3,Pl,'pcolor',...
-                                '\itv \rm\bf')
+                                '$$v$$')
                             colormap(ax2,Pl.imola)
                         case 'variable'
                             ax1=subplot(2,1,1);
                             plotfield(D.rho,M.X./1e3,M.Z./1e3,Pl,'contourf',...
-                                '\it\rho\rm\bf','quiver',ID.vx,ID.vz)
+                                '$$\rho$$','quiver',ID.vx,ID.vz)
                             colormap(ax1,flipud(Pl.lajolla))
                             ax2=subplot(2,1,2);
                             plotfield(log10(D.eta),M.X./1e3,M.Z./1e3,Pl,'contourf',...
-                                '\it\eta\rm\bf','quiver',ID.vx,ID.vz)
+                                '$$\eta$$','quiver',ID.vx,ID.vz)
                             colormap(ax2,flipud(Pl.lapaz))
                     end
                     switch Pl.savefig
@@ -223,7 +221,7 @@ for k = 1:length(eta1)
             figure(3)
             ax1=subplot(3,2,k);
             plotfield(Ma.C,Ma.XM./1e3,Ma.ZM./1e3,Pl,'scatter',...
-                '\itTracers\rm\bf')
+                '$$Tracers$$')
             colormap(ax1,flipud(Pl.lajolla))                        
             break
         end
@@ -243,12 +241,12 @@ if strcmp(getenv('OS'),'Windows_NT')
     rmpath('..\..\AdvectionProblem')
     rmpath('..\..\StokesProblem')
     rmpath('..\..\SetUp')
-    rmpath('..\..\ScaleParam')
+%     rmpath('..\..\ScaleParam')
 else
     rmpath('../../AdvectionProblem')
     rmpath('../../StokesProblem')
     rmpath('../../SetUp')
-    rmpath('../../ScaleParam')
+%     rmpath('../../ScaleParam')
 end
 % ======================================================================= %
 % ======================================================================= %

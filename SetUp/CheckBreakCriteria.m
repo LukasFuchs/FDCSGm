@@ -34,20 +34,20 @@ if (T.time(it) >= T.tmax)
         case 'const'
             ax1=subplot(2,1,1);
             plotfield(D.T,M.X,M.Z,Pl,'contourf',...
-                '\itT \rm\bf','quiver',ID.vx,ID.vz)
+                '$$T$$','quiver',ID.vx,ID.vz)
             colormap(ax1,flipud(Pl.lajolla))
             ax2=subplot(2,1,2);
             plotfield(ID.v,M.X,M.Z,Pl,'pcolor',...
-                '\itv \rm\bf')
+                '$$v$$')
             colormap(ax2,Pl.imola);
         case 'variable'
             ax1=subplot(2,1,1);
             plotfield(D.T,M.X,M.Z,Pl,'contourf',...
-                '\itT\rm\bf','quiver',ID.vx,ID.vz)
+                '$$T$$','quiver',ID.vx,ID.vz)
             colormap(ax1,flipud(Pl.lajolla))
             ax2=subplot(2,1,2);
             plotfield(log10(D.eta),M.X,M.Z,Pl,'contourf',...
-                '\it\eta\rm\bf','quiver',ID.vx,ID.vz)
+                '$$\eta$$','quiver',ID.vx,ID.vz)
             colormap(ax2,flipud(Pl.lapaz))
     end
     answer = 'yes';
@@ -62,20 +62,20 @@ elseif( epsV <= epsC && it > 50 )
         case 'const'
             ax1=subplot(2,1,1);
             plotfield(D.T,M.X,M.Z,Pl,'contourf',...
-                '\itT \rm\bf','quiver',ID.vx,ID.vz)
+                '$$T$$','quiver',ID.vx,ID.vz)
             colormap(ax1,flipud(Pl.lajolla))
             ax2=subplot(2,1,2);
             plotfield(ID.v,M.X,M.Z,Pl,'pcolor',...
-                '\itv \rm\bf')
+                '$$v$$')
             colormap(ax2,Pl.imola)
         case 'variable'
             ax1=subplot(2,1,1);
             plotfield(D.T,M.X,M.Z,Pl,'contourf',...
-                '\itT\rm\bf','quiver',ID.vx,ID.vz)
+                '$$T$$','quiver',ID.vx,ID.vz)
             colormap(ax1,flipud(Pl.lajolla))
             ax2=subplot(2,1,2);
             plotfield(log10(D.eta),M.X,M.Z,Pl,'contourf',...
-                '\it\eta\rm\bf','quiver',ID.vx,ID.vz)
+                '$$\eta$$','quiver',ID.vx,ID.vz)
             colormap(ax2,flipup(Pl.lapaz))
     end
     answer = 'yes';

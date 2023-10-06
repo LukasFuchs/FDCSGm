@@ -2,7 +2,7 @@ function Pl = PlotData(it,Pl,T,D,M,ID,Py)
 Pl.time     =   ...
     ['@ Iteration: ',sprintf('%i',it),...
     '; Time: ',sprintf('%2.2e',T.time(it))];
-if (mod(it,200)==0||it==1)
+if (mod(it,10)==0||it==1)
     switch Pl.plotfields
         case 'yes'
             figure(1)
@@ -11,21 +11,21 @@ if (mod(it,200)==0||it==1)
                 case 'const'
                     ax1=subplot(2,1,1);
                     plotfield(D.T,M.X,M.Z,Pl,'contourf',...
-                        '\itT \rm\bf','quiver',ID.vx,ID.vz)
+                        '$$T$$','quiver',ID.vx,ID.vz)
                     caxis([0 1])
                     colormap(ax1,flipud(Pl.lajolla))
                     ax2=subplot(2,1,2);
                     plotfield(ID.v,M.X,M.Z,Pl,'pcolor',...
-                        '\itv \rm\bf')
+                        '$$v$$')
                     colormap(ax2,Pl.imola)
                 case 'variable'
                     ax1=subplot(2,1,1);
                     plotfield(D.T,M.X,M.Z,Pl,'contourf',...
-                        '\itT\rm\bf','quiver',ID.vx,ID.vz)
+                        '$$T$$','quiver',ID.vx,ID.vz)
                     colormap(ax1,flipud(Pl.lajolla))
                     ax2=subplot(2,1,2);
                     plotfield(log10(D.eta),M.X,M.Z,Pl,'contourf',...
-                        '\it\eta\rm\bf','quiver',ID.vx,ID.vz)
+                        '$$\eta$$','quiver',ID.vx,ID.vz)
                     colormap(ax2,flipud(Pl.lapaz))
             end
             switch Pl.savefig

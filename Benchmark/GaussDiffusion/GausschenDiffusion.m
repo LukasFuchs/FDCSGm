@@ -72,8 +72,8 @@ T.dtdifac   =   0.8;         %   Diffusion stability criterium
 %% ========================= Plot parameter ============================= %
 Pl.inc      =   min(N.nz/10,N.nx/5);
 Pl.inc      =   round(Pl.inc);
-Pl.xlab     =   '\bfx [ km ]';
-Pl.zlab     =   '\bfz [ km ]';
+Pl.xlab     =   '$$x\ [\ km\ ]$$';
+Pl.zlab     =   '$$z\ [\ km\ ]$$';
 
 switch Pl.plotfields
     case 'yes'
@@ -152,11 +152,11 @@ for it = 1:T.itmax
                 clf
                 ax1=subplot(2,2,1);
                 plotfield(D.T,M.X./M.Lscale,M.Z./M.Lscale,Pl,'contourf',...
-                    '\itT \rm\bf','contoury',D.Tana);
+                    '$$T$$','contoury',D.Tana);
                 colormap(ax1,flipud(Pl.lajolla))
                 ax2=subplot(2,2,2);
                 plotfield(D.epsT,M.X./M.Lscale,M.Z./M.Lscale,Pl,'pcolor',...
-                    '\it\epsilon_{T} \rm\bf');
+                    '$$\varepsilon_{T}$$');
                 colormap(ax2,Pl.vik)
                 ax3=subplot(2,2,3);
                 plot(D.TProfile(:,it),M.z./M.Lscale,'k','LineWidth',2)
@@ -164,13 +164,18 @@ for it = 1:T.itmax
                 plot(D.TProfilea(:,it),M.z./M.Lscale,'y--')
                 hold off
                 axis([B.T0 B.T0+B.TAmpl M.H/M.Lscale 0])
-                xlabel('T_{x = L/2} [ ^oC ]'); ylabel('Depth [ km ]')
-                title([{'Temperatur Profile'};{'@ Distance x = L/2'}])
-                set(gca,'FontWeight','Bold','FontSize',10,'LineWidth',2)
+                xlabel('$$T_{x=L/2}\ [^oC]$$','Interpreter','latex')
+                ylabel('$$Depth\ [km]$$','Interpreter','latex')
+                title([{'$$Temperatur\ Profile$$'};...
+                    {'$$at\ Distance\ x=L/2$$'}],'Interpreter','latex')                
+                set(gca,'FontWeight','Bold','FontSize',15,'LineWidth',2,...
+                    'TickLabelInterpreter','latex')
                 ax4=subplot(2,2,4);
                 plot(T.time(1:it)/T.tscale,D.RMS(1:it),'k','LineWidth',2)
-                ylabel('RMS'); xlabel('Time[ Myrs ]')
-                set(gca,'FontWeight','Bold','FontSize',10,'LineWidth',2)
+                ylabel('$$RMS$$','Interpreter','latex')
+                xlabel('$$Time\ [Myrs]$$','Interpreter','latex')
+                set(gca,'FontWeight','Bold','FontSize',15,'LineWidth',2,...
+                    'TickLabelInterpreter','latex')
                 switch Pl.savefig
                     case 'yes'
                         saveas(figure(1),...

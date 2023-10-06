@@ -85,8 +85,8 @@ for k = 1:size(Schema,1)
         %% ========================= Plot parameter ============================= %
         Pl.inc      =   min(N.nz/10,N.nx/5);
         Pl.inc      =   round(Pl.inc);
-        Pl.xlab     =   '\bfx [ km ]';
-        Pl.zlab     =   '\bfz [ km ]';
+        Pl.xlab     =   '$$x\ [km]$$';
+        Pl.zlab     =   '$$z\ [km]$$';
         switch Pl.plotfields
             case 'yes'
                 if strcmp(getenv('OS'),'Windows_NT')
@@ -169,11 +169,11 @@ for k = 1:size(Schema,1)
                         clf
                         ax1=subplot(2,2,1);
                         plotfield(D.T,M.X./M.Lscale,M.Z./M.Lscale,Pl,'contourf',...
-                            '\itT \rm\bf','contoury',D.Tana);
+                            '$$T$$','contoury',D.Tana);
                         colormap(ax1,flipud(Pl.lajolla))
                         ax2=subplot(2,2,2);
                         plotfield(D.epsT,M.X./M.Lscale,M.Z./M.Lscale,Pl,'pcolor',...
-                            '\it\epsilon_{T} \rm\bf');
+                            '$$\varepsilon_{T}$$');
                         colormap(ax2,Pl.vik)
                         ax3=subplot(2,2,3);
                         plot(D.TProfile(:,it),M.z./M.Lscale,'k','LineWidth',2)
@@ -181,13 +181,18 @@ for k = 1:size(Schema,1)
                         plot(D.TProfilea(:,it),M.z./M.Lscale,'y--')
                         hold off
                         axis([B.T0 B.T0+B.TAmpl M.H/M.Lscale 0])
-                        xlabel('T_{x = L/2} [ ^oC ]'); ylabel('Depth [ km ]')
-                        title([{'Temperatur Profile'};{'@ Distance x = L/2'}])
-                        set(gca,'FontWeight','Bold','FontSize',10,'LineWidth',2)
+                        xlabel('$$T_{x=L/2}\ [^oC]$$','Interpreter','latex')
+                        ylabel('$$Depth\ [km]$$','Interpreter','latex')
+                        title([{'$$Temperature\ Profile$$'};...
+                            {'$$@\ Distance\ x=L/2$$'}],'Interpreter','latex')
+                        set(gca,'FontWeight','Bold','FontSize',15,'LineWidth',2,...
+                            'TickLabelInterpreter','latex')
                         ax4=subplot(2,2,4);
                         plot(T.time(1:it)/T.tscale,D.RMS(1:it),'k','LineWidth',2)
-                        ylabel('RMS'); xlabel('Time[ Myrs ]')
-                        set(gca,'FontWeight','Bold','FontSize',10,'LineWidth',2)
+                        ylabel('$$RMS$$','Interpreter','latex')
+                        xlabel('$$Time\ [Myrs]$$','Interpreter','latex')
+                        set(gca,'FontWeight','Bold','FontSize',15,'LineWidth',2,...
+                            'TickLabelInterpreter','latex')
                         switch Pl.savefig
                             case 'yes'
                                 saveas(figure(1),...
@@ -238,14 +243,16 @@ for k = 1:size(Schema,1)
     subplot(1,3,1)
     p(k) = loglog(1./nxnz(k,:),eps(k,:),'LineStyle',linstyle{k},...
         'Marker','*','LineWidth',2);
-    legendinfo{k} = Schema{k};
+    legendinfo{k} = ['$$',Schema{k},'$$'];
     hold on
     if k == size(Schema,1)
         legendinfo{k+1} = '';
-        xlabel('1/nx/nz'); ylabel('RMS_{\DeltaT}')
+        xlabel('$$1/nx/nz$$','Interpreter','latex')
+        ylabel('$$RMS_{\Delta T}$$','Interpreter','latex')
         axis square
-        set(gca,'FontWeight','Bold','FontSize',10,'LineWidth',2)
-        legend(p,legendinfo,'Location','NorthWest')
+        set(gca,'FontWeight','Bold','FontSize',15,'LineWidth',2,...
+            'TickLabelInterpreter','latex')
+        legend(p,legendinfo,'Location','NorthWest','Interpreter','latex')
 %         axis([1e-5 1e-2 1e-2 2])
     end
     subplot(1,3,2)
@@ -253,15 +260,16 @@ for k = 1:size(Schema,1)
         'Marker','*','LineWidth',2)
     hold on
     if k == size(Schema,1)
-        legendinfo{k+1} = 'Sol_{ana}';
+        legendinfo{k+1} = '$$Sol_{ana}$$';
         plot(1/max(nxnz(1,:)):1e-4:1/min(nxnz(1,:)),...
             max(max(D.Tana)).*...
             ones(1,length(1/max(nxnz(1,:)):1e-4:1/min(nxnz(1,:)))),'k--')
-        xlabel('1/nx/nz'); ylabel('T_{max}')
+        xlabel('$$1/nx/nz$$','Interpreter','latex')
+        ylabel('$$T_{max}$$','Interpreter','latex')
         axis square
-        set(gca,'FontWeight','Bold','FontSize',10,'LineWidth',2,...
-            'xscale','log')
-        legend(legendinfo,'Location','NorthWest')
+        set(gca,'FontWeight','Bold','FontSize',15,'LineWidth',2,...
+            'xscale','log','TickLabelInterpreter','latex')
+        legend(legendinfo,'Location','NorthWest','Interpreter','latex')
 %         axis([1e-5 1e-2 785 795])
     end
     subplot(1,3,3)
@@ -272,10 +280,12 @@ for k = 1:size(Schema,1)
         plot(1/max(nxnz(1,:)):1e-4:1/min(nxnz(1,:)),...
             mean(mean(D.Tana)).*...
             ones(1,length(1/max(nxnz(1,:)):1e-4:1/min(nxnz(1,:)))),'k--')
-        xlabel('1/nx/nz'); ylabel('\langle T \rangle')
+        xlabel('$$1/nx/nz$$','Interpreter','latex')
+        ylabel('$$\langle T \rangle$$','Interpreter','latex')
         axis square
-        set(gca,'FontWeight','Bold','FontSize',10,'LineWidth',2)
-        legend(legendinfo,'Location','NorthEast')
+        set(gca,'FontWeight','Bold','FontSize',15,'LineWidth',2,...
+            'TickLabelInterpreter','latex')
+        legend(legendinfo,'Location','NorthEast','Interpreter','latex')
 %         axis([1e-5 1e-2 775 776])
     end
 end

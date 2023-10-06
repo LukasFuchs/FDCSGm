@@ -39,9 +39,11 @@ if Benchmark
     hold on
     plot(T.time(1:T.indtime),ones(T.indtime,1).*Ger(1,blmod),'r--')
 end
-set(gca,'FontWeight','Bold');
-xlabel('t'); ylabel('Nus')
-title('Nusselt Number')
+set(gca,'FontWeight','Bold','LineWidth',2,'FontSize',12,...
+    'TickLabelInterpreter','latex')
+xlabel('$$t$$','Interpreter','latex')
+ylabel('$$Nus$$','Interpreter','latex')
+title('$$Nusselt\ Number$$','Interpreter','latex')
 
 subplot(f,1,2)
 plot(T.time(1:T.indtime),D.meanV(1:T.indtime),...
@@ -52,9 +54,11 @@ if Benchmark
     %     'LineWidth',2)
     plot(T.time(1:T.indtime),ones(T.indtime,1).*Ger(2,blmod),'r--')
 end
-set(gca,'FontWeight','Bold');
-xlabel('t'); ylabel('VRMS')
-title('Root Mean Square Velocity')
+set(gca,'FontWeight','Bold','LineWidth',2,'FontSize',12,...
+    'TickLabelInterpreter','latex')
+xlabel('$$t$$','Interpreter','latex')
+ylabel('$$V_{RMS}$$','Interpreter','latex')
+title('$$Root\ Mean\ Square\ Velocity$$','Interpreter','latex')
 
 
 subplot(f,1,3)
@@ -66,9 +70,11 @@ if Benchmark
 else
     plot(D.meanT(:,T.indtime),M.z,'LineWidth',2)
 end
-set(gca,'FontWeight','Bold');
-xlabel('T'); ylabel('z')
-title('Temperature Profile')
+set(gca,'FontWeight','Bold','LineWidth',2,'FontSize',12,...
+    'TickLabelInterpreter','latex')
+xlabel('$$T$$','Interpreter','latex')
+ylabel('$$z$$','Interpreter','latex')
+title('$$Temperature\ Profile$$','Interpreter','latex')
 
 if Benchmark
     subplot(4,1,4)
@@ -79,10 +85,12 @@ if Benchmark
         plot([Ger(7,blmod),Ger(8,blmod),Ger(9,blmod),Ger(10,blmod)],'s',...
             'MarkerFaceColor','r')
     end
-    set(gca,'FontWeight','Bold','yscale','log');
-    xlabel('\DeltaT'); ylabel('')
-    title('Temperature difference at corners')
-    legend('Model','Benchmark')
+    set(gca,'FontWeight','Bold','LineWidth',2,'FontSize',12,...
+        'yscale','log','TickLabelInterpreter','latex')    
+    xlabel('$$\Delta T$$','Interpreter','latex')
+    ylabel('')
+    title('$$Temperature\ difference\ at\ corners$$','Interpreter','latex')
+    legend('$$Model$$','$$Benchmark$$','Interpreter','latex')
 end
 
 end

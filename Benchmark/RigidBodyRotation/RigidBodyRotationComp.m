@@ -9,13 +9,13 @@ if strcmp(getenv('OS'),'Windows_NT')
 else
     addpath('../../AdvectionProblem')
     addpath('../../SetUp')
-    addpath('../../StokesProble')
+    addpath('../../StokesProblem')
 end
 % ======================================================================= %
 scheme          =   {'upwind','SLF','semi-lag','tracers'};
 for i = 1:size(scheme,2)
     %% ===================== Some initial definitions =================== %
-    Pl.savefig      =   'yes';
+    Pl.savefig      =   'no';
     Pl.plotfields   =   'no';
     % =================================================================== %
     %% ============ Define method to solve the energy equation ========== %
@@ -27,11 +27,11 @@ for i = 1:size(scheme,2)
     B.EtaIni        =   'none';
     % =================================================================== %
     %% ================== Define initial temperature anomaly ============ %
-    B.Tini          =   'circular';       % Tanomaly
+    B.Tini          =   'circle';       % Tanomaly
     B.T0            =   1000;           % [ K ]
     B.TAmpl         =   200;            % [ K ]
     switch B.Tini
-        case 'gaussianRBR'            
+        case 'gaussianRBR'
             B.Tsigma        =   12;
         otherwise
             B.Tsigma        =   0.1;
@@ -46,8 +46,8 @@ for i = 1:size(scheme,2)
     M.xmax          =   1;              % Aspect ratio
     % =================================================================== %
     %% ====================== Define the numerical grid ================= %
-    N.nx            =   301;
-    N.nz            =   301;
+    N.nx            =   101;
+    N.nz            =   101;
     % =================================================================== %
     %% ====================== Define time constants ===================== %
     T.tmaxini       =   6.2869e-1;      % [ Ma ]
@@ -74,8 +74,8 @@ for i = 1:size(scheme,2)
     %% ========================= Plot parameter ========================= %
     Pl.inc      =   min(N.nz/10,N.nx/10);
     Pl.inc      =   round(Pl.inc);
-    Pl.xlab     =   '\bfx [ km ]';
-    Pl.zlab     =   '\bfz [ km ]';
+    Pl.xlab     =   '$$x\ [km]$$';
+    Pl.zlab     =   '$$z\ [km]$$';
     % Animation settings ------------------------------------------------ %
     switch Pl.savefig
         case 'yes'
@@ -120,39 +120,40 @@ for i = 1:size(scheme,2)
         end
         %% ========================== Plot data ========================= %
         Pl.time     =   ...
-            ['@ Iteration: ',sprintf('%i',it),...
-            '; Time: ',sprintf('%2.2e',T.time(it)/1e6/(365.25*24*60*60)),' Myr'];
+            ['$$@ Iteration: ',sprintf('%i',it),...
+            '; Time: ',sprintf('%2.2e',T.time(it)/1e6/(365.25*24*60*60)),' Myr$$'];
         switch Pl.plotfields
             case 'yes'
                 if (mod(it,50)==0||it==1)
                     switch B.AdvMethod
                         case 'tracers'
                             figure(2),clf
-                            tit = {['2-D numerical Advection:',B.AdvMethod];...
-                                ['\Deltat_{fac} = ',num2str(T.dtfac),...
+                            tit = {['$$2-D\ numerical\ Advection:',B.AdvMethod,'$$'];...
+                                ['$$\Delta\ t_{fac} = ',num2str(T.dtfac),...
                                 '; nx = ',num2str(N.nx),', nz = ',...
                                 num2str(N.nz),', mpe: ',num2str(N.nmx*N.nmz),...
-                                ', Step: ',num2str(it)]};
+                                ', Step: ',num2str(it),'$$']};
                             ax1=subplot(1,2,1);
                             plotfield(D.T./D.Tmax,M.X/1e3,M.Z/1e3,Pl,...
                                 'pcolor',tit,'quiver',ID.vx,ID.vz)
                             colormap(ax1,flipud(Pl.lajolla))
-                            
+
                             ax2=subplot(1,2,2);
                             plot(Ma.XM./1e3,Ma.ZM./1e3,'.','MarkerSize',1)
                             hold on
                             plot(M.X./1e3,M.Z./1e3,'kx','MarkerSize',2)
-                            xlabel('x [ km ]'); ylabel('z [ km ]')
-                            title('Tracerdistribution')
+                            xlabel('$$x\ [km]$$','Interpreter','latex')
+                            ylabel('$$z\ [km]$$','Interpreter','latex')
+                            title('$$Tracerdistribution$$','Interpreter','latex')
                             axis equal; axis tight
-                            set(gca,'FontWeight','Bold')
+                            set(gca,'FontWeight','Bold','TickLabelInterpreter','latex')
                         otherwise
                             figure(2),clf
-                            tit = {['2-D numerical Advection:',B.AdvMethod];...
-                                ['\Deltat_{fac} = ',num2str(T.dtfac),...
+                            tit = {['$$2-D\ numerical\ Advection:',B.AdvMethod,'$$'];...
+                                ['$$\Delta\ t_{fac} = ',num2str(T.dtfac),...
                                 '; nx = ',num2str(N.nx),', nz = ',...
                                 num2str(N.nz),', mpe: ',num2str(N.nmx*N.nmz),...
-                                ', Step: ',num2str(it)]};
+                                ', Step: ',num2str(it),'$$']};
                             ax1=subplot(1,1,1);
                             plotfield(D.T./D.Tmax,M.X/1e3,M.Z/1e3,Pl,...
                                 'pcolor',tit,'quiver',ID.vx,ID.vz)
@@ -163,12 +164,12 @@ for i = 1:size(scheme,2)
                         case 'yes'
                             saveas(figure(2),...
                                 [M.ModDir,'/Field',num2str(it)],'png')
-                            
+
                             % Capture the plot as an image
                             frame       = getframe(h);
                             im          = frame2im(frame);
                             [imind,cm]  = rgb2ind(im,256);
-                            
+
                             % Write to the GIF File
                             if it == 1
                                 imwrite(imind,cm,Pl.filename,'gif', 'Loopcount',inf);
@@ -187,31 +188,32 @@ for i = 1:size(scheme,2)
             switch B.AdvMethod
                 case 'tracers'
                     figure(2),clf
-                    tit = {['2-D numerical Advection:',B.AdvMethod];...
-                        ['\Deltat_{fac} = ',num2str(T.dtfac),...
+                    tit = {['$$2-D\ numerical\ Advection:',B.AdvMethod,'$$'];...
+                        ['$$\Delta\ t_{fac} = ',num2str(T.dtfac),...
                         '; nx = ',num2str(N.nx),', nz = ',...
                         num2str(N.nz),', mpe: ',num2str(N.nmx*N.nmz),...
-                        ', Step: ',num2str(it)]};
+                        ', Step: ',num2str(it),'$$']};
                     ax1=subplot(1,2,1);
                     plotfield(D.T./D.Tmax,M.X/1e3,M.Z/1e3,Pl,...
                         'pcolor',tit,'quiver',ID.vx,ID.vz)
                     colormap(ax1,flipud(Pl.lajolla))
-                    
+
                     ax2=subplot(1,2,2);
                     plot(Ma.XM./1e3,Ma.ZM./1e3,'.','MarkerSize',1)
                     hold on
                     plot(M.X./1e3,M.Z./1e3,'kx','MarkerSize',2)
-                    xlabel('x [ km ]'); ylabel('z [ km ]')
-                    title('Tracerdistribution')
+                    xlabel('$$x\ [km]$$','Interpreter','latex')
+                    ylabel('$$z\ [km]$$','Interpreter','latex')
+                    title('$$Tracerdistribution$$','Interpreter','latex')
                     axis equal; axis tight
-                    set(gca,'FontWeight','Bold')
+                    set(gca,'FontWeight','Bold','TickLabelInterpreter','latex')
                 otherwise
                     figure(2),clf
-                    tit = {['2-D numerical Advection:',B.AdvMethod];...
-                        ['\Deltat_{fac} = ',num2str(T.dtfac),...
+                    tit = {['$$2-D\ numerical\ Advection:',B.AdvMethod,'$$'];...
+                        ['$$\Delta\ t_{fac} = ',num2str(T.dtfac),...
                         '; nx = ',num2str(N.nx),', nz = ',...
                         num2str(N.nz),', mpe: ',num2str(N.nmx*N.nmz),...
-                        ', Step: ',num2str(it)]};
+                        ', Step: ',num2str(it),'$$']};
                     ax1=subplot(1,1,1);
                     plotfield(D.T./D.Tmax,M.X/1e3,M.Z/1e3,Pl,...
                         'pcolor',tit,'quiver',ID.vx,ID.vz)
@@ -220,18 +222,18 @@ for i = 1:size(scheme,2)
             end
             break
         end
-    end    
-    figure(3)    
-    tit = {['2-D numerical Advection:',B.AdvMethod];...
-        ['\Deltat_{fac} = ',num2str(T.dtfac),...
+    end
+    figure(3)
+    tit = {['$$2-D\ numerical\ Advection:',B.AdvMethod,'$$'];...
+        ['$$\Delta\ t_{fac} = ',num2str(T.dtfac),...
         '; nx = ',num2str(N.nx),', nz = ',...
         num2str(N.nz),', mpe: ',num2str(N.nmx*N.nmz),...
-        ', Step: ',num2str(it)]};
+        ', Step: ',num2str(it),'$$']};
     ax1=subplot(2,2,i);
     plotfield(D.T./D.Tmax,M.X/1e3,M.Z/1e3,Pl,...
         'pcolor',tit,'quiver',ID.vx,ID.vz)
     caxis([B.T0/(B.T0+B.TAmpl) 1])
-    colormap(ax1,flipud(Pl.lajolla))    
+    colormap(ax1,flipud(Pl.lajolla))
 end
 %% ====================== Clear path structure ========================== %
 if strcmp(getenv('OS'),'Windows_NT')
@@ -241,7 +243,7 @@ if strcmp(getenv('OS'),'Windows_NT')
 else
     rmpath('../../AdvectionProblem')
     rmpath('../../SetUp')
-    rmpath('../../StokesProble')
+    rmpath('../../StokesProblem')
 end
 % ======================================================================= %
 % profile viewer

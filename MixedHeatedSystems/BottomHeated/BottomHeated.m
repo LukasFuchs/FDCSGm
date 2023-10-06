@@ -35,6 +35,8 @@ B.EtaIni        =   'tdep';
 % ======================================================================= %
 %% ================== Define initial temperature anomaly ================ %
 B.Tini          =   'block';
+B.T0            =   1000;
+B.TAmpl         =   100; 
 Py.tparam       =   'const';
 % ======================================================================= %
 %% ========================= Define flow field ========================== %
@@ -46,8 +48,8 @@ M.H         =   -2900;          %   Modeltiefe [ in km ]
 M.xmax      =   3;              %   Seitenverhaeltniss
 % ======================================================================= %
 %% ====================== Define the numerical grid ===================== %
-N.nz        =   101;             %   Vertikale Gitteraufloesung
-N.nx        =   301;             %   Horizontale Gitteraufloesung
+N.nz        =   51;             %   Vertikale Gitteraufloesung
+N.nx        =   151;             %   Horizontale Gitteraufloesung
 % ======================================================================= %
 %% ====================== Define physical constants ===================== %
 Py.g        =   9.81;               %   Schwerebeschleunigung [m/s^2]
@@ -102,7 +104,7 @@ T.dtdifac   =   0.9;            %   Diffusions Stabilitaetskriterium
 [Py,D,ID,M,N,T,A,Pl]    =   SetUpFields(Py,B,N,M,T,Pl);
 % ======================================================================= %
 %% ======================== Setup initial conditions ==================== %
-[T,D,B,Ma,Py]           =   SetUpInitialConditions(T,D,Py,M,N,B);
+[T,D,B,M,Ma,Py]         =   SetUpInitialConditions(T,D,Py,M,N,B);
 % ======================================================================= %
 %% ======================= Rayleigh number conditions =================== %
 if Py.Ra < 0
@@ -118,8 +120,8 @@ end
 %% ========================= Plot parameter ============================= %
 Pl.inc      =   min(N.nz/10,N.nx/10);
 Pl.inc      =   round(Pl.inc);
-Pl.xlab     =   '\bfx';
-Pl.zlab     =   '\bfz';
+Pl.xlab     =   '$$x$$';
+Pl.zlab     =   '$$z$$';
 switch Pl.plotfields
     case 'yes'
         if strcmp(getenv('OS'),'Windows_NT')
@@ -145,7 +147,7 @@ end
 %% ========================== Scale Parameters ========================== %
 switch lower(Py.scale)
     case 'yes'
-        [M,N,D,T,S]     =   ScaleParameters(M,Py,N,D,T);
+        [M,N,D,T,S]     =   ScaleParameters(B,M,Py,N,D,T);
 end
 % ======================================================================= %
 %% ================ Information for the command window ================== %
@@ -200,10 +202,11 @@ for it = 1:T.itmax
     Pl              =   PlotData(it,Pl,T,D,M,ID,Py);
     % =================================================================== %
     %% ========================== Advection ============================= %
-    [D,Ma,ID]       =   Advection(it,B,D,ID,Py,T.dt,M,Ma);
+    [D,Ma,ID]       =   Advection(it,N,B,D,ID,Py,T.dt,M,Ma);
     % =================================================================== %
     %% ========================== Diffusion ============================= %
-    D.T             =   Diffusion(B,D.T,D.Q,T.dt,N);
+%     D.T             =   Diffusion(B,D.T,D.Q,T.dt,N);
+    D.T             =   Diffusion(B,D.T,D.Q,D.rho,Py,T.dt,N);
     % =================================================================== %
     %% ================== Heat flow at the surface ====================== %
     D.dTtop         =   (D.T(1,:)-D.T(2,:))./N.dz;

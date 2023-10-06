@@ -21,7 +21,7 @@ else
 end
 % ======================================================================= %
 %% Some initial definitions --------------------------------------------- %
-Pl.savefig      =   'yes';
+Pl.savefig      =   'no';
 Pl.plotfields   =   'yes';
 Py.scale        =   'yes';
 % ======================================================================= %
@@ -66,7 +66,7 @@ Py.kappa    =   Py.k/Py.rho0/Py.cp; % 	Thermische Diffusivitaet [ m^2/s ]
 Py.Q0       =   0;              % Waermeproduktionsrate pro Volumen [W/m^3]
 Py.Q0       =   Py.Q0/Py.rho0;  % Waermeproduktionsrate pro Masse [W/kg]
 
-Py.eta0     =   1e21;           %   Viskositaet [ Pa*s ]
+Py.eta0     =   1e23;           %   Viskositaet [ Pa*s ]
 
 Py.DeltaT   =   1000;           % Temperaturdifferenz
 
@@ -114,8 +114,8 @@ else
     Py.eta0 =   Py.rho0*Py.g*Py.alpha*Py.DeltaT*(-M.H*1e3)^3/Py.Ra/Py.kappa;
 end
 % ======================================================================= %
-n           =   [2,3,4,5];
-% n           =   2;
+% n           =   [2,3,4,5];
+n           =   [2 3];
 nz          =   ceil((n-1).*(Py.Ra/4)^(1/3)+1);
 Nus         =   zeros(length(n),1);
 VRMS        =   zeros(length(n),1);
@@ -133,8 +133,8 @@ for i = 1:length(n)
     %% ===================== Plot parameter ============================= %
     Pl.inc      =   min(N.nz/10,N.nx/10);
     Pl.inc      =   round(Pl.inc);
-    Pl.xlab     =   '\bfx';
-    Pl.zlab     =   '\bfz';
+    Pl.xlab     =   '$$x$$';
+    Pl.zlab     =   '$$z$$';
     switch Pl.plotfields
         case 'yes'
             if strcmp(getenv('OS'),'Windows_NT')
@@ -288,9 +288,11 @@ plot(1./nz.^2,Nus,'o','MarkerSize',8,'MarkerEdgeColor','k',...
 hold on
 plot(1e-6,Ger(1,blmod),'s','MarkerSize',8,'MarkerEdgeColor','r',...
     'MarkerFaceColor','k')
-set(gca,'FontWeight','Bold','yscale','log','xscale','log','LineWidth',2);
-xlabel('1/nz/nx'); ylabel('Nusselt #')
-title('Aufloesungstest')
+set(gca,'FontWeight','Bold','yscale','log','xscale','log',...
+    'LineWidth',2,'FontSize',15,'TickLabelInterpreter','latex')
+xlabel('$$1/nz/nx$$','Interpreter','latex')
+ylabel('$$Nusselt\ Number$$','Interpreter','latex')
+title('$$Resolution\ test$$','Interpreter','latex')
 
 subplot(2,1,2)
 plot(1./nz.^2,VRMS,'o','MarkerSize',8,'MarkerEdgeColor','k',...
@@ -298,9 +300,11 @@ plot(1./nz.^2,VRMS,'o','MarkerSize',8,'MarkerEdgeColor','k',...
 hold on
 plot(1e-6,Ger(2,blmod),'s','MarkerSize',8,'MarkerEdgeColor','r',...
     'MarkerFaceColor','k')
-set(gca,'FontWeight','Bold','yscale','log','xscale','log','LineWidth',2);
-xlabel('1/nz/nx'); ylabel('V_{RMS}')
-legend('Model','Benchmark')
+set(gca,'FontWeight','Bold','yscale','log','xscale','log',...
+    'LineWidth',2,'FontSize',15,'TickLabelInterpreter','latex')
+xlabel('$$1/nz/nx$$','Interpreter','latex')
+ylabel('$$V_{RMS}$$','Interpreter','latex')
+legend('$$Model$$','$$Benchmark$$','Interpreter','latex')
 
 DATA    =   [nz',Nus,VRMS];
 switch Pl.savefig

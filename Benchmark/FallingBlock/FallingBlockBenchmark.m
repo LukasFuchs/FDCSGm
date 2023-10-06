@@ -33,8 +33,8 @@ for k = 1:length(eta1)
     M.xmax      =   1;              %   Aspect ratio
     % =================================================================== %
     %% ====================== Define the numerical grid ================= %
-    N.nz        =   51;             %   Vertical grid solution
-    N.nx        =   51;             %   Horizontal grid solution
+    N.nz        =   21;             %   Vertical grid solution
+    N.nx        =   21;             %   Horizontal grid solution
     % =================================================================== %
     %% ====================== Tracer advection method =================== %
     % Number of tracers per cell: nmx*nmz                                 %
@@ -50,7 +50,7 @@ for k = 1:length(eta1)
     
     Py.kappa    =   Py.k/Py.rho0/Py.cp; % 	Thermal diffusivity [ m^2/s ]
     
-    Py.Q0       =   7.45e-09; %3.1e-9;  %   Heat production rate per volume [W/m^3]
+    Py.Q0       =   0; %3.1e-9;         %   Heat production rate per volume [W/m^3]
     Py.Q0       =   Py.Q0/Py.rho0;      %   Heat production rate per mass [W/kg]
     
     Py.eta0     =   eta0;               %   Viscosity comp. 0 [ Pa*s ]
@@ -80,8 +80,8 @@ for k = 1:length(eta1)
     %% ========================= Plot parameter ========================= %
     Pl.inc      =   min(N.nz/10,N.nx/5);
     Pl.inc      =   round(Pl.inc);
-    Pl.xlab     =   '\bfx';
-    Pl.zlab     =   '\bfz';
+    Pl.xlab     =   '$$x$$';
+    Pl.zlab     =   '$$z$$';
     switch Pl.plotfields
         case 'yes'
             if strcmp(getenv('OS'),'Windows_NT')
@@ -136,20 +136,20 @@ for k = 1:length(eta1)
                 case 'const'
                     ax1=subplot(2,1,1);
                     plotfield(D.rho,M.X./1e3,M.Z./1e3,Pl,'pcolor',...
-                        '\it\rho \rm\bf','quiver',ID.vx,ID.vz)
+                        '$$\rho$$','quiver',ID.vx,ID.vz)
                     colormap(ax1,flipud(Pl.lajolla))
                     ax2=subplot(2,1,2);
                     plotfield(ID.v,M.X./1e3,M.Z/1e3,Pl,'pcolor',...
-                        '\itv \rm\bf')
+                        '$$v$$')
                     colormap(ax2,Pl.imola)
                 case 'variable'
                     ax1=subplot(2,1,1);
                     plotfield(D.rho,M.X./1e3,M.Z./1e3,Pl,'contourf',...
-                        '\it\rho\rm\bf','quiver',ID.vx,ID.vz)
+                        '$$\rho$$','quiver',ID.vx,ID.vz)
                     colormap(ax1,flipud(Pl.lajolla))
                     ax2=subplot(2,1,2);
                     plotfield(log10(D.eta),M.X./1e3,M.Z./1e3,Pl,'pcolor',...
-                        '\it\eta\rm\bf')
+                        '$$\eta$$')
                     colormap(ax2,flipud(Pl.lapaz))
             end
             switch Pl.savefig

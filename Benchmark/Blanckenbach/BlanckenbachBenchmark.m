@@ -124,8 +124,8 @@ end
 %% ========================= Plot parameter ============================= %
 Pl.inc      =   min(N.nz/10,N.nx/10);
 Pl.inc      =   round(Pl.inc);
-Pl.xlab     =   '\bfx';
-Pl.zlab     =   '\bfz';
+Pl.xlab     =   '$$x$$';
+Pl.zlab     =   '$$z$$';
 switch Pl.plotfields
     case 'yes'
         if strcmp(getenv('OS'),'Windows_NT')

@@ -5,12 +5,10 @@ if strcmp(getenv('OS'),'Windows_NT')
     addpath('..\..\AdvectionProblem')
     addpath('..\..\StokesProblem')
     addpath('..\..\SetUp')
-    addpath('..\..\ScaleParam')
 else
     addpath('../../AdvectionProblem')
     addpath('../../StokesProblem')
     addpath('../../SetUp')
-    addpath('../../ScaleParam')
 end
 % ======================================================================= %
 T.tstart        =   tic;
@@ -56,7 +54,7 @@ Py.Q0       =   0; %3.1e-9;         %   Heat production rate per volume [W/m^3]
 Py.Q0       =   Py.Q0/Py.rho0;      %   Heat production rate per mass [W/kg]
 
 Py.eta0     =   1e21;               %   Viscosity comp. 0 [ Pa*s ]
-Py.eta1     =   1e21;               %   Viscosity comp. 1 [ Pa*s ]
+Py.eta1     =   1e22;               %   Viscosity comp. 1 [ Pa*s ]
 
 Py.rho1     =   3300;               %   Density comp. 1 [ kg/m^3 ]
 
@@ -71,8 +69,8 @@ B.lbc       =   1;              %   Left
 B.rbc       =   1;              %   Right
 % ======================================================================= %
 %% ====================== Define time constants ========================= %
-T.tmaxini   =   9.886;             %   Maximum time in Ma
-T.itmax     =   50;            %   Maximum number of iterations
+T.tmaxini   =   15.446;         %   Maximum time in Ma;
+T.itmax     =   2000;           %   Maximum number of iterations
 T.dtfac     =   0.5;            %   Courant criterium
 % ======================================================================= %
 %% ========================= Define fields required ===================== %
@@ -84,8 +82,8 @@ T.dtfac     =   0.5;            %   Courant criterium
 %% ========================= Plot parameter ============================= %
 Pl.inc      =   min(N.nz/10,N.nx/5);
 Pl.inc      =   round(Pl.inc);
-Pl.xlab     =   '\bfx';
-Pl.zlab     =   '\bfz';
+Pl.xlab     =   '$$x$$';
+Pl.zlab     =   '$$z$$';
 switch Pl.plotfields
     case 'yes'
         if strcmp(getenv('OS'),'Windows_NT')
@@ -108,12 +106,6 @@ switch Pl.savefig
         Pl.filename    = [M.ModDir,'/Evolution.gif'];
         set(figure(2),'position',[1.8,1.8,766.4,780.8]);
         h           =   figure(2);
-end
-% ======================================================================= %
-%% ========================== Scale Parameters ========================== %
-switch lower(Py.scale)
-    case 'yes'
-        [M,N,D,T,S]     =   ScaleParameters(M,Py,N,D,T);
 end
 % ======================================================================= %
 %% ================ Information for the command window ================== %
@@ -166,7 +158,7 @@ for it = 1:T.itmax
     Pl.time     =   ...
         ['@ Iteration: ',sprintf('%i',it),...
         '; Time: ',sprintf('%2.2e',T.time(it))];
-    if (mod(it,1)==0||it==1)
+    if (mod(it,10)==0||it==1)
         switch Pl.plotfields
             case 'yes'
                 figure(2)
@@ -175,20 +167,20 @@ for it = 1:T.itmax
                     case 'const'
                         ax1=subplot(2,1,1);
                         plotfield(D.rho,M.X./1e3,M.Z./1e3,Pl,'contourf',...
-                            '\it\rho \rm\bf','quiver',ID.vx,ID.vz)
+                            '$$\rho$$','quiver',ID.vx,ID.vz)
                         colormap(ax1,flipud(Pl.lajolla))
                         ax2=subplot(2,1,2);
                         plotfield(ID.v,M.X./1e3,M.Z/1e3,Pl,'pcolor',...
-                            '\itv \rm\bf')
+                            '$$v$$')
                         colormap(ax2,Pl.imola)
                     case 'variable'
                         ax1=subplot(2,1,1);
                         plotfield(D.rho,M.X./1e3,M.Z./1e3,Pl,'contourf',...
-                            '\it\rho\rm\bf','quiver',ID.vx,ID.vz)
+                            '$$\rho$$','quiver',ID.vx,ID.vz)
                         colormap(ax1,flipud(Pl.lajolla))
                         ax2=subplot(2,1,2);
                         plotfield(log10(D.eta),M.X./1e3,M.Z./1e3,Pl,'contourf',...
-                            '\it\eta\rm\bf','quiver',ID.vx,ID.vz)
+                            '$$\eta$$','quiver',ID.vx,ID.vz)
                         colormap(ax2,flipud(Pl.lapaz))
                 end
                 switch Pl.savefig
@@ -226,20 +218,20 @@ for it = 1:T.itmax
             case 'const'
                 ax1=subplot(2,1,1);
                 plotfield(D.rho,M.X./1e3,M.Z./1e3,Pl,'contourf',...
-                    '\it\rho \rm\bf','quiver',ID.vx,ID.vz)
+                    '$$\rho$$','quiver',ID.vx,ID.vz)
                 colormap(ax1,flipud(Pl.lajolla))
                 ax2=subplot(2,1,2);
                 plotfield(ID.v,M.X./1e3,M.Z/1e3,Pl,'pcolor',...
-                    '\itv \rm\bf')
+                    '$$v$$')
                 colormap(ax2,Pl.imola)
             case 'variable'
                 ax1=subplot(2,1,1);
                 plotfield(D.rho,M.X./1e3,M.Z./1e3,Pl,'contourf',...
-                    '\it\rho\rm\bf','quiver',ID.vx,ID.vz)
+                    '$$\rho$$','quiver',ID.vx,ID.vz)
                 colormap(ax1,flipud(Pl.lajolla))
                 ax2=subplot(2,1,2);
                 plotfield(log10(D.eta),M.X./1e3,M.Z./1e3,Pl,'contourf',...
-                    '\it\eta\rm\bf','quiver',ID.vx,ID.vz)
+                    '$$\eta$$','quiver',ID.vx,ID.vz)
                 colormap(ax2,flipud(Pl.lapaz))
         end
         break
@@ -258,12 +250,10 @@ if strcmp(getenv('OS'),'Windows_NT')
     rmpath('..\..\AdvectionProblem')
     rmpath('..\..\StokesProblem')
     rmpath('..\..\SetUp')
-    rmpath('..\..\ScaleParam')
 else
     rmpath('../../AdvectionProblem')
     rmpath('../../StokesProblem')
     rmpath('../../SetUp')
-    rmpath('../../ScaleParam')
 end
 % ======================================================================= %
 % ======================================================================= %

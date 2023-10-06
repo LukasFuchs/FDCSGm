@@ -3,17 +3,15 @@ clc
 % profile on
 %% ======================== Add required paths ========================== %
 if strcmp(getenv('OS'),'Windows_NT')
-    addpath('..\..\DiffusionProblem')
     addpath('..\..\AdvectionProblem')
     addpath('..\..\StokesProblem')
     addpath('..\..\SetUp')
-    addpath('..\..\ScaleParam')
+%     addpath('..\..\ScaleParam')
 else
-    addpath('../../DiffusionProblem')
     addpath('../../AdvectionProblem')
     addpath('../../StokesProblem')
     addpath('../../SetUp')
-    addpath('../../ScaleParam')
+%    addpath('../../ScaleParam')
 end
 % ======================================================================= %
 T.tstart        =   tic;
@@ -25,20 +23,20 @@ Py.scale        =   'no';
 %% ============ Define method to solve the energy equation ============== %
 B.AdvMethod     =   'semi-lag';
 B.Aparam        =   'comp';
-B.DiffMethod    =   'none';
+% B.DiffMethod    =   'none';
 % ======================================================================= %
 %% ==================== Define viscosity conditions ===================== %
 Py.eparam       =   'variable';
 B.EtaIni        =   'RTI';
-B.lambda 	=   0.5; 		% Wellenlaenge der Perturbation [ km ]
+B.lambda        =   0.5; 		% Wellenlaenge der Perturbation [ km ]
 B.deltaA        =   100;        % Amplitude [ km ]
-% ======================================================================= %
-%% ================== Define initial temperature anomaly ================ %
-B.Tini          =   'none';
-Py.tparam       =   'none';
+%% ======================================================================= %
+%%% ================== Define initial temperature anomaly ================ %
+%B.Tini          =   'none';
+%Py.tparam       =   'none';
 % ======================================================================= %
 %% ========================= Define flow field ========================== %
-B.IniFlow       =   'none';
+%B.IniFlow       =   'none';
 B.FlowFac       =   10;
 % ======================================================================= %
 %% ==================== Define model geometry constants ================= %
@@ -92,8 +90,8 @@ T.dtfac     =   1.0;        %   Advektionscourantkriterium
 %% ========================= Plot parameter ============================= %
 Pl.inc      =   min(N.nz/10,N.nx/5);
 Pl.inc      =   round(Pl.inc);
-Pl.xlab     =   '\bfx [ km ]';
-Pl.zlab     =   '\bfz [ km ]';
+Pl.xlab     =   '$$x\ [km]$$';
+Pl.zlab     =   '$$z\ [km]$$';
 switch Pl.plotfields
     case 'yes'
         if strcmp(getenv('OS'),'Windows_NT')
@@ -117,22 +115,20 @@ switch Pl.savefig
         h           =   figure(3);
 end
 % ======================================================================= %
-%% ========================== Scale Parameters ========================== %
-switch lower(Py.scale)
-    case 'yes'
-        [M,N,D,T,S]         =   ScaleParameters(B,M,Py,N,D,T);
-end
-% ======================================================================= %
+% %% ========================== Scale Parameters ========================== %
+% switch lower(Py.scale)
+%     case 'yes'
+%         [M,N,D,T,S]         =   ScaleParameters(B,M,Py,N,D,T);
+% end
+% % ======================================================================= %
 %% ================ Information for the command window ================== %
 fprintf([' Rayleigh-Taylor Instabilitaet  --------------------- ',...
     '\n Advektion mit: %s',...
     '\n Viskositaet ist: %s',...
-    '\n Anfangstemperaturfeld: %s',...
-    '\n Anfangsgeschwindigkeitsfeld: %s',...
     '\n Aufloesung (nx x nz): %i x %i',...
     '\n Refrenzviskositaet [Pa s]: %2.2e',...
     '\n  --------------------- ',...
-    '\n\n '],B.AdvMethod,Py.eparam,B.Tini,B.IniFlow,...
+    '\n\n '],B.AdvMethod,Py.eparam,...
     N.nx,N.nz,Py.eta0);
 fprintf(['Maximum Time : %1.4g',...
     '\n Maximale Anzahl an Iterationen: %5i',...
@@ -180,15 +176,15 @@ for it = 1:T.itmax
                 
                 ax1=subplot(3,1,1);
                 plotfield(D.rho,M.X/1e3,M.Z/1e3,Pl,'contourf',...
-                    '\it\rho\rm\bf','quiver',ID.vx,ID.vz)
+                    '$$\rho$$','quiver',ID.vx,ID.vz)
                 colormap(ax1,flipud(Pl.oslo))
                 ax2=subplot(3,1,2);
                 plotfield(log10(D.eta),M.X/1e3,M.Z/1e3,Pl,'pcolor',...
-                    '\it\eta\rm\bf','contour2',D.C,1.5)
+                    '$$\eta$$')
                 colormap(ax2,flipud(Pl.lapaz))
                 ax3=subplot(3,1,3);
                 plotfield(ID.v.*100*365.25*24*60*60,...
-                    M.X/1e3,M.Z/1e3,Pl,'pcolor','\itv \rm\bf')
+                    M.X/1e3,M.Z/1e3,Pl,'pcolor','$$v$$')
                 colormap(ax3,Pl.imola)
                 
                 switch Pl.savefig
@@ -221,15 +217,15 @@ figure(3)
 clf
 ax1=subplot(3,1,1);
 plotfield(D.rho,M.X/1e3,M.Z/1e3,Pl,'contourf',...
-    '\it\rho\rm\bf','quiver',ID.vx,ID.vz)
+    '$$\rho$$','quiver',ID.vx,ID.vz)
 colormap(ax1,flipud(Pl.oslo))
 ax2=subplot(3,1,2);
 plotfield(log10(D.eta),M.X/1e3,M.Z/1e3,Pl,'pcolor',...
-    '\it\eta\rm\bf')
+    '$$\eta$$')
 colormap(ax2,flipud(Pl.lapaz))
 ax3=subplot(3,1,3);
 plotfield(ID.v.*100*365.25*24*60*60,...
-    M.X/1e3,M.Z/1e3,Pl,'pcolor','\itv \rm\bf')
+    M.X/1e3,M.Z/1e3,Pl,'pcolor','$$v$$')
 colormap(ax3,Pl.imola)
 switch Pl.savefig
     case 'yes'
@@ -243,9 +239,11 @@ figure(4)
 plot(T.time/1e6/(365.25*24*60*60),...
     D.meanV*100*365.25*24*60*60,...
     'LineWidth',2)
-set(gca,'FontWeight','Bold');
-xlabel('t [ Ma ]'); ylabel('VRMS [ cm/a ]')
-title('Root Mean Square Velocity')
+set(gca,'FontWeight','Bold',...
+    'LineWidth',2,'FontSize',15,'TickLabelInterpreter','latex')
+xlabel('$$t\ [Ma]$$','Interpreter','latex')
+ylabel('$$V_{RMS}\ [cm/a]$$','Interpreter','latex')
+title('$$Root\ Mean\ Square\ Velocity$$','Interpreter','latex')
 
 switch Pl.savefig
     case 'yes'
@@ -255,20 +253,19 @@ end
 T.tend      = toc(T.tstart);
 %% ====================== Clear path structure ========================== %
 if strcmp(getenv('OS'),'Windows_NT')
-    rmpath('..\..\DiffusionProblem')
+%     rmpath('..\..\DiffusionProblem')
     rmpath('..\..\AdvectionProblem')
     rmpath('..\..\StokesProblem')
     rmpath('..\..\SetUp')
-    rmpath('..\..\ScaleParam')
+%     rmpath('..\..\ScaleParam')
 else
-    rmpath('../../DiffusionProblem')
+%     rmpath('../../DiffusionProblem')
     rmpath('../../AdvectionProblem')
     rmpath('../../StokesProblem')
     rmpath('../../SetUp')
-    rmpath('../../ScaleParam')
+%     rmpath('../../ScaleParam')
 end
 % ======================================================================= %
-
 % ======================================================================= %
 % =============================== END =================================== %
 % ======================================================================= %
