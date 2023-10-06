@@ -84,3 +84,5 @@ Orientation **α** [°]: 45
 
 ### References
 Schmid, D. W., & Podladchikov, Y. Y. (2003). Analytical solutions for deformable elliptical inclusions in general shear. Geophysical Journal International, 155(1), 269-288.
+
+# Directory Content
