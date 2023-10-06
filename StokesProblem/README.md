@@ -56,7 +56,7 @@ where *ρ<sub>0</sub>* is the reference density and *α* the thermal expansion c
 
 ## Internal Structure
 
-&emsp; I initially wrote this code during my PhD and, unfortunately, the documentation was quite brief. However, the main scripts to solve for the velocities and the pressure are the functions [solveSECE](https://github.com/LukasFuchs/FDCSGm/blob/main/StokesProblem/solveSECE.m)[Sc.m](https://github.com/LukasFuchs/FDCSGm/blob/main/StokesProblem/solveSECESc.m) and [solveSECE_const_Eta](https://github.com/LukasFuchs/FDCSGm/blob/main/StokesProblem/solveSECE_const_Eta.m)[Sc.m](https://github.com/LukasFuchs/FDCSGm/blob/main/StokesProblem/solveSECE_const_EtaSc.m) in a dimensional and non-dimensional (files ending with *Sc.m) form. Each function follows the same procedure, which is given as 
+&emsp; I initially wrote this code during my [PhD](https://onedrive.live.com/?authkey=%21AHBJz3oP27xd42Y&cid=775D7EE18409BBFB&id=775D7EE18409BBFB%21674908&parId=775D7EE18409BBFB%21623998&o=OneUp) and, unfortunately, the documentation was quite brief. However, the main scripts to solve for the velocities and the pressure are the functions [solveSECE](https://github.com/LukasFuchs/FDCSGm/blob/main/StokesProblem/solveSECE.m)[Sc.m](https://github.com/LukasFuchs/FDCSGm/blob/main/StokesProblem/solveSECESc.m) and [solveSECE_const_Eta](https://github.com/LukasFuchs/FDCSGm/blob/main/StokesProblem/solveSECE_const_Eta.m)[Sc.m](https://github.com/LukasFuchs/FDCSGm/blob/main/StokesProblem/solveSECE_const_EtaSc.m) in a dimensional and non-dimensional (files ending with *Sc.m) form. Each function follows the same procedure, which is given as 
 
 - setting up the $rhs$ vector, using a vertical running scheme and ordering the unknowns per grid point as *P*, *v<sub>x</sub>*, and *v<sub>z</sub>*,
 - setting up the coefficient matrix,
@@ -64,6 +64,8 @@ where *ρ<sub>0</sub>* is the reference density and *α* the thermal expansion c
 - updating the velocity and pressure field.
 
 &emsp;Setting up the coefficient matrix, I also include the boundary nodes, and the order of the unknows for the inner grid points is *P*, *v<sub>x</sub>*, and *v<sub>z</sub>*, too. The function is structured in such a way, that I first collect all coefficients for the *x*-stokes equation, second for the *z*-stokes equation, and finally for the continuum euqation. The coefficients are stored in an array with 3 * (3 * 4 + 2 ) columns, which is the total number of used grid points for the finite difference stencils or the number of non-zero diagonals, and 3 * nx * nz rows, i.e., the total number of equations. I finally use this array to setup the coefficient matrix in MATLAB with the *spdiags* command, i.e., I do use a sparse matrix format. The system of equation is then solved with the right-array division in MATLAB. 
+
+&emsp;Since this structure of the code is working and has been tested with respect to analytical solutions for different [channel flows](https://github.com/LukasFuchs/FDCSGm/tree/main/Benchmark/ChannelFlow) and additional [benchmarks](https://github.com/LukasFuchs/FDCSGm/tree/main/Benchmark), I never intended to optimize *my* structure for the stokes solver and, moreover, I do not let the students write this solver. Hoever, I am open for suggestions (highly appreciated and thanks in advance!). 
 
 ### Value Interpolation
 
