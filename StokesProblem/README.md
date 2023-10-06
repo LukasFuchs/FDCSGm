@@ -59,4 +59,27 @@ where *ρ<sub>0</sub>* is the reference density and *α* the thermal expansion c
 ### Constitutive Relation Parameters
 
 # Directory Content
+[GetStrainRate.m](https://github.com/LukasFuchs/FDCSGm/blob/main/StokesProblem/GetStrainRate.m)<br>
+&emsp;-> Function to solve for the strain-rate on the **regular** grid
+
+[GetStrainRateStress.m](https://github.com/LukasFuchs/FDCSGm/blob/main/StokesProblem/GetStrainRateStress.m)<br>
+&emsp;-> Function to solve for the strain-rate and stress on the **staggered** grid. (Not correctly implemented yet!)
+
+[InterpStaggered.m](https://github.com/LukasFuchs/FDCSGm/blob/main/StokesProblem/InterpStaggered.m)<br>
+&emsp; -> Function to interpolate the viscosities from the staggered onto the regular grid.
+
+[solveSECE.m](https://github.com/LukasFuchs/FDCSGm/blob/main/StokesProblem/solveSECE.m)<br>
+&emsp; -> Function to solve the stokes and continuum equation for a variable viscosity and in dimensional form. 
+
+[solveSECESc.m](https://github.com/LukasFuchs/FDCSGm/blob/main/StokesProblem/solveSECESc.m)<br>
+&emsp; -> Function to solve the stokes and continuum equation for a variable viscosity and in a non-dimensional form. 
+
+[solveSECE_const_Eta.m](https://github.com/LukasFuchs/FDCSGm/blob/main/StokesProblem/solveSECE_const_Eta.m)<br>
+&emsp; -> Function to solve the stokes and continuum equation for a constant viscosity and in a dimensional form. 
+
+[solveSECE_const_EtaSc.m](https://github.com/LukasFuchs/FDCSGm/blob/main/StokesProblem/solveSECE_const_EtaSc.m)<br>
+&emsp; -> Function to solve the stokes and continuum equation for a constant viscosity and in a non-dimensional form. 
+
+[velgrad.m](https://github.com/LukasFuchs/FDCSGm/blob/main/StokesProblem/velgrad.m)<br>
+&emsp; -> Function to calculate a horizontal or vertical velocity gradient.
 
