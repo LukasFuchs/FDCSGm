@@ -63,11 +63,11 @@ where *ρ<sub>0</sub>* is the reference density and *α* the thermal expansion c
 - solving the sysmtem of equations, and 
 - updating the velocity and pressure field.
 
-Setting up the coefficient matrix, I also include the boundary nodes, and the order of the unknows for the inner grid points is *P*, *v<sub>x</sub>*, and *v<sub>z</sub>*, too. The function is structured in such a way, that I first collect all coefficients for the *x*-stokes equation, second for the *z*-stokes equation, and finally for the continuum euqation. The coefficients are stored in an array with 3 * (3 * 4 + 2 ) columns, which is the total number of used grid points in the finite difference stencil or the number of non-zero diagonals, and 3*nx*nz rows, i.e., the total number of equations. I finally use this array to setup the coefficient matrix in MATLAB with the *spdiags* command, i.e., I do use a sparse matrix format. 
+&emsp;Setting up the coefficient matrix, I also include the boundary nodes, and the order of the unknows for the inner grid points is *P*, *v<sub>x</sub>*, and *v<sub>z</sub>*, too. The function is structured in such a way, that I first collect all coefficients for the *x*-stokes equation, second for the *z*-stokes equation, and finally for the continuum euqation. The coefficients are stored in an array with 3 * (3 * 4 + 2 ) columns, which is the total number of used grid points for the finite difference stencils or the number of non-zero diagonals, and 3 * nx * nz rows, i.e., the total number of equations. I finally use this array to setup the coefficient matrix in MATLAB with the *spdiags* command, i.e., I do use a sparse matrix format. The system of equation is then solved with the right-array division in MATLAB. 
 
 ### Value Interpolation
 
-The velocity on the staggered grid is interpolated (harmonic average) to the regular grid points for visualization purposes, as well as, to advect the material. This will be optimized in the near future. 
+&emsp;The velocity on the staggered grid is interpolated (harmonic average) to the regular grid points for visualization purposes, as well as, to advect the material. This will be optimized in the near future. 
 
 # References 
 
