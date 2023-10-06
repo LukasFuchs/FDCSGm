@@ -31,7 +31,9 @@ B.EtaIni        =   '';
 % ======================================================================= %
 %% ================== Define initial temperature anomaly ================ %
 B.Tini          =   'block';
-Py.tparam       =   'variable';
+B.T0            =   1000;
+B.TAmpl         =   100; 
+Py.tparam       =   'const';
 % ======================================================================= %
 %% ========================= Define flow field ========================== %
 B.IniFlow       =   'none';
@@ -98,7 +100,7 @@ T.dtdifac   =   0.9;            %   Diffusions Stabilitaetskriterium
 [Py,D,ID,M,N,T,A,Pl]    =   SetUpFields(Py,B,N,M,T,Pl);
 % ======================================================================= %
 %% ======================== Setup initial conditions ==================== %
-[T,D,B,Ma,Py]           =   SetUpInitialConditions(T,D,Py,M,N,B);
+[T,D,B,M,Ma,Py]         =   SetUpInitialConditions(T,D,Py,M,N,B);
 % ======================================================================= %
 %% ======================= Rayleigh number conditions =================== %
 if Py.Ra < 0
@@ -114,8 +116,8 @@ end
 %% ========================= Plot parameter ============================= %
 Pl.inc      =   min(N.nz/10,N.nx/10);
 Pl.inc      =   round(Pl.inc);
-Pl.xlab     =   '\bfx [ km ]';
-Pl.zlab     =   '\bfz [ km ]';
+Pl.xlab     =   '$$x\ [km]$$';
+Pl.zlab     =   '$$z\ [km]$$';
 
 switch Pl.plotfields
     case 'yes'
@@ -142,7 +144,7 @@ end
 %% ========================== Scale Parameters ========================== %
 switch lower(Py.scale)
     case 'yes'
-        [M,N,D,T,S]     =   ScaleParameters(M,Py,N,D,T);
+        [M,N,D,T,S]         =   ScaleParameters(B,M,Py,N,D,T);
 end
 % ======================================================================= %
 %% ================ Information for the command window ================== %
@@ -164,7 +166,6 @@ fprintf(['Maximum Time : %1.4g [ Ma ]',...
 % ======================================================================= %
 %% ========================= Time loop ================================= %%
 for it = 1:T.itmax
-    %     disp(['Iteration: ',sprintf('%i',it)])
     if(strcmp(B.AdvMethod,'none')==0)
         switch Py.eparam
             case 'const'
@@ -189,103 +190,23 @@ for it = 1:T.itmax
     end
     % =================================================================== %
     %% =========== Interpolate velocity onto the regular grid =========== %
-    [ID]        =   InterpStaggered(D,ID,N,'velocity');
-    D.meanV(it) = mean(ID.v,'all');   % Mittleregeschwindigkeit
-    % ------------------------------------------------------------------- %
-    
-    %% Darstellung der Daten -------------------------------------------- %
-    Pl.time     =   ...
-        ['@ Iteration: ',sprintf('%i',it),...
-        '; Time: ',sprintf('%2.2e',T.time(it)/1e6/(365.25*24*60*60)),...
-        ' [ Ma ]'];
-    
-    if (mod(it,10)==0||it==1)
-        switch Pl.plotfields
-            case 'yes'
-                figure(1) % --------------------------------------------- %
-                clf
-                switch Py.eparam
-                    case 'const'
-                        ax1=subplot(2,1,1);
-                        plotfield((D.T-D.T(1,1)),M.X./1e3,M.Z./1e3,...
-                            Pl,'contourf',...
-                            '\itT \rm\bf','quiver',ID.vx,ID.vz)
-                        colormap(ax1,flipud(Pl.lajolla))
-                        ax2=subplot(2,1,2);
-                        plotfield(ID.v,M.X./1e3,M.Z./1e3,Pl,'pcolor',...
-                            '\itv \rm\bf')
-                        colormap(ax2,Pl.imola)
-                    case 'variable'
-                        ax1=subplot(2,1,1);
-                        plotfield(D.T,M.X./1e3,M.Z/.1e3,Pl,'contourf',...
-                            '\itT\rm\bf','quiver',ID.vx,ID.vz)
-                        colormap(ax1,flipud(Pl.lajolla))
-                        ax2=subplot(2,1,2);
-                        plotfield(log10(D.eta),M.X,M.Z,Pl,'contourf',...
-                            '\it\eta\rm\bf','quiver',ID.vx,ID.vz)
-                        colormap(ax2,flipud(Pl.lapaz))
-                end
-                
-                switch Pl.savefig
-                    case 'yes'
-                        saveas(figure(1),...
-                            ['data/ThermalConvect_Ra_',sprintf('%2.2e',Py.Ra),...
-                            '_eta_',Py.eparam,'_xmax_',num2str(M.xmax),...
-                            '_nz_',num2str(N.nz),'_',num2str(it)],'png')
-                        
-                        % Capture the plot as an image
-                        frame       = getframe(h);
-                        im          = frame2im(frame);
-                        [imind,cm]  = rgb2ind(im,256);
-                        
-                        % Write to the GIF File
-                        if it == 1
-                            imwrite(imind,cm,Pl.filename,'gif', 'Loopcount',inf);
-                        else
-                            imwrite(imind,cm,Pl.filename,'gif','WriteMode','append');
-                        end
-                end
-            case 'no'
-                disp(['Iteration: ',sprintf('%i',it)])
-        end
-    end
-    % ------------------------------------------------------------------- %
-    
-    %% Advektion ======================================================== %
-    switch B.AdvMethod
-        case 'semi-lag'
-            if (it==1)
-                [D.T]  =   SemiLagAdvection2D(ID,M,D.T,T.dt);
-                
-                % Speicher die alte Geschwindigkeit
-                ID.vxo          =   ID.vx;
-                ID.vzo          =   ID.vz;
-            else
-                [D.T]  =   SemiLagAdvection2D(ID,M,D.T,T.dt);
-            end
-    end
-    % ------------------------------------------------------------------- %
-    
-    %% Diffusion ======================================================== %
-    switch B.DiffMethod
-        case 'explicit'
-            D.T     =   SolveDiff2Dexplicit(D.T,D.Q,D.rho,T.dt,Py,N,B);
-        case 'implicit'
-            [D.T,N] =   SolveDiff2Dimplicit(D.T,D.Q,D.rho,T.dt,Py,N,B);
-        case 'implicito'
-            [D.T,N] =   SolveDiff2Dimplicit(D.T,D.Q,D.rho,T.dt,Py,N,B);
-        case 'ADI'
-            D.T     =   SolveDiff2DADI(D.T,D.Q,D.rho,T.dt,Py,N,B);
-        case 'CNV'
-            [D.T,N] =   SolveDiff2DCNV(D.T,D.Q,D.rho,T.dt,Py,N,B);
-        case 'none'
-        otherwise
-            error('Diffusion scheme is not defined!')
-    end
+    [ID]            =   InterpStaggered(D,ID,N,'velocity');
+    D.meanV(it)     =   rms(ID.vx(:) + ID.vz(:));
+    % =================================================================== %
+    %% ========================== Plot data ============================= %
+    Pl              =   PlotData(it,Pl,T,D,M,ID,Py);
+    % =================================================================== %
+    %% ========================== Advection ============================= %
+    [D,Ma,ID]       =   Advection(it,N,B,D,ID,Py,T.dt,M,Ma);
+    % =================================================================== %
+    %% ========================== Diffusion ============================= %
+    D.T             =   Diffusion(B,D.T,D.Q,D.rho,Py,T.dt,N);
     % =================================================================== %
     %% ================== Heat flow at the surface ====================== %
-    D.dTtop     =   (D.T(1,:)-D.T(2,:))./N.dz;
-    D.Nus(it)   =   trapz(M.x,D.dTtop)*(-M.H/D.T(N.nz,1)/M.L);
+    D.dTtop         =   (D.T(1,:)-D.T(2,:))./N.dz;
+    D.dTbot         =   (D.T(end-1,:)-D.T(end,:))./N.dz;
+    %     D.Nus(it)       =   trapz(M.x,D.dTtop).*abs(M.H)/M.L;
+    D.Nus(it)       =   mean(D.dTtop);
     
     D.meanT(:,it)   =   mean(D.T,2);
     % =================================================================== %
@@ -293,7 +214,7 @@ for it = 1:T.itmax
     D.rho       =   Py.rho0.*(1-Py.alpha.*(D.T-D.T(1,1)));
     % =================================================================== %
     %% ========================== Check break =========================== %
-    [answer,T]  =   CheckBreakCriteria(it,T,D,M,Pl,ID,Py);
+    [answer,T]      =   CheckBreakCriteria(it,T,D,M,Pl,ID,Py);
     switch answer
         case 'yes'
             break

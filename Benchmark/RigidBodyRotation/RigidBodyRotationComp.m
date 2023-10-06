@@ -46,8 +46,8 @@ for i = 1:size(scheme,2)
     M.xmax          =   1;              % Aspect ratio
     % =================================================================== %
     %% ====================== Define the numerical grid ================= %
-    N.nx            =   101;
-    N.nz            =   101;
+    N.nx            =   201;
+    N.nz            =   201;
     % =================================================================== %
     %% ====================== Define time constants ===================== %
     T.tmaxini       =   6.2869e-1;      % [ Ma ]
@@ -72,7 +72,7 @@ for i = 1:size(scheme,2)
     T.dt      =     T.dtfac*min(N.dx,abs(N.dz))/...
         (sqrt(max(max(D.vx))^2 + max(max(D.vz))^2));
     %% ========================= Plot parameter ========================= %
-    Pl.inc      =   min(N.nz/10,N.nx/10);
+    Pl.inc      =   min(N.nz/11,N.nx/11);
     Pl.inc      =   round(Pl.inc);
     Pl.xlab     =   '$$x\ [km]$$';
     Pl.zlab     =   '$$z\ [km]$$';
@@ -110,7 +110,7 @@ for i = 1:size(scheme,2)
     % =================================================================== %
     %% ========================= Time loop ============================= %%
     for it = 1:T.itmax
-        disp([' Time step: ',num2str(it)])
+%         disp([' Time step: ',num2str(it)])
         if it>1
             T.time(it)  =   T.time(it-1) + T.dt;
             if T.time(it) > T.tmax

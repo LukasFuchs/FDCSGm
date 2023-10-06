@@ -6,12 +6,10 @@ if strcmp(getenv('OS'),'Windows_NT')
     addpath('..\..\AdvectionProblem')
     addpath('..\..\StokesProblem')
     addpath('..\..\SetUp')
-%     addpath('..\..\ScaleParam')
 else
     addpath('../../AdvectionProblem')
     addpath('../../StokesProblem')
     addpath('../../SetUp')
-%     addpath('../../ScaleParam')
 end
 % ======================================================================= %
 T.tstart        =   tic;
@@ -109,12 +107,6 @@ switch Pl.savefig
         h           =   figure(3);
 end
 % ======================================================================= %
-% %% ========================== Scale Parameters ========================== %
-% switch lower(Py.scale)
-%     case 'yes'
-%         [M,N,D,T,S]         =   ScaleParameters(B,M,Py,N,D,T);
-% end
-% % ======================================================================= %
 %% ================ Information for the command window ================== %
 fprintf([' Rayleigh-Taylor Instabilitaet  --------------------- ',...
     '\n Advektion mit: %s',...
@@ -131,7 +123,6 @@ fprintf(['Maximum Time : %1.4g',...
 % ======================================================================= %
 %% ========================= Time loop ================================= %%
 for it = 1:T.itmax
-    %     disp(['Iteration: ',sprintf('%i',it)])
     if(strcmp(B.AdvMethod,'none')==0)
         switch Py.eparam
             case 'const'
@@ -247,17 +238,13 @@ end
 T.tend      = toc(T.tstart);
 %% ====================== Clear path structure ========================== %
 if strcmp(getenv('OS'),'Windows_NT')
-%     rmpath('..\..\DiffusionProblem')
     rmpath('..\..\AdvectionProblem')
     rmpath('..\..\StokesProblem')
     rmpath('..\..\SetUp')
-%     rmpath('..\..\ScaleParam')
 else
-%     rmpath('../../DiffusionProblem')
     rmpath('../../AdvectionProblem')
     rmpath('../../StokesProblem')
     rmpath('../../SetUp')
-%     rmpath('../../ScaleParam')
 end
 % ======================================================================= %
 % ======================================================================= %

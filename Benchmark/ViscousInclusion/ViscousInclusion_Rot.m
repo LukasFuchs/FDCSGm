@@ -38,7 +38,7 @@ for i = 1:length(rotAngle)
     % Define method for solving the energy equation --------------------- %
     B.AdvMethod     =   'none';
     B.DiffMethod    =   'none';
-    B.Aparam       =   'none';
+    B.Aparam        =   'none';
     Py.scale        =   'yes';
     
     % Variable oder konstante Vikositaet -------------------------------- %
@@ -203,24 +203,28 @@ for i = 1:length(rotAngle)
         
         %% Darstellung der Daten ---------------------------------------- %
         Pl.time     =   '';
-        Pl.xlab     =   'x';
-        Pl.zlab     =   'z';
+        Pl.xlab     =   '$$x$$';
+        Pl.zlab     =   '$$z$$';
         
         if (mod(it,5)==0||it==1)
             figure(1) % ------------------------------------------------- %
             clf
-            subplot(2,2,1)
+            ax1=subplot(2,2,1);
             plotfield(log10(D.eta),M.X,M.Z,Pl,'pcolor',...
-                '\itlog_{10} ( \eta ) \rm\bf','quiver',ID.vx,ID.vz)
-            subplot(2,2,2)
+                '$$log_{10}\ ( \eta )$$','quiver',ID.vx,ID.vz)
+            colormap(ax1,flipud(Pl.lapaz))
+            ax2=subplot(2,2,2);
             plotfield(log10(ID.psi),M.X,M.Z,Pl,'pcolor',...
-                '\it log_{10} ( \psi ) \rm\bf')
-            subplot(2,2,3)
+                '$$log_{10}\ ( \psi )$$')
+            colormap(ax2,Pl.imola)
+            ax3=subplot(2,2,3);
             plotfield(log10(ID.eII),M.X,M.Z,Pl,'pcolor',...
-                '\itlog_{10} ( \epsilon_{II} ) \rm\bf')
-            subplot(2,2,4)
+                '$$log_{10}\ ( \dot\varepsilon_{II} )$$')
+            colormap(ax3,Pl.batlowW)
+            ax4=subplot(2,2,4);
             plotfield(log10(ID.tauII),M.X,M.Z,Pl,'pcolor',...
-                '\it log_{10} ( \tau_{II} ) \rm\bf')
+                '$$log_{10}\ ( \tau_{II} )$$')
+            colormap(ax4,Pl.nuuk)
         end
         
         switch Pl.savefig
@@ -252,13 +256,18 @@ clf
 yyaxis left; plot(rotAngle,psiinc1,'LineWidth',2)
 hold on
 plot(rotAngle,tauIIinc,'LineWidth',2)
-xlabel('\alpha'); ylabel('\psi or \tau_{II}')
-set(gca,'FontWeight','Bold','yscale','log','LineWidth',2,'FontSize',15)
+xlabel('$$\alpha$$','Interpreter','latex')
+ylabel('$$\psi\ or\ \tau_{II}$$','Interpreter','latex')
+set(gca,'FontWeight','Bold','yscale','log','LineWidth',2,'FontSize',15,...
+    'TickLabelInterpreter','latex')
 yyaxis right; plot(rotAngle,eIIinc,'LineWidth',2)
-set(gca,'FontWeight','Bold','yscale','log','LineWidth',2,'FontSize',15)
-ylabel('\epsilon_{II}'); xlabel('\alpha');
-legend('\langle\psi\rangle','\langle\tau_{II}\rangle',...
-    '\langle\epsilon_{II}\rangle','Location','SouthEast')
+set(gca,'FontWeight','Bold','yscale','log','LineWidth',2,'FontSize',15,...
+    'TickLabelInterpreter','latex')
+ylabel('$$\dot\varepsilon_{II}$$','Interpreter','latex')
+xlabel('$$\alpha$$','Interpreter','latex');
+legend('$$\langle \psi \rangle$$','$$\langle \tau_{II} \rangle$$',...
+    '$$\langle \dot\varepsilon_{II} \rangle$$','Location','SouthEast',...
+    'Interpreter','latex')
 % axis([0 180 1e-6 5e-5])
 
 switch Pl.savefig

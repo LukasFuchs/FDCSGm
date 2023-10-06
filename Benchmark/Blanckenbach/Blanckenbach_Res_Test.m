@@ -114,8 +114,8 @@ else
     Py.eta0 =   Py.rho0*Py.g*Py.alpha*Py.DeltaT*(-M.H*1e3)^3/Py.Ra/Py.kappa;
 end
 % ======================================================================= %
-% n           =   [2,3,4,5];
-n           =   [2 3];
+n           =   [2,3,4,5];
+% n           =   [2 3];
 nz          =   ceil((n-1).*(Py.Ra/4)^(1/3)+1);
 Nus         =   zeros(length(n),1);
 VRMS        =   zeros(length(n),1);
@@ -213,7 +213,6 @@ for i = 1:length(n)
         % =============================================================== %
         %% ======= Interpolate velocity onto the regular grid =========== %
         [ID]        =   InterpStaggered(D,ID,N,'velocity');
-        %     D.meanV(it) = mean(ID.v,'all');   % Mittleregeschwindigkeit
         D.meanV(it) = rms(ID.vx(:) + ID.vz(:));
         % =============================================================== %
         %% ====================== Plot data ============================= %

@@ -39,7 +39,7 @@ if Benchmark
     hold on
     plot(T.time(1:T.indtime),ones(T.indtime,1).*Ger(1,blmod),'r--')
 end
-set(gca,'FontWeight','Bold','LineWidth',2,'FontSize',12,...
+set(gca,'FontWeight','Bold','LineWidth',2,'FontSize',15,...
     'TickLabelInterpreter','latex')
 xlabel('$$t$$','Interpreter','latex')
 ylabel('$$Nus$$','Interpreter','latex')
@@ -54,7 +54,7 @@ if Benchmark
     %     'LineWidth',2)
     plot(T.time(1:T.indtime),ones(T.indtime,1).*Ger(2,blmod),'r--')
 end
-set(gca,'FontWeight','Bold','LineWidth',2,'FontSize',12,...
+set(gca,'FontWeight','Bold','LineWidth',2,'FontSize',15,...
     'TickLabelInterpreter','latex')
 xlabel('$$t$$','Interpreter','latex')
 ylabel('$$V_{RMS}$$','Interpreter','latex')
@@ -70,7 +70,7 @@ if Benchmark
 else
     plot(D.meanT(:,T.indtime),M.z,'LineWidth',2)
 end
-set(gca,'FontWeight','Bold','LineWidth',2,'FontSize',12,...
+set(gca,'FontWeight','Bold','LineWidth',2,'FontSize',15,...
     'TickLabelInterpreter','latex')
 xlabel('$$T$$','Interpreter','latex')
 ylabel('$$z$$','Interpreter','latex')
@@ -85,7 +85,7 @@ if Benchmark
         plot([Ger(7,blmod),Ger(8,blmod),Ger(9,blmod),Ger(10,blmod)],'s',...
             'MarkerFaceColor','r')
     end
-    set(gca,'FontWeight','Bold','LineWidth',2,'FontSize',12,...
+    set(gca,'FontWeight','Bold','LineWidth',2,'FontSize',15,...
         'yscale','log','TickLabelInterpreter','latex')    
     xlabel('$$\Delta T$$','Interpreter','latex')
     ylabel('')
