@@ -1,6 +1,6 @@
 # General Information
 
-&emsp;This directory contains several rountines to solve the diffusive part of the *temperature conservation equation* (1- and 2-D, steady state and time-dependent) using different numerical discretization methods. The routines are avaible in a dimensional or non-dimensional form (files ending with *Sc.m; see [*FDCSGm/ScaleParam*](https://github.com/LukasFuchs/FDCSGm/tree/main/ScaleParam) regarding the scaling; so far the 1-D routines are only availabe in a dimensional version!). 
+&emsp;This directory contains several rountines to solve the diffusive part of the *temperature conservation equation* (1- and 2-D, steady state and time-dependent) using different numerical discretization methods. The routines are available in a dimensional or non-dimensional form (files ending with *Sc.m; see [*FDCSGm/ScaleParam*](https://github.com/LukasFuchs/FDCSGm/tree/main/ScaleParam) regarding the scaling; so far the 1-D routines are only available in a dimensional version!). 
 
 -------------
 
@@ -43,7 +43,7 @@ where *i* and *j* are the vertical and horizontal indices of the numerical finit
 
 $T_{i,j}^{n+1} = T_{i,j}^{n} + s_x(T_{i,j+1}^{n} - 2T_{i,j}^{n} + T_{i,j-1}^{n}) + s_z(T_{i+1,j}^{n} - 2T_{i,j}^{n} + T_{i-1,j}^{n}) + \frac{Q_{i,j}^n \Delta t}{\rho c_p}$,&emsp;&emsp;&emsp;(8)
 
-where $s_x = \frac{\kappa \Delta t}{(\Delta x)^2}$ and $s_z = \frac{\kappa \Delta t}{(\Delta z)^2}$. Equation (8) can be solved *iteratively* for every inner grid point assuming an initial condition is defined (multiple initial conditions can be set in the code, check [*SetUpInitialConditions.m*](https://github.com/LukasFuchs/FDCSGm/blob/main/SetUp/SetUpInitialConditions.m)). For more details on how this is implemented in MATLAB see [*SolveDiff2Dimplicit.m*](https://github.com/LukasFuchs/FDCSGm/blob/main/DiffusionProblem/SolveDiff2Dexplicit.m).
+where $s_x = \frac{\kappa \Delta t}{(\Delta x)^2}$ and $s_z = \frac{\kappa \Delta t}{(\Delta z)^2}$. Equation (8) can be solved *iteratively* for every inner grid point assuming an initial condition is defined (multiple initial conditions can be set in the code, check the [SetUp](https://github.com/LukasFuchs/FDCSGm/tree/main/SetUp) directory and [*SetUpInitialConditions.m*](https://github.com/LukasFuchs/FDCSGm/blob/main/SetUp/SetUpInitialConditions.m)). For more details on how this is implemented in MATLAB see [*SolveDiff2Dexplicit.m*](https://github.com/LukasFuchs/FDCSGm/blob/main/DiffusionProblem/SolveDiff2Dexplicit.m).
 
 &emsp;For the boundaries of our model domain, different thermal conditions can be set. Here, I focus on two fundamental conditions, the *Dirichlet* and *Neumann* boundary conditions. The Dirichlet boundary condition defines a constant temperature along the boundary, such that the temperature, for example, along the *left* boundary can be defined as:
 
@@ -61,17 +61,17 @@ $\frac{T_{i,2} - T_{i,0}}{2 \Delta x} = c_{left}$,&emsp;&emsp;&emsp;(11)
  
 where *c<sub>left</sub>* is a constant defining the flux through the boundary and *T<sub>i,0</sub>* are the ghost nodes outside the left boundary. Now, one can solve for an expression of the temperature at the ghost nodes which fulfils the condition of equation (10) as:
 
-$T_{i,0} = T_{i,2} - 2 \Delta x c_l$.&emsp;&emsp;&emsp;(12)
+$T_{i,0} = T_{i,2} - 2 \Delta x c_{left}$.&emsp;&emsp;&emsp;(12)
 
 &emsp;Considering that equation (8) is also valid along the left boundary nodes assuming Neuman conditions, one can rewrite equation (8) for the left boundary nodes using the condition for the ghost nodes outside the numerical domain (equation (12)) as followed:
 
-$T_{i,1}^{n+1} = T_{i,1}^{n} + s_x(2T_{i,2}^{n} - 2(T_{i,1}^{n} + \Delta x c_l)) + s_z(T_{i+1,1}^{n} - 2T_{i,1}^{n} + T_{i-1,1}^{n}) + \frac{Q_{i,1}^n \Delta t}{\rho c_p}$,&emsp;&emsp;&emsp;(13)
+$T_{i,1}^{n+1} = T_{i,1}^{n} + s_x(2T_{i,2}^{n} - 2(T_{i,1}^{n} + \Delta x c_{left})) + s_z(T_{i+1,1}^{n} - 2T_{i,1}^{n} + T_{i-1,1}^{n}) + \frac{Q_{i,1}^n \Delta t}{\rho c_p}$,&emsp;&emsp;&emsp;(13)
  
 The same applies for the other boundaries. Caution needs to be taken at the corners of the model. 
 
 ## Discretization Methods
 
-&emsp; Within the code different discretization methods can be chosen to solve the diffusive part of the temperature conservation equation (i.e., *explicit*, *implicit*, *CNA*, *ADI*). While the explicit scheme seems to be the most accurate finite difference scheme for the time-dependent diffusion equation I implemented (see [Gaussian Diffusion Benchmark](https://github.com/LukasFuchs/FDCSGm/tree/main/Benchmark/GaussDiffusion)), the dependency of the time stepping on the grid resolution might become problematic in models with a high resolution and could significantly slow down the model calculations (that is, smaller time steps are necessary for higher resolutions!). In the following, I will present some well-know alternative discretization methods for the diffusive part of the temperature equation, which can help to resolve this issue, and briefly discuss their advantages and disadvantages. All discretization methods can be used in the [thermal convection code](https://github.com/LukasFuchs/FDCSGm/tree/main/MixedHeatedSystems) and the [Blankenbach Benchmark](https://github.com/LukasFuchs/FDCSGm/tree/main/Benchmark/Blanckenbach) and are generally available to chose in the code **FDCSGm**. A more detailed analysis on the accuracy of each discretization scheme and the effect of the grid resolution is given in the [Gaussian Diffusion Benchmark](https://github.com/LukasFuchs/FDCSGm/tree/main/Benchmark/GaussDiffusion). 
+&emsp; Within the code different discretization methods can be chosen to solve the diffusive part of the temperature conservation equation (i.e., *explicit*, *implicit*, *CNA*, *ADI*). While the explicit scheme seems to be the most accurate finite difference scheme for the time-dependent diffusion equation I implemented (see [Gaussian Diffusion Benchmark](https://github.com/LukasFuchs/FDCSGm/tree/main/Benchmark/GaussDiffusion)), the dependency of the time stepping on the grid resolution might become problematic in models with a high resolution and could significantly slow down the model calculations (that is, smaller time steps are necessary for higher resolutions!). In the following, I will present some well-know alternative discretization methods for the diffusive part of the temperature equation, which can help to resolve this issue, and briefly discuss their advantages and disadvantages. All discretization methods can be used in the [thermal convection code](https://github.com/LukasFuchs/FDCSGm/tree/main/MixedHeatedSystems) and the [Blankenbach Benchmark](https://github.com/LukasFuchs/FDCSGm/tree/main/Benchmark/Blanckenbach) and are generally available to chose in the code. A more detailed analysis on the accuracy of each discretization scheme and the effect of the grid resolution is given in the [Gaussian Diffusion Benchmark](https://github.com/LukasFuchs/FDCSGm/tree/main/Benchmark/GaussDiffusion). 
 
 ### Implicit, FTCS
 
@@ -83,7 +83,7 @@ where *n* is the current and *n+1* the next time step, $\Delta t$ is the time st
 
 $-s_zT_{i-1,j}^{n+1}-s_xT_{i,j-1}^{n+1}+(1+2s_z+2s_x)T_{i,j}^{n+1}-s_xT_{i,j+1}^{n+1}-s_zT_{i+1,j}^{n+1}=T_{i,j}^n+\frac{Q_{i,j}^n \Delta t}{\rho c_p}$, &emsp;&emsp;&emsp; (15)
 
-where $s_x=\frac{\kappa \Delta t}{\Delta x^2}$ and $s_z=\frac{\kappa \Delta t}{\Delta z^2}$. This is a linear system of equation in the form of $\boldsymbol{A}\cdot x = rhs$, where ***A*** is a coefficient matrix (here with five non-zero diagonals), *x* the unknown vector, and *rhs* the known right-hand side. The main advantage of the implicit method is that there are no restrictions on the time step, but this does not mean that it is accurate. Taking too large time steps may result in an inaccurate solution for features with small spatial scales. Here, I do solve the linear system of equations in MATLAB with a right-array divison (but other solver method are applicable, too). 
+where $s_x=\frac{\kappa \Delta t}{\Delta x^2}$ and $s_z=\frac{\kappa \Delta t}{\Delta z^2}$. This is a linear system of equation in the form of $\boldsymbol{A}\cdot x = rhs$, where $\boldsymbol{A}$ is a coefficient matrix (here with five non-zero diagonals), $x$ the unknown vector, and $rhs$ the known right-hand side. The main advantage of the implicit method is that there are no restrictions on the time step, but this does not mean that it is accurate. Taking too large time steps may result in an inaccurate solution for features with small spatial scales. Here, I do solve the linear system of equations in MATLAB with a right-array divison (but other solver method are applicable, too). 
 
 &emsp;As promising as the implicit method is, the band-width of the coefficient matrix could be problematic in models with a very high resoltuion. In addition, one needs to be careful in setting up the coefficient matrix and the corresponding unknown and *rhs* vectors (especially in 2-D and even more in 3-D). Here, one needs to do a proper indexing of the regular grid points by using a global index variable, which goes from 1 to *nx* x *nz*. This global index replaces the local *i* and *j* indices in equation (14), such that the spatial derivatives at a point *i*, *j* are given as: 
 
@@ -99,7 +99,7 @@ $-s_zT_{i-1,1}^{n+1}+(1+2s_z+2s_x)T_{i,1}^{n+1}-2s_xT_{i,2}^{n+1}-s_zT_{i+1,1}^{
 
 where *c<sub>left</sub>* needs to fulfil the following condition at the left boundary: 
 
-$\frac{\partial T}{\partial x} = c_{left} = \frac{T_{i,2}-T_{i,0}}{2\Delta x}$. &emsp;&emsp;&emsp; (19) 
+$\frac{\partial T}{\partial x} = \frac{T_{i,2}-T_{i,0}}{2\Delta x} = c_{left} $. &emsp;&emsp;&emsp; (19) 
 
 The same applies for the remaining boundaries. 
 
@@ -158,7 +158,7 @@ $s_zT_{i-1,j}-2(s_x+s_z)T_{i,j}+2s_xT_{i,j+1}+s_zT_{i+1,j} = -\frac{Q}{k}+\frac{
 
 $0=\frac{\partial}{\partial x}(k\frac{\partial T}{\partial x})+\frac{\partial}{\partial z}(k\frac{\partial T}{\partial z})+Q$.&emsp;&emsp;&emsp; (27)
 
-&emsp;To properly solve equation (27), one needs to apply a conservative finite difference scheme, such that the heat flux $(q_i = k\frac{\partial T}{\partial i})$ is defined between the regular grid nodes (e.g., points A,B,C, and D) and the temperature on the regular grid nodes. Therefore, one needs to average the conductivity and equation (27) results in a linear system of equations in the form of: 
+&emsp;To properly solve equation (27), one needs to apply a conservative finite difference scheme, such that the heat flux $(q_i = k\frac{\partial T}{\partial i})$ is defined **between** the regular grid nodes (e.g., points A,B,C, and D) and the temperature **on** the regular grid nodes. Therefore, one needs to average the conductivity and equation (27) results in a linear system of equations in the form of: 
 
 $\frac{k_D}{\Delta z^2}T_{i-1,j}+\frac{k_A}{\Delta x^2}T_{i,j-1}+(-\frac{1}{\Delta x^2}(k_A+k_B)-\frac{1}{\Delta z^2}(k_c+k_D))T_{i,j}+\frac{k_B}{\Delta x^2}T_{i,j+1}+\frac{k_C}{\Delta z^2}T_{i+1,j} = -Q_{i,j}$, &emsp;&emsp;&emsp; (28)
 
@@ -212,7 +212,11 @@ $k_{A} = \frac{k_{j-1} + k_{j}}{2}$
 
 $k_{B} = \frac{k_j + k_{j+1}}{2}$. &emsp;&emsp;&emsp; (38)
 
-An [*explicit*](https://github.com/LukasFuchs/FDCSGm/blob/main/DiffusionProblem/SolveDiff1Dexplicit_vary.m) solver for a 1-D thermal profile with variable thermal parameters and a radiogenic heat source is also available.
+------------------------------------------------------
+
+An [*explicit*](https://github.com/LukasFuchs/FDCSGm/blob/main/DiffusionProblem/SolveDiff1Dexplicit_vary.m) solver for a 1-D thermal profile with variable thermal parameters and a radiogenic heat source is also available. For an example of a 2-D model setup see the [Continental_Geotherm](https://github.com/LukasFuchs/FDCSGm/tree/main/Continental_Geotherm) directory. While this is simply an extension of the 1-D steady-state solution into a second dimension, one could use this model to calculate the steady-state solution of more complex continental settings (e.g., by using the markers and interpolating the properties from the marker onto the grid; similar to the [RTI](https://github.com/LukasFuchs/FDCSGm/tree/main/Benchmark/RTI) or the [viscous inclusion](https://github.com/LukasFuchs/FDCSGm/tree/main/Benchmark/ViscousInclusion)).
+
+------------------------------------------------------
 
 #### ***Thermal boundary conditions***
 
@@ -274,18 +278,20 @@ The gradient of temperature (and thus the vertical heat flux) can be defined usi
 
    $Q_{top} = -\frac{2\Delta t c_{bottom}}{\rho_{nz} c_{p,nz} \delta z}k_A$. &emsp;&emsp;&emsp; (42)
 
+---------------------------------------------------------------------------------------------------------------------
+
 #### Oceanic Geotherms
-![OLGT1](https://github.com/LukasFuchs/FDCSGm/assets/25866942/fa77bb60-1314-4be4-8852-499b1a1be17c)<br>
+![OLGT1](https://github.com/LukasFuchs/FDCSGm/assets/25866942/b1983148-a7f6-48b0-a6ad-0768eb1747f4)<br>
 ***Figure 1. Oceanic Lithosphere.** LEFT: Temperature profile [K]  for an oceanic lithosphere of 60 Ma of age and constant thermal boundary conditions at the top and bottom. The blue line shows the initial temperature profile. The yellow dashed line shows the solution for a half-space cooling model. RIGHT: Heat flux [mW/m<sup>2</sup>] with depth. The parameters of this model are defined as the default values in the routine OceanicGeotherm.m.*
 
-![OLGT2](https://github.com/LukasFuchs/FDCSGm/assets/25866942/638c6d66-7c96-4b6c-9924-4d00718504ec)<br>
+![OLGT2](https://github.com/LukasFuchs/FDCSGm/assets/25866942/34f0f13a-ea9e-484e-93e5-7f485e97cabd)<br>
 ***Figure 2. Oceanic Lithosphere II**. Same as Figure 1 but with constant heat flux boundary conditions qbottom =10 mW/m<sup>2</sup> and qtop = 90 mW/m<sup>2</sup>.*
 
 #### Continental Geotherms
-![CLGT1](https://github.com/LukasFuchs/FDCSGm/assets/25866942/a040e96d-2896-4632-ba0c-67dce616ea33)<br>
-***Figure 3. Continental Lithosphere.** LEFT: Temperature profile for a continental lithosphere of 1000 Ma of age with constant upper and lower thermal boundary conditions. The blue line shows the initial condition, the red line shows the solution of equation (1), the yellow dashed line shows the solution of the time-independent heat equation (1-D poisson equation), and the magenta dashed line shows the solution of a 2D, staggered finite difference code. MIDDLE: Heat flux with depth. RIGHT: Thermal parameter for the lithosphere setup: thermal conductivity [k], specific heat [c<sub>p</sub>], density [ρ], and volumetric heat generation rate [Q].*
+![CLGT1](https://github.com/LukasFuchs/FDCSGm/assets/25866942/21528c42-36ee-49be-abdd-e96fb6a17195)<br>
+***Figure 3. Continental Lithosphere.** LEFT: Temperature profile for a continental lithosphere of 1000 Ma of age with constant upper and lower thermal boundary conditions. The blue line shows the initial condition, the red line shows the solution of equation (1), the yellow dashed line shows the solution of the time-independent heat equation (1-D poisson equation), and the magenta dashed line shows the solution of a [2D, staggered finite difference code](https://github.com/LukasFuchs/FDCSGm/blob/main/Continental_Geotherm/ContinentalGeotherm.m). MIDDLE: Heat flux with depth. RIGHT: Thermal parameter for the lithosphere setup: thermal conductivity [k], specific heat [c<sub>p</sub>], density [ρ], and volumetric heat generation rate [Q].*
 
-![CLGT2](https://github.com/LukasFuchs/FDCSGm/assets/25866942/f6e8bc3f-dd9f-4e8b-b97a-64ff9ec1b151)<br>
+![CLGT2](https://github.com/LukasFuchs/FDCSGm/assets/25866942/e37d281e-8b2b-46ad-b9c3-68f16650d49f)<br>
 ***Figure 5. Continental Lithosphere II**. Same as Figure 3 but with constant upper and lower heat flux boundary conditions, q<sub>top</sub> = 40 mW/m<sup>2</sup> and q<sub>bottom</sub> = 10 mW/m<sup>2</sup>.*
 
 # Directory Content
