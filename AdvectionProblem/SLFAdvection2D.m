@@ -3,7 +3,7 @@ function [A] = SLFAdvection2D(vx,vz,Aold,A,dx,dz,dt)
 % 
 %               dA/dt = -vx * ( dA/dx ) - vz * ( dA/dz )
 % 
-% in einer zweidimensionalen Umgebung mit Hilfe des staggered-leaped frog
+% in einer zweidimensionalen Umgebung mit Hilfe des staggered-leap frog
 % Schemas (SLF), d.h. 
 % die Zeit- und Raum-Differentiale werden beide als zentrale finite
 % Differenzen genommen. Daher benoetigen wir auch das ALTE Temperaturfeld! 
