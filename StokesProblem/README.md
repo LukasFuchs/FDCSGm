@@ -58,6 +58,10 @@ where *ρ<sub>0</sub>* is the reference density and *α* the thermal expansion c
 
 ### Constitutive Relation Parameters
 
+# References 
+
+Gerya, T. (2019). Introduction to numerical geodynamic modelling. Cambridge University Press.
+
 # Directory Content
 [GetStrainRate.m](https://github.com/LukasFuchs/FDCSGm/blob/main/StokesProblem/GetStrainRate.m)<br>
 &emsp;-> Function to solve for the strain-rate on the **regular** grid
