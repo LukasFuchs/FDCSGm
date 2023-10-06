@@ -5,7 +5,7 @@
 ## Advection equation 
 &emsp;In case the material is not moving, one can solve the energy equation only for the diffusive part (e.g., an intrusion problem or a non-deforming lithosphere). Generally, however, the material is moving and certain properties need to be advected with the flow (e.g., the temperature). Thermal mantle convection is a perfect example on how to transport heat with both diffusion (especiall in the thermal boundary layers) and advection (mainly within the interior). 
    
-&emsp;The energy equation can be solved simultaneously with the diffusive and convective part using different discretization methods (interestingly, *FTCS* is stable with some numerical diffusion, which is always unstable for pure advection). However, for the sake of simplicity and a more conveniant way to teach both mechanisms (at least in my opinion), I do prefer, so far, the operator-splitting method, that is, I first solve for the convective part of the energy equation, followed by the conductive part. The conducitve part can be solved by the different discretization methods as described in the [diffusion problem directory](https://github.com/LukasFuchs/FDCSGm/tree/main/DiffusionProblem) and the convective part by the e.g., *upwind*, *semi-lagrangian*, or *passive tracer* method. 
+&emsp;The energy equation can be solved simultaneously with the diffusive and convective part using different discretization methods (interestingly, *forward in time and centered in space (FTCS)* is stable with some numerical diffusion, which is always unstable for pure advection). However, for the sake of simplicity and a more conveniant way to teach both mechanisms (at least in my opinion), I do prefer, so far, the operator-splitting method, that is, I first solve for the convective part of the energy equation, followed by the conductive part. The conducitve part can be solved by the different discretization methods as described in the [diffusion problem directory](https://github.com/LukasFuchs/FDCSGm/tree/main/DiffusionProblem) and the convective part by the e.g., *upwind*, *semi-lagrangian*, or *passive tracer* method. 
 
 &emsp;In general, advection describes the transport of a property, here the temperature, from one point to another, where one can assume different reference frames for the given point of interest. If we assume a not moving reference frame (that is an *Eulerian* grid), the change in temperature at a certain point can be described by (i.e. the *eulerian advective transport equation*): 
 
@@ -19,7 +19,7 @@ where both are related by:
 
 $\frac{DT}{Dt} = \frac{\partial T}{\partial t} + \overrightarrow{v} \cdot \nabla T$.&emsp;&emsp;&emsp;(3)
 
-&emsp;For a Lagrangian reference point advection is given by a simple *ordinary differential equation* particle advection scheme, where changes in its coordinates are related with the material velocities as: 
+&emsp;For a Lagrangian reference point, advection is given by a simple *ordinary differential equation* particle advection scheme, where changes in its coordinates are related with the material velocities as: 
 
 $\frac{Dx_i}{Dt} = v_i$,&emsp;&emsp;&emsp; (4)
 
@@ -33,7 +33,7 @@ where *i* is the coordinate index and *x<sub>i</sub>* is a spatial coordinate.
 
 ### The Upwind Scheme
 
-&emsp;The idea is that the flux into the local cell will only depend on the gradient of temperature in the direction upstream. The upwind scheme is similar to a forward in time and centered in space discretization, however, the central spacial derivatives are replaced by single-sided forward and backward finite differences and one needs to consider the advection velocity as well, to ensure that the discretization in space is always upstream. In 2-D the advection equation is then given as: 
+&emsp;The idea is that the flux into the local cell will only depend on the gradient of temperature in the direction upstream. The upwind scheme is similar to a *FTCS* discretization, however, the central spacial derivatives are replaced by single-sided forward and backward finite differences and one needs to consider the advection velocity as well, to ensure that the discretization in space is always upstream. In 2-D the advection equation is then given as: 
 
 $\frac{T_{i,j}^{n+1}-T_{i,j}^n}{\Delta t}=-v_{x;i,j}\cases{\matrix{\frac{T_{i,j}^{n}-T_{i,j-1}^n}{\Delta x} \quad \text{if} \quad v_{x;i,j} > 0 \\\ \frac{T_{i,j+1}^{n}-T_{i,j}^n}{\Delta x} \quad \text{if} \quad v_{x;i,j}<0}} 
 -v_{z;i,j}\cases{\matrix{\frac{T_{i,j}^{n}-T_{i-1,j}^n}{\Delta z} \quad \text{if} \quad v_{z;i,j} > 0 \\\ \frac{T_{i+1,j}^{n}-T_{i,j}^n}{\Delta z} \quad \text{if} \quad v_{z;i,j}<0}}$, &emsp;&emsp;&emsp;(5)
@@ -48,12 +48,12 @@ $\Delta t \le \frac{\Delta x}{max(|v|)}$.&emsp;&emsp;&emsp; (6)
 
 &emsp;This method considers a centered in time and centered in space discretization of the partial differentials, thus it has a higher order of accuracy in space (second order) and is suppose to not have any numerical diffusion. In 2-D the advection equation discretizes to:
 
-$\frac{T_{i,j}^{n+1} - T_{i,j}^{n+1}}{2\Delta t}=-v_{x;i,j}\frac{T_{i,j+1}^{n} - T_{i,j-1}^{n}}{2\Delta x}-v_{z;i,j}\frac{T_{i+1,j}^{n} - T_{i-1,j}^{n}}{2\Delta z}$. &emsp;&emsp;&emsp; (7)
+$\frac{T_{i,j}^{n+1} - T_{i,j}^{n-1}}{2\Delta t}=-v_{x;i,j}\frac{T_{i,j+1}^{n} - T_{i,j-1}^{n}}{2\Delta x}-v_{z;i,j}\frac{T_{i+1,j}^{n} - T_{i-1,j}^{n}}{2\Delta z}$. &emsp;&emsp;&emsp; (7)
 
 For more details see [*SLFAdvection2D.m*](https://github.com/LukasFuchs/FDCSGm/blob/main/AdvectionProblem/SLFAdvection2D.m).
 
 ### The semi-lagragian scheme 
-&emsp;This method is related to the tracer-based advection by solving ordinary differential equations (*ODEs*), where it assumes that *imaginary tracers* are located at certain positions and land directly at the finite difference grid nodes after advection within one time step. Thus, one needs to calculate the *origin points* for each grid node back in time (e.g., one Euler time step) with a given velocity field (e.g., using an *iterative mid-point scheme*, i.e. one uses the velocity at a point half a time step backward in time) and then interpolate the property from the regular grid points to the determined *origin points*. This scheme assumes that no heat-sources were active during the advection. The method does not have any numerical diffusion but shows inaccuracies due to the interpolation method. For more details see [*SemiLagAdvection2D.m*](https://github.com/LukasFuchs/FDCSGm/blob/main/AdvectionProblem/SemiLagAdvection2D.m).
+&emsp;This method is related to the tracer-based advection by solving ordinary differential equations (*ODEs*), where it assumes that *imaginary tracers* are located at certain positions and land directly at the finite difference grid nodes after advection within one time step. Thus, one needs to calculate the *origin points* for each grid node back in time (e.g., one Euler time step) with a given velocity field (e.g., using an *iterative mid-point scheme*, i.e. one uses the velocity at a point half a time step backward in time) and then to interpolate the property from the regular grid points to the determined *origin points*. This scheme assumes that no heat-sources were active during the advection. The method does not have any numerical diffusion but shows inaccuracies due to the interpolation method. For more details see [*SemiLagAdvection2D.m*](https://github.com/LukasFuchs/FDCSGm/blob/main/AdvectionProblem/SemiLagAdvection2D.m).
    
 ### Passive tracers
 
