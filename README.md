@@ -12,5 +12,6 @@
 
 # References
 
-*Gerya, T. (2009). Introduction to numerical geodynamic modelling.*<br>
+*Gerya, T. (2009). Introduction to numerical geodynamic modelling.*
+
 *Becker, T. W. and Kaus, B. J. P (2020 update): Numerical Modeling of Earth Systems: An introduction to computational methods with focus on solid Earth applications of continuum mechanics, The University of Texas at Austin, v. 1.2.2, 2020.*
