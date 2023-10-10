@@ -57,8 +57,8 @@ Resolution (nx x nz): 51 x 51<br>
 
 &emsp;The temperature and velocity patterns are resolved well (Figure 1) and the steady state values for the Nusselt number and the root mean square velocity are nearly reached (Figure 2), too. Variations from the benchmark values might be due to a rather coarse resolution (51x51) and the given solving methods, that is the explicit diffusion solver, the semi-lagrangian advection method, and the operator splitting method. 
 
-![Field3150](https://github.com/LukasFuchs/FDCSGm/assets/25866942/0c34c0a8-2e05-4ead-9c6d-a85a92b1a3b3)<br>
-**Figure 1.** Steady-state temperautre (top) and velcoity field (bottom). The arrows whos the velocity vectors at certain grid points. The reference viscosity is 10<sup>23</sup> [Pa s] and *Ra* = 10<sup>4</sup>.
+![Field_SS](https://github.com/LukasFuchs/FDCSGm/assets/25866942/ddb79a1e-96ca-431a-b32e-b1bc7070f3d1)<br>
+**Figure 1.** Steady-state temperautre (top) and velcoity field (bottom). Thermal convection is calculated using an explicit (*t<sub>courant</sub>*=0.5) diffusion solver and advection is solved using semi-lagrange; the resolution is 51 x 51. The arrows show the velocity vectors at certain grid points. The reference viscosity is 10<sup>23</sup> [Pa s] and *Ra* = 10<sup>4</sup>.
 
 ![TimeSeries](https://github.com/LukasFuchs/FDCSGm/assets/25866942/7e7863a1-9360-41af-94a9-58f26065bb37)<br>
 **Figure 2.** Time series of Nusselt number and root mean square velocity as well as the vertical temperautre profile in the middle of the model domain and the temperautre differences at the corners of the model (in the following order: top left (1), top right (2), bottom right (3), and bottom left (4)).
