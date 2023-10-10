@@ -68,15 +68,16 @@ Resolution (nx x nz): 51 x 51<br>
 
 ### High Rayleigh number cases
 
-&emsp;This becomes even more obvious for higher Rayleigh number (*Ra* = 10<sup>6</sup>) calculations for which the deviations of the Nusselt number are quite significant as well as for a temperature-dependent thermal convection (Figures 3 & 4).
+&emsp;This becomes even more obvious for higher Rayleigh number (*Ra* = 10<sup>6</sup>) calculations for which the deviations of the Nusselt number are quite significant as well as for a temperature-dependent thermal convection (Figures 4-6).
 
-![Field_SS](https://github.com/LukasFuchs/FDCSGm/assets/25866942/24db94dd-0c7d-4566-aac3-49a995cd3ff0)<br>
-**Figure 3.** Steady-state temperautre and velcoity field. For more details see captions Figure 1. The reference viscosity is 10<sup>21</sup> [Pa s] and *Ra* = 10<sup>6</sup>.
+![Field_SS](https://github.com/LukasFuchs/FDCSGm/assets/25866942/61f23759-6024-4e85-bc17-0480a1824059)<br>
+**Figure 4.** Steady-state temperautre and velcoity field. For more details see captions **Figure 1**. The reference viscosity is 10<sup>21</sup> [Pa s] and *Ra* = 10<sup>6</sup>.
 
-![TimeSeries](https://github.com/LukasFuchs/FDCSGm/assets/25866942/0d87a365-3347-40a6-83d1-150ea76f34cd)<br>
-**Figure 4.** Time series, temperature profile, and corner heat fluxes. For more details see captions of Figure 2.
+![TimeSeries](https://github.com/LukasFuchs/FDCSGm/assets/25866942/1c96ecf2-c90b-4f1c-a759-c204bcfbe3d2)<br>
+**Figure 5.** Time series, temperature profile, and corner heat fluxes of the model shown in **Figure 4**. For more details see captions of **Figure 2**.
 
-![Evolution_small](https://github.com/LukasFuchs/FDCSGm/assets/25866942/2cf47636-250b-4494-9f8c-c27fb24aac47)
+![Evolution_small](https://github.com/LukasFuchs/FDCSGm/assets/25866942/41261e3f-4ee5-46ba-8ae5-b537e0c29a58)<br>
+**Figure 6.** Evolution of the temperature and velocity field of the model shown in **Figure 4**.
 
 ***Resolution test for higher Ra***
 
