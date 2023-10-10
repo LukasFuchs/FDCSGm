@@ -81,13 +81,15 @@ Resolution (nx x nz): 51 x 51<br>
 
 ***Resolution test for higher Ra***
 
-Depdending on the Rayleigh number, we can estimate the number of grid points in the upper thermal boundary layer (*d*) and, thus, the total resolution of our model, with:
+Depending on the Rayleigh number, we can estimate the number of grid points in the upper thermal boundary layer (*d*) and, thus, the total resolution of our model, with:
 
 $(\frac{H}{d})^3 = \frac{1}{4}Ra$, &emsp; &emsp; &emsp; (2)
 
-Assuming that we want to use *n* grid points within the upper thermal boundary layer, the total number of vertical grid points is given by : 
+Assuming that we want to use *n* grid points within the upper thermal boundary layer, the total number of vertical grid points is given by: 
 
-$nz = (n-1)\sqrt[3]{\frac{Ra}{4}}+1$, &emsp; &emsp; &emsp; (3)
+$nz = (n-1)\sqrt[3]{\frac{Ra}{4}}+1$. &emsp; &emsp; &emsp; (3)
+
+Increasing the resolution of the model, insuring that a high enough resolution is present in the thermal boundary layer as defined with equation Now, one can run a series of models for the high Rayleigh number cases with an increasng resolution
 
 ![ResTest_eta_constRa1e6](https://github.com/LukasFuchs/FDCSGm/assets/25866942/29b92c83-ddb2-498b-a0fb-c3ca3da6f24a)<br>
 **Figure 5.** Resolution test for high Rayleigh number calculations. Needs some further exploration, why the rms is not propergating towards the benchmark value!
