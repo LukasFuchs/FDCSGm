@@ -60,10 +60,11 @@ Resolution (nx x nz): 51 x 51<br>
 ![Field_SS](https://github.com/LukasFuchs/FDCSGm/assets/25866942/ddb79a1e-96ca-431a-b32e-b1bc7070f3d1)<br>
 **Figure 1.** Steady-state temperautre (top) and velcoity field (bottom). Thermal convection is calculated using an explicit (*t<sub>courant</sub>*=0.5) diffusion solver and advection is solved using semi-lagrange; the resolution is 51 x 51. The arrows show the velocity vectors at certain grid points. The reference viscosity is 10<sup>23</sup> [Pa s] and *Ra* = 10<sup>4</sup>.
 
-![TimeSeries](https://github.com/LukasFuchs/FDCSGm/assets/25866942/7e7863a1-9360-41af-94a9-58f26065bb37)<br>
-**Figure 2.** Time series of Nusselt number and root mean square velocity as well as the vertical temperautre profile in the middle of the model domain and the temperautre differences at the corners of the model (in the following order: top left (1), top right (2), bottom right (3), and bottom left (4)).
+![TimeSeries](https://github.com/LukasFuchs/FDCSGm/assets/25866942/bf34bc89-ef49-41f0-82c8-21caf7094e06)<br>
+**Figure 2.** Time series of Nusselt number and root mean square velocity as well as the vertical temperautre profile in the middle of the model domain and the temperautre differences at the corners of the model (in the following order: top left (1), top right (2), bottom right (3), and bottom left (4)) for the model in **Figure 1**.
 
-![Evolution_small](https://github.com/LukasFuchs/FDCSGm/assets/25866942/fb4f6e36-29d7-4f2a-affa-3bca238ae59d)<br>
+![Evolution](https://github.com/LukasFuchs/FDCSGm/assets/25866942/337b3cb5-3843-49bb-b0f3-c97b505d5f03)<br>
+**Figure 3.** Evolution of the temperature and velocity field of the model shown in **Figure 1**.
 
 ### High Rayleigh number cases
 
