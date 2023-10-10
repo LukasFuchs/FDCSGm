@@ -73,10 +73,10 @@ Resolution (nx x nz): 51 x 51<br>
 ![Field_SS](https://github.com/LukasFuchs/FDCSGm/assets/25866942/61f23759-6024-4e85-bc17-0480a1824059)<br>
 **Figure 4.** Steady-state temperautre and velcoity field. For more details see captions **Figure 1**. The reference viscosity is 10<sup>21</sup> [Pa s] and *Ra* = 10<sup>6</sup>.
 
-![TimeSeries](https://github.com/LukasFuchs/FDCSGm/assets/25866942/1c96ecf2-c90b-4f1c-a759-c204bcfbe3d2)<br>
+![TimeSeries](https://github.com/LukasFuchs/FDCSGm/assets/25866942/a20b2c25-b554-400c-b05b-7eeb6a8e7080)<br>
 **Figure 5.** Time series, temperature profile, and corner heat fluxes of the model shown in **Figure 4**. For more details see captions of **Figure 2**.
 
-![Evolution_small](https://github.com/LukasFuchs/FDCSGm/assets/25866942/41261e3f-4ee5-46ba-8ae5-b537e0c29a58)<br>
+![Evolution_small](https://github.com/LukasFuchs/FDCSGm/assets/25866942/9b7e1853-094c-4556-a8c5-8a2f512efdf0)<br>
 **Figure 6.** Evolution of the temperature and velocity field of the model shown in **Figure 4**.
 
 ***Resolution test for higher Ra***
