@@ -106,7 +106,7 @@ b = 0
 &emsp;For a temperature-dependent thermal convection, a higher resolution (101x101) is necessary to even obtain a stable solution of the temperature field (Figures 6 & 7). A higher resolution significantly increases the computation time (at least to reach the same final time as in the previous calculations; steady state seems to be reached rather early within the computations), which should be compansated using a variable grid size, which needs to be implemented first. 
 
 ![Field_SS](https://github.com/LukasFuchs/FDCSGm/assets/25866942/22bb63c7-8577-40fb-b4bd-b4d50d55c141)<br>
-**Figure 8.**  Steady-state temperautre and velcoity field. Thermal convection is calculated using an ADI (*t<sub>courant</sub>*=0.5) diffusion solver and advection is solved using semi-lagrange; the resolution is 101 x 101. For more details see captions Figure 1. The reference viscosity is 10<sup>23</sup><br> [Pa s] and *Ra* = 10<sup>4</sup>.
+**Figure 8.**  Steady-state temperautre and velcoity field. Thermal convection is calculated using an ADI (*t<sub>courant</sub>*=2.0) diffusion solver and advection is solved using semi-lagrange; the resolution is 101 x 101. For more details see captions Figure 1. The reference viscosity is 10<sup>23</sup><br> [Pa s] and *Ra* = 10<sup>4</sup>.
 
 ![TimeSeries](https://github.com/LukasFuchs/FDCSGm/assets/25866942/6d7d3d3b-10d7-42d3-b938-8d5ddc747e6c)<br>
 **Figure 9.** Time series, temperature profile, and corner heat fluxes. For more details see captions of Figure 2.
