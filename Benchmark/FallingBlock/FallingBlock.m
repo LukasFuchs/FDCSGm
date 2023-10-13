@@ -97,8 +97,9 @@ end
 % Animation settings ---------------------------------------------------- %
 switch Pl.savefig
     case 'yes'
-        M.ModDir    = ['data/Blanckenbach_Ra_',sprintf('%2.2e',Py.Ra),...
-            '_eta_',Py.eparam,'_xmax_',num2str(M.xmax),...
+        M.ModDir    = ['data/FallingBlock',...
+            '_etar_',num2str(Py.eta1/Py.eta0),...
+            '_drho_',num2str(Py.rho1-Py.rho0),...
             '_nx_',num2str(N.nz),'_nz_',num2str(N.nz)];
         if ~exist(M.ModDir,'dir')
             mkdir(M.ModDir)
@@ -156,8 +157,8 @@ for it = 1:T.itmax
     % =================================================================== %
     %% ========================== Plot data ============================= %
     Pl.time     =   ...
-        ['@ Iteration: ',sprintf('%i',it),...
-        '; Time: ',sprintf('%2.2e',T.time(it))];
+        {['@ Iteration: ',sprintf('%i',it)];...
+        ['Time: ',sprintf('%2.2e',T.time(it))]};
     if (mod(it,10)==0||it==1)
         switch Pl.plotfields
             case 'yes'
@@ -207,12 +208,10 @@ for it = 1:T.itmax
     [D,Ma,ID]       =   Advection(it,N,B,D,ID,Py,T.dt,M,Ma);
     % =================================================================== %
     %% ========================== Check break =========================== %
-    if (T.time(it) >= T.tmax)
-        set(figure(3),'position',[1.8,1.8,766.4,780.8]);
-        h           =   figure(3);
+    if (T.time(it) >= T.tmax)        
         disp('Maximum time reached, stop time loop!')
         T.indtime   = find(T.time(2:end)==0,1,'first');
-        figure(3)
+        figure(2)
         clf
         switch Py.eparam
             case 'const'
@@ -241,7 +240,7 @@ end
 %% ======================== Save final figure =========================== %
 switch Pl.savefig
     case 'yes'
-        saveas(figure(3),[M.ModDir,'/Field_SS'],'png')
+        saveas(figure(2),[M.ModDir,'/Field_SS'],'png')
 end
 % ======================================================================= %
 T.tend      = toc(T.tstart);

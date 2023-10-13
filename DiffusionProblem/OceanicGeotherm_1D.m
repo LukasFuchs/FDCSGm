@@ -149,7 +149,6 @@ end
 
 %% Plot profile if requested ============================================ %
 if plotparam
-    %     if nargin==0 && strcmp(T.lbound,'const') && strcmp(T.ubound,'const')
     if strcmp(T.lbound,'const') && strcmp(T.ubound,'const')
         T.Tana      =   zeros(N.nz,1);
         T.Tana      =   T.Tini + ...
@@ -160,7 +159,6 @@ if plotparam
     subplot(1,2,1)
     hold on
     plot(T.T,M.z./1e3,'r-','LineWidth',2)
-    %     if nargin==0 && strcmp(T.lbound,'const') && strcmp(T.ubound,'const')
     if strcmp(T.lbound,'const') && strcmp(T.ubound,'const')
         plot(T.Tana,M.z/1e3,'--','LineWidth',2)
         legend('$$Initial$$',['$$T_{',num2str(t.age/1e6/t.tfac),'Ma}$$'],...

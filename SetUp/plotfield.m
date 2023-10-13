@@ -50,7 +50,7 @@ end
 
 xlabel(Pl.xlab,'Interpreter','latex')
 ylabel(Pl.zlab,'Interpreter','latex')
-title([titparam;{Pl.time}],'Interpreter','latex')
+title([titparam;Pl.time],'Interpreter','latex')
 cb = colorbar; cb.TickLabelInterpreter = 'latex';
 shading interp, lighting phong
 axis normal; axis equal, axis tight; caxis([fmin fmax])

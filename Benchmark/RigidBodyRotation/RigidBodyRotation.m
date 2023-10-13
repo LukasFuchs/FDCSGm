@@ -13,7 +13,7 @@ else
 end
 % ======================================================================= %
 %% ===================== Some initial definitions ======================= %
-Pl.savefig      =   'no';
+Pl.savefig      =   'yes';
 Pl.plotfields   =   'yes';
 % ======================================================================= %
 %% ============ Define method to solve the energy equation ============== %
@@ -39,8 +39,8 @@ M.H             =   -1;             % [ km ]
 M.xmax          =   1;              % Aspect ratio
 % ======================================================================= %
 %% ====================== Define the numerical grid ===================== %
-N.nx            =   51;
-N.nz            =   51;
+N.nx            =   301;
+N.nz            =   301;
 % ======================================================================= %
 %% ====================== Define time constants ========================= %
 T.tmaxini       =   6.2869e-1;      % [ Ma ]
@@ -113,11 +113,11 @@ for it = 1:T.itmax
     end
     %% ========================== Plot data ============================= %
     Pl.time     =   ...
-        ['@ Iteration: ',sprintf('%i',it),...
-        '; Time: ',sprintf('%2.2e',T.time(it)/1e6/(365.25*24*60*60)),' Myr'];
+        {['@ Iteration: ',sprintf('%i',it)];...
+        ['Time: ',sprintf('%2.2e',T.time(it)/1e6/(365.25*24*60*60)),' Myr']};
     switch Pl.plotfields
         case 'yes'
-            if (mod(it,10)==0||it==1)
+            if (mod(it,50)==0||it==1)
                 switch B.AdvMethod
                     case 'tracers'
                         figure(1),clf

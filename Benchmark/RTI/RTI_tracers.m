@@ -150,8 +150,8 @@ for it = 1:T.itmax
     % =================================================================== %
     %% ========================== Plot data ============================= %
     Pl.time     =   ...
-        ['@ Iteration: ',sprintf('%i',it),...
-        '; Time: ',sprintf('%2.2e',T.time(it)/1e6/(365.25*24*60*60)),' Myr'];
+        {['Time: ',sprintf('%2.2e',T.time(it)/1e6/(365.25*24*60*60)),...
+        ' Myr']};
     
     switch Pl.plotfields
         case 'yes'

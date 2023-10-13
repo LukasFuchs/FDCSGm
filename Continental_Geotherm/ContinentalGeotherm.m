@@ -18,10 +18,6 @@ Py.scale        =   'no';
 B.AdvMethod     =   'none';
 B.Aparam        =   'none';
 B.DiffMethod    =   'none';
-% B.EtaIni        =   'none';
-% ======================================================================= %
-%% ==================== Define viscosity conditions ===================== %
-% Py.eparam       =   'none';
 % ======================================================================= %
 %% ================== Define initial temperature anomaly ================ %
 B.Tini          =   'ContGeotherm';

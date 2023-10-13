@@ -94,9 +94,10 @@ for k = 1:length(eta1)
     end
     switch Pl.savefig
         case 'yes'
-            M.ModDir    = ['data/SteadyState/FallingBlock_',...
-                '_eta_',Py.eparam,'_eta0_',sprintf('%2.0e',Py.eta0),...
-                '_nx_',num2str(N.nz),'_nz_',num2str(N.nz)];
+            M.ModDir    = ['data/FallingBlock',...
+            '_etar_',num2str(Py.eta1/Py.eta0),...
+            '_drho_',num2str(Py.rho1-Py.rho0),...
+            '_nx_',num2str(N.nz),'_nz_',num2str(N.nz)];
             if ~exist(M.ModDir,'dir')
                 mkdir(M.ModDir)
             end
@@ -112,7 +113,6 @@ for k = 1:length(eta1)
         N.nx,N.nz,Py.eta0);
     % =================================================================== %
     %% ============================ Solving equations =================== %
-    %     if(strcmp(B.AdvMethod,'none')==0)
     switch Py.eparam
         case 'const'
             [D,A]       =   solveSECE_const_Eta(D,Py,N,B,A);
@@ -121,7 +121,6 @@ for k = 1:length(eta1)
         otherwise
             error('Viscosity not difined! Check Py.eparam parameter.')
     end
-    %     end
     % =================================================================== %
     %% =========== Interpolate velocity onto the regular grid =========== %
     [ID]        =   InterpStaggered(D,ID,N,'velocity');
@@ -155,16 +154,10 @@ for k = 1:length(eta1)
             switch Pl.savefig
                 case 'yes'
                     saveas(figure(2),...
-                        [M.ModDir,'/Field'],'png')
+                        [M.ModDir,'/FieldSS'],'png')
             end
         case 'no'
             disp(['Iteration: ',sprintf('%i',it)])
-    end
-    % =================================================================== %
-    %% ======================== Save final figure ======================= %
-    switch Pl.savefig
-        case 'yes'
-            saveas(figure(2),[M.ModDir,'/Field_SS'],'png')
     end
     % =================================================================== %
     vmax(k)     =   max(ID.v(M.ind));
@@ -178,7 +171,9 @@ set(gca,'FontWeight','Bold','LineWidth',2,'FontSize',15,'xscale','log',...
     'TickLabelInterpreter','latex')
 switch Pl.savefig
     case 'yes'
-        saveas(figure(3),[M.ModDir,'/vz_eta_r_nx_',num2str(N.nx)],'png')
+        saveas(figure(3),['data',...
+                '/drho_',num2str(Py.rho1-Py.rho0),...
+                '_vz_eta_r_nx_',num2str(N.nx)],'png')
 end
 %% ====================== Clear path structure ========================== %
 if strcmp(getenv('OS'),'Windows_NT')
