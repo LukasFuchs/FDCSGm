@@ -34,10 +34,10 @@ nmz = 5
 
 ## Instantaneous Solution
 
-![Field](https://github.com/LukasFuchs/FDCSGm/assets/25866942/95af2887-d065-4be7-ab7f-a0b09d7bf73c)<br>
+![FieldSS](https://github.com/LukasFuchs/FDCSGm/assets/25866942/0aea1c3f-ac42-44f9-95ef-a597625b8f6f)<br>
 **Figure 1.** Denstiy [kg/m<sup>3</sup>] and viscosity [Pa s] fields for a viscosity ratio between the block and the background medium of 6 orders of magnitude. The arrows show the instantaneous solution for the velocity field. 
 
-![vz_eta_r_nx_51](https://github.com/LukasFuchs/FDCSGm/assets/25866942/a5fa6fc1-a989-4e27-bd4f-3a67562ecad9)<br>
+![drho_100_vz_eta_r_nx_51](https://github.com/LukasFuchs/FDCSGm/assets/25866942/ab71d51e-21da-4185-9d03-54e8e57c0b70)<br>
 **Figure 2.** Maximum sinking velocity [m/s] over the logarithm of the viscosity ratio between the block and the background medium. The absolut viscosity deviates a little bit from the solution of *Gerya* (2009), but the trend of a decreasing sinking velocity with increasing viscosity ratio is the same. 
 
 --------------------------
@@ -46,5 +46,5 @@ nmz = 5
 
 &emsp;The material defroms and sinks similar to the ones presented in *Gerya* (2009). However, somehow the block seems to rotate, especially for the high viscosity ratio cases. This might be due to the advection of the tracers with the regular grid velocity instead of the staggered grid one. This is will be implemente in the future. 
 
-![TracerComparison_nx_51](https://github.com/LukasFuchs/FDCSGm/assets/25866942/97afa25c-9f3a-4a98-923e-040fb4b379ce)<br>
+![TracerComparison_nx_51](https://github.com/LukasFuchs/FDCSGm/assets/25866942/40e1f7f3-1fa8-43a1-94a2-344cc6d36d7b)<br>
 **Figure 3.** Density fields [kg/m<sup>3</sup>] after a certain time for a sinking block model with different viscosity ratios (from top left to bottom right: -1,1,2,3,4,5, respectively). Shown is the density field on the tracers ploted as dots of a certain size. 
