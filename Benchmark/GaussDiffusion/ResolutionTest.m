@@ -14,7 +14,7 @@ end
 T.tstart        =   tic;
 
 Schema          =   {'explicit';'implicit';'CNV';'ADI'};
-nrnxnz          =   8; 
+nrnxnz          =   2; 
 
 eps             =   zeros(size(Schema,1),nrnxnz);
 nxnz            =   zeros(size(Schema,1),nrnxnz);

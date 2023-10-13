@@ -65,7 +65,7 @@ D                       =   rmfield(D,{'Q','rho','P','Nus','eta'});
 T.dt      =     T.dtfac*min(N.dx,abs(N.dz))/...
     (sqrt(max(max(D.vx))^2 + max(max(D.vz))^2));
 %% ========================= Plot parameter ============================= %
-Pl.inc      =   min(N.nz/21,N.nx/21);
+Pl.inc      =   min(N.nz/11,N.nx/11);
 Pl.inc      =   round(Pl.inc);
 Pl.xlab     =   '$$x\ [km]$$';
 Pl.zlab     =   '$$z\ [km]$$';
@@ -117,7 +117,7 @@ for it = 1:T.itmax
         '; Time: ',sprintf('%2.2e',T.time(it)/1e6/(365.25*24*60*60)),' Myr'];
     switch Pl.plotfields
         case 'yes'
-            if (mod(it,50)==0||it==1)
+            if (mod(it,10)==0||it==1)
                 switch B.AdvMethod
                     case 'tracers'
                         figure(1),clf

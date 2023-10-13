@@ -73,7 +73,7 @@ for k = 1:length(angle)
         % Define method for solving the energy equation ----------------- %
         B.AdvMethod     =   'none';
         B.DiffMethod    =   'none';
-        B.Aparam       =   'none';
+        B.Aparam        =   'none';
         Py.scale        =   'none';
         
         % Variable oder konstante Vikositaet ---------------------------- %
@@ -94,8 +94,8 @@ for k = 1:length(angle)
         % --------------------------------------------------------------- %
         
         %% ------------------- Definition des Numerischen Gitters ------- %
-        N.nz        =   201;            %   Vertikale Gitteraufloesung
-        N.nx        =   201;            %   Horizontale Gitteraufloesung
+        N.nz        =   301;            %   Vertikale Gitteraufloesung
+        N.nx        =   301;            %   Horizontale Gitteraufloesung
         % --------------------------------------------------------------- %
         
         %% Tracer Advektionsmethode ------------------------------------- %
@@ -189,9 +189,7 @@ for k = 1:length(angle)
         %% ------------------------- Plot Parameter --------------------- %
         Pl.inc      =   min(N.nz/10,N.nx/10);
         Pl.inc      =   round(Pl.inc);
-        % --------------------------------------------------------------- %
-        % --------------------------------------------------------------- %
-        
+        % --------------------------------------------------------------- %        
         %% Scale Parameters ============================================= %
         [M,N,D,T,S]         =   ScaleParameters(B,M,Py,N,D,T);
         switch B.IniFlow
@@ -249,27 +247,27 @@ for k = 1:length(angle)
             
             %% Darstellung der Daten ------------------------------------ %
             Pl.time     =   '';
-            Pl.xlab     =   'x';
-            Pl.zlab     =   'z';
+            Pl.xlab     =   '$$x$$';
+            Pl.zlab     =   '$$z$$';
             
             if (mod(it,5)==0||it==1)
                 figure(1) % --------------------------------------------- %
                 clf
                 ax1 = subplot(2,2,1);
                 plotfield(log10(D.eta),M.X,M.Z,Pl,'pcolor',...
-                    '\itlog_{10} ( \eta ) \rm\bf','quiver',ID.vx,ID.vz)
+                    '$$log_{10}\ (\eta)$$','quiver',ID.vx,ID.vz)
                 colormap(ax1,Pl.lapaz)
                 ax2 = subplot(2,2,2);
                 plotfield(log10(ID.psi),M.X,M.Z,Pl,'pcolor',...
-                    '\it log_{10} ( \psi ) \rm\bf')
+                    '$$log_{10}\ (\psi)$$')
                 colormap(ax2,Pl.imola)
                 ax3 = subplot(2,2,3);
                 plotfield(log10(ID.eII),M.X,M.Z,Pl,'pcolor',...
-                    '\itlog_{10} ( \epsilon_{II} ) \rm\bf')
+                    '$$log_{10}\ ( \varepsilon_{II} )$$')
                 colormap(ax3,Pl.batlowW)
                 ax4 = subplot(2,2,4);
                 plotfield(log10(ID.tauII),M.X,M.Z,Pl,'pcolor',...
-                    '\it log_{10} ( \tau_{II} ) \rm\bf')
+                    '$$log_{10}\ ( \tau_{II} )$$')
                 colormap(ax4,Pl.nuuk)
             end
             
@@ -345,13 +343,17 @@ for k = 1:length(angle)
     yyaxis left; plot(eta2./Py.eta0,psiinc1,'LineWidth',2)
     hold on
     plot(eta2./Py.eta0,tauIIinc,'LineWidth',2)
-    ylabel('\psi or \tau_{II}')
-    set(gca,'FontWeight','Bold','xscale','log','yscale','log','LineWidth',2,'FontSize',15)
+    ylabel('$$\psi or \tau_{II}$$','Interpreter','latex')
+    set(gca,'FontWeight','Bold','xscale','log','yscale','log',...
+        'LineWidth',2,'FontSize',15,'TickLabelInterpreter','latex')
     yyaxis right; plot(eta2./Py.eta0,eIIinc,'LineWidth',2)
-    set(gca,'FontWeight','Bold','xscale','log','yscale','log','LineWidth',2,'FontSize',15)
-    ylabel('\epsilon_{II}'); xlabel('\eta_{inc}/\eta_{out}');
-    legend('\langle\psi\rangle','\langle\tau_{II}\rangle',...
-        '\langle\epsilon_{II}\rangle','Location','SouthEast')
+    set(gca,'FontWeight','Bold','xscale','log','yscale','log',...
+        'LineWidth',2,'FontSize',15,'TickLabelInterpreter','latex')
+    ylabel('$$\varepsilon_{II}$$','Interpreter','latex')
+    xlabel('$$\eta_{inc}/\eta_{out}$$','Interpreter','latex');
+    legend('$$\langle \psi \rangle$$','$$\langle \tau_{II} \rangle$$',...
+        '$$\langle \epsilon_{II} \rangle$$','Location','SouthEast',...
+        'Interpreter','latex')
     % axis([0 180 1e-11 1e-6])
     switch Pl.savefig
         case 'yes'

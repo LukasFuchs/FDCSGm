@@ -33,8 +33,8 @@ for k = 1:length(eta1)
     M.xmax      =   1;              %   Aspect ratio
     % =================================================================== %
     %% ====================== Define the numerical grid ================= %
-    N.nz        =   21;             %   Vertical grid solution
-    N.nx        =   21;             %   Horizontal grid solution
+    N.nz        =   51;             %   Vertical grid solution
+    N.nx        =   51;             %   Horizontal grid solution
     % =================================================================== %
     %% ====================== Tracer advection method =================== %
     % Number of tracers per cell: nmx*nmz                                 %
@@ -112,16 +112,16 @@ for k = 1:length(eta1)
         N.nx,N.nz,Py.eta0);
     % =================================================================== %
     %% ============================ Solving equations =================== %
-%     if(strcmp(B.AdvMethod,'none')==0)
-        switch Py.eparam
-            case 'const'
-                [D,A]       =   solveSECE_const_Eta(D,Py,N,B,A);
-            case 'variable'
-                [D,A]       =   solveSECE(D,Py,N,B);
-            otherwise
-                error('Viscosity not difined! Check Py.eparam parameter.')
-        end
-%     end
+    %     if(strcmp(B.AdvMethod,'none')==0)
+    switch Py.eparam
+        case 'const'
+            [D,A]       =   solveSECE_const_Eta(D,Py,N,B,A);
+        case 'variable'
+            [D,A]       =   solveSECE(D,Py,N,B);
+        otherwise
+            error('Viscosity not difined! Check Py.eparam parameter.')
+    end
+    %     end
     % =================================================================== %
     %% =========== Interpolate velocity onto the regular grid =========== %
     [ID]        =   InterpStaggered(D,ID,N,'velocity');
@@ -176,7 +176,10 @@ xlabel('$$log_{10}( \eta_{block} / \eta_{medium} )$$','Interpreter','latex')
 ylabel('Block velocity [ m/s ]','Interpreter','latex')
 set(gca,'FontWeight','Bold','LineWidth',2,'FontSize',15,'xscale','log',...
     'TickLabelInterpreter','latex')
-saveas(figure(3),[M.ModDir,'/vz_eta_r_nx_',num2str(N.nx)],'png')
+switch Pl.savefig
+    case 'yes'
+        saveas(figure(3),[M.ModDir,'/vz_eta_r_nx_',num2str(N.nx)],'png')
+end
 %% ====================== Clear path structure ========================== %
 if strcmp(getenv('OS'),'Windows_NT')
     rmpath('..\..\AdvectionProblem')

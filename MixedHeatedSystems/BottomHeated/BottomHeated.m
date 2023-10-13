@@ -48,8 +48,8 @@ M.H         =   -2900;          %   Modeltiefe [ in km ]
 M.xmax      =   3;              %   Seitenverhaeltniss
 % ======================================================================= %
 %% ====================== Define the numerical grid ===================== %
-N.nz        =   51;             %   Vertikale Gitteraufloesung
-N.nx        =   151;             %   Horizontale Gitteraufloesung
+N.nz        =   101;             %   Vertikale Gitteraufloesung
+N.nx        =   301;             %   Horizontale Gitteraufloesung
 % ======================================================================= %
 %% ====================== Define physical constants ===================== %
 Py.g        =   9.81;               %   Schwerebeschleunigung [m/s^2]
@@ -95,7 +95,7 @@ B.thf       =   273;
 B.bhf       =   B.thf + Py.DeltaT;
 % ======================================================================= %
 %% ====================== Define time constants ========================= %
-T.tmaxini   =   4500;     %   Maximale Zeit in Ma
+T.tmaxini   =   4500;           %   Maximale Zeit in Ma
 T.itmax     =   5000;           %   Maximal erlaubte Anzahl der Iterationen
 T.dtfac     =   1.0;            %   Advektionscourantkriterium
 T.dtdifac   =   0.9;            %   Diffusions Stabilitaetskriterium
@@ -147,7 +147,7 @@ end
 %% ========================== Scale Parameters ========================== %
 switch lower(Py.scale)
     case 'yes'
-        [M,N,D,T,S]     =   ScaleParameters(B,M,Py,N,D,T);
+        [M,N,D,T,S]         =   ScaleParameters(B,M,Py,N,D,T);
 end
 % ======================================================================= %
 %% ================ Information for the command window ================== %
@@ -169,7 +169,6 @@ fprintf(['Maximum Time : %1.4g',...
 % ======================================================================= %
 %% ========================= Time loop ================================= %%
 for it = 1:T.itmax
-    %     disp(['Iteration: ',sprintf('%i',it)])
     if(strcmp(B.AdvMethod,'none')==0)
         switch Py.eparam
             case 'const'
@@ -194,9 +193,8 @@ for it = 1:T.itmax
     end
     % =================================================================== %
     %% =========== Interpolate velocity onto the regular grid =========== %
-    [ID]        =   InterpStaggered(D,ID,N,'velocity');
-%     D.meanV(it) = mean(ID.v,'all');   % Mittleregeschwindigkeit
-    D.meanV(it) = rms(ID.vx(:) + ID.vz(:));
+    [ID]            =   InterpStaggered(D,ID,N,'velocity');
+    D.meanV(it)     =   rms(ID.vx(:) + ID.vz(:));
     % =================================================================== %
     %% ========================== Plot data ============================= %
     Pl              =   PlotData(it,Pl,T,D,M,ID,Py);
@@ -205,7 +203,6 @@ for it = 1:T.itmax
     [D,Ma,ID]       =   Advection(it,N,B,D,ID,Py,T.dt,M,Ma);
     % =================================================================== %
     %% ========================== Diffusion ============================= %
-%     D.T             =   Diffusion(B,D.T,D.Q,T.dt,N);
     D.T             =   Diffusion(B,D.T,D.Q,D.rho,Py,T.dt,N);
     % =================================================================== %
     %% ================== Heat flow at the surface ====================== %
@@ -224,7 +221,7 @@ for it = 1:T.itmax
     end
     % =================================================================== %
     %% ========================== Check break =========================== %
-    [answer,T]  =   CheckBreakCriteria(it,T,D,M,Pl,ID,Py);
+    [answer,T]      =   CheckBreakCriteria(it,T,D,M,Pl,ID,Py);
     switch answer
         case 'yes'
             break

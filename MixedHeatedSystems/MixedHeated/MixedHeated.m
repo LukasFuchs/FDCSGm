@@ -35,6 +35,8 @@ B.EtaIni        =   'tdep';
 % ======================================================================= %
 %% ================== Define initial temperature anomaly ================ %
 B.Tini          =   'block';
+B.T0            =   1000;
+B.TAmpl         =   100; 
 Py.tparam       =   'const';
 % ======================================================================= %
 %% ========================= Define flow field ========================== %
@@ -93,8 +95,8 @@ B.thf       =   273;
 B.bhf       =   B.thf + Py.DeltaT;
 % ======================================================================= %
 %% ====================== Define time constants ========================= %
-T.tmaxini   =   4500;     %   Maximale Zeit in Ma
-T.itmax     =   5000;           %   Maximal erlaubte Anzahl der Iterationen
+T.tmaxini   =   4500;           %   Maximale Zeit in Ma
+T.itmax     =   50;           %   Maximal erlaubte Anzahl der Iterationen
 T.dtfac     =   1.0;            %   Advektionscourantkriterium
 T.dtdifac   =   0.9;            %   Diffusions Stabilitaetskriterium
 % ======================================================================= %
@@ -102,7 +104,7 @@ T.dtdifac   =   0.9;            %   Diffusions Stabilitaetskriterium
 [Py,D,ID,M,N,T,A,Pl]    =   SetUpFields(Py,B,N,M,T,Pl);
 % ======================================================================= %
 %% ======================== Setup initial conditions ==================== %
-[T,D,B,Ma,Py]           =   SetUpInitialConditions(T,D,Py,M,N,B);
+[T,D,B,M,Ma,Py]         =   SetUpInitialConditions(T,D,Py,M,N,B);
 % ======================================================================= %
 %% ======================= Rayleigh number conditions =================== %
 if Py.Ra < 0
@@ -118,8 +120,8 @@ end
 %% ========================= Plot parameter ============================= %
 Pl.inc      =   min(N.nz/10,N.nx/10);
 Pl.inc      =   round(Pl.inc);
-Pl.xlab     =   '\bfx';
-Pl.zlab     =   '\bfz';
+Pl.xlab     =   '$$x$$';
+Pl.zlab     =   '$$z$$';
 switch Pl.plotfields
     case 'yes'
         if strcmp(getenv('OS'),'Windows_NT')
@@ -145,7 +147,7 @@ end
 %% ========================== Scale Parameters ========================== %
 switch lower(Py.scale)
     case 'yes'
-        [M,N,D,T,S]     =   ScaleParameters(M,Py,N,D,T);
+        [M,N,D,T,S]         =   ScaleParameters(B,M,Py,N,D,T);
 end
 % ======================================================================= %
 %% ================ Information for the command window ================== %
@@ -167,7 +169,6 @@ fprintf(['Maximum Time : %1.4g',...
 % ======================================================================= %
 %% ========================= Time loop ================================= %%
 for it = 1:T.itmax
-    %     disp(['Iteration: ',sprintf('%i',it)])
     if(strcmp(B.AdvMethod,'none')==0)
         switch Py.eparam
             case 'const'
@@ -192,18 +193,17 @@ for it = 1:T.itmax
     end
     % =================================================================== %
     %% =========== Interpolate velocity onto the regular grid =========== %
-    [ID]        =   InterpStaggered(D,ID,N,'velocity');
-%     D.meanV(it) = mean(ID.v,'all');   % Mittleregeschwindigkeit
-    D.meanV(it) = rms(ID.vx(:) + ID.vz(:));
+    [ID]            =   InterpStaggered(D,ID,N,'velocity');
+    D.meanV(it)     =   rms(ID.vx(:) + ID.vz(:));
     % =================================================================== %
     %% ========================== Plot data ============================= %
     Pl              =   PlotData(it,Pl,T,D,M,ID,Py);
     % =================================================================== %
     %% ========================== Advection ============================= %
-    [D,Ma,ID]       =   Advection(it,B,D,ID,Py,T.dt,M,Ma);
+    [D,Ma,ID]       =   Advection(it,N,B,D,ID,Py,T.dt,M,Ma);
     % =================================================================== %
     %% ========================== Diffusion ============================= %
-    D.T             =   Diffusion(B,D.T,D.Q,T.dt,N);
+    D.T             =   Diffusion(B,D.T,D.Q,D.rho,Py,T.dt,N);
     % =================================================================== %
     %% ================== Heat flow at the surface ====================== %
     D.dTtop         =   (D.T(1,:)-D.T(2,:))./N.dz;
@@ -221,7 +221,7 @@ for it = 1:T.itmax
     end
     % =================================================================== %
     %% ========================== Check break =========================== %
-    [answer,T]  =   CheckBreakCriteria(it,T,D,M,Pl,ID,Py);
+    [answer,T]      =   CheckBreakCriteria(it,T,D,M,Pl,ID,Py);
     switch answer
         case 'yes'
             break
