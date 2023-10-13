@@ -46,5 +46,5 @@ nmz = 5
 
 &emsp;The material defroms and sinks similar to the ones presented in *Gerya* (2009). However, somehow the block seems to rotate, especially for the high viscosity ratio cases. This might be due to the advection of the tracers with the regular grid velocity instead of the staggered grid one. This is will be implemente in the future. 
 
-![TracerComparison_nx_51](https://github.com/LukasFuchs/FDCSGm/assets/25866942/40e1f7f3-1fa8-43a1-94a2-344cc6d36d7b)<br>
+![Comparison](https://github.com/LukasFuchs/FDCSGm/assets/25866942/29dbc458-c6aa-4edf-bb56-bcaa3dcab80a)<br>
 **Figure 3.** Density fields [kg/m<sup>3</sup>] after a certain time for a sinking block model with different viscosity ratios (from top left to bottom right: -1,1,2,3,4,5, respectively). Shown is the density field on the tracers ploted as dots of a certain size. 
