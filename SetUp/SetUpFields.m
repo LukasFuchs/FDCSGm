@@ -85,7 +85,7 @@ else
 end
 
 % Visualization stuff --------------------------------------------------- %
-Version             =   7;
+Version             =   8;
 Pl.TColMapName      =   'lajolla';
 Pl.VColMapName      =   'imola';
 Pl.EColMapName      =   'lapaz';

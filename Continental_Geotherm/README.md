@@ -14,5 +14,5 @@ One needs to define:
  
 The script was used, e.g., to calculate the initial temperature field of a certain geodynamic lithosphere model with an upper and lower crust and is listed here simply as an example of how to use the code. For more details, see [ContinentalGeotherm.m](https://github.com/LukasFuchs/FDCSGm/blob/main/Continental_Geotherm/ContinentalGeotherm.m).
 
-![Example](https://github.com/LukasFuchs/FDCSGm/assets/25866942/8aa3d185-e993-4ac6-baee-0b185381ba62)<br>
+![Example](https://github.com/LukasFuchs/FDCSGm/assets/25866942/4015d05f-d78f-457a-9141-e8edb9d5cb6b)<br>
 **Figure 1.** Example of a 2-D continental lithosphere setup with upper and lower crust. 

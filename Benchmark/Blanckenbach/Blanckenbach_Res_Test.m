@@ -21,14 +21,14 @@ else
 end
 % ======================================================================= %
 %% Some initial definitions --------------------------------------------- %
-Pl.savefig      =   'no';
-Pl.plotfields   =   'yes';
+Pl.savefig      =   'yes';
+Pl.plotfields   =   'no';
 Py.scale        =   'yes';
 % ======================================================================= %
 %% ============ Define method to solve the energy equation ============== %
 B.AdvMethod     =   'semi-lag';
 B.Aparam        =   'temp';
-B.DiffMethod    =   'explicit';
+B.DiffMethod    =   'ADI';
 % ======================================================================= %
 %% ==================== Define viscosity conditions ===================== %
 Py.eparam       =   'const';
@@ -38,8 +38,8 @@ B.EtaIni        =   'tdep';
 % ======================================================================= %
 %% ================== Define initial temperature anomaly ================ %
 B.Tini          =   'block';
-B.T0            =   1000;
-B.TAmpl         =   20; 
+B.T0            =   1000;       %   Background temperature [ K ]
+B.TAmpl         =   20;         %   Temperature pertubation [ K ]
 Py.tparam       =   'const';
 % ======================================================================= %
 %% ========================= Define flow field ========================== %
@@ -66,7 +66,7 @@ Py.kappa    =   Py.k/Py.rho0/Py.cp; % 	Thermische Diffusivitaet [ m^2/s ]
 Py.Q0       =   0;              % Waermeproduktionsrate pro Volumen [W/m^3]
 Py.Q0       =   Py.Q0/Py.rho0;  % Waermeproduktionsrate pro Masse [W/kg]
 
-Py.eta0     =   1e23;           %   Viskositaet [ Pa*s ]
+Py.eta0     =   1e21;           %   Viskositaet [ Pa*s ]
 
 Py.DeltaT   =   1000;           % Temperaturdifferenz
 
@@ -101,7 +101,7 @@ B.bhf       =   B.thf + Py.DeltaT;
 T.tmaxini   =   10000;          %   Maximale Zeit in Ma
 T.itmax     =   1e6;            %   Maximal erlaubte Anzahl der Iterationen
 T.dtfac     =   1.0;            %   Advektionscourantkriterium
-T.dtdifac   =   0.9;            %   Diffusions Stabilitaetskriterium
+T.dtdifac   =   3.0;            %   Diffusions Stabilitaetskriterium
 % ======================================================================= %
 %% ======================= Rayleigh number conditions =================== %
 if Py.Ra < 0
@@ -114,8 +114,13 @@ else
     Py.eta0 =   Py.rho0*Py.g*Py.alpha*Py.DeltaT*(-M.H*1e3)^3/Py.Ra/Py.kappa;
 end
 % ======================================================================= %
+<<<<<<< HEAD
+% n           =   [2,3,4,5,6,7,8,9];
+n           =   [2 3 4 5];
+=======
 n           =   [2,3,4,5];
 % n           =   [2 3];
+>>>>>>> 6b9832310cc814801daf2d0fe51327d7c49e4178
 nz          =   ceil((n-1).*(Py.Ra/4)^(1/3)+1);
 Nus         =   zeros(length(n),1);
 VRMS        =   zeros(length(n),1);
@@ -133,6 +138,7 @@ for i = 1:length(n)
     %% ===================== Plot parameter ============================= %
     Pl.inc      =   min(N.nz/10,N.nx/10);
     Pl.inc      =   round(Pl.inc);
+    Pl.tstpinc  =   50; 
     Pl.xlab     =   '$$x$$';
     Pl.zlab     =   '$$z$$';
     switch Pl.plotfields
@@ -155,9 +161,12 @@ for i = 1:length(n)
             if ~exist(M.ModDir,'dir')
                 mkdir(M.ModDir)
             end
-            Pl.filename     =   [M.ModDir,'/Evolution.gif'];
-            set(figure(1),'position',[1.8,1.8,766.4,780.8]);
-            Pl.h            =   figure(1);
+            switch Pl.plotfields
+                case 'yes'
+                    Pl.filename     =   [M.ModDir,'/Evolution.gif'];
+                    set(figure(1),'position',[1.8,1.8,766.4,780.8]);
+                    Pl.h            =   figure(1);
+            end
     end
     % =================================================================== %
     %% ====================== Scale Parameters ========================== %

@@ -281,18 +281,18 @@ The gradient of temperature (and thus the vertical heat flux) can be defined usi
 ---------------------------------------------------------------------------------------------------------------------
 
 #### Oceanic Geotherms
-![OLGT1](https://github.com/LukasFuchs/FDCSGm/assets/25866942/b1983148-a7f6-48b0-a6ad-0768eb1747f4)<br>
-***Figure 1. Oceanic Lithosphere.** LEFT: Temperature profile [K]  for an oceanic lithosphere of 60 Ma of age and constant thermal boundary conditions at the top and bottom. The blue line shows the initial temperature profile. The yellow dashed line shows the solution for a half-space cooling model. RIGHT: Heat flux [mW/m<sup>2</sup>] with depth. The parameters of this model are defined as the default values in the routine OceanicGeotherm.m.*
+![OLGT1](https://github.com/LukasFuchs/FDCSGm/assets/25866942/5304197f-a8fb-4127-8228-94b93232b8dd)<br>
+***Figure 1. Oceanic Lithosphere.** LEFT: Temperature profile [K]  for an oceanic lithosphere of 60 Ma of age and constant thermal boundary conditions at the top and bottom. The blue line shows the initial temperature profile. The yellow dashed line shows the solution for a half-space cooling model. RIGHT: Heat flux q<sub>z</sub> [mW/m<sup>2</sup>] with depth. The parameters of this model are defined as the default values in the routine OceanicGeotherm.m.*
 
-![OLGT2](https://github.com/LukasFuchs/FDCSGm/assets/25866942/34f0f13a-ea9e-484e-93e5-7f485e97cabd)<br>
-***Figure 2. Oceanic Lithosphere II**. Same as Figure 1 but with constant heat flux boundary conditions qbottom =10 mW/m<sup>2</sup> and qtop = 90 mW/m<sup>2</sup>.*
+![OLGT2](https://github.com/LukasFuchs/FDCSGm/assets/25866942/7d6f45b8-3d3a-4748-a705-76b98c72d9b0)<br>
+***Figure 2. Oceanic Lithosphere II**. Same as **Figure 1** but with constant heat flux boundary conditions q<sub>bottom</sub> =10 mW/m<sup>2</sup> and q<sub>top</sub> = 90 mW/m<sup>2</sup>.*
 
 #### Continental Geotherms
-![CLGT1](https://github.com/LukasFuchs/FDCSGm/assets/25866942/21528c42-36ee-49be-abdd-e96fb6a17195)<br>
+![CLGT1](https://github.com/LukasFuchs/FDCSGm/assets/25866942/e77c1e3b-a12f-4d20-a5af-d42db39176aa)<br>
 ***Figure 3. Continental Lithosphere.** LEFT: Temperature profile for a continental lithosphere of 1000 Ma of age with constant upper and lower thermal boundary conditions. The blue line shows the initial condition, the red line shows the solution of equation (1), the yellow dashed line shows the solution of the time-independent heat equation (1-D poisson equation), and the magenta dashed line shows the solution of a [2D, staggered finite difference code](https://github.com/LukasFuchs/FDCSGm/blob/main/Continental_Geotherm/ContinentalGeotherm.m). MIDDLE: Heat flux with depth. RIGHT: Thermal parameter for the lithosphere setup: thermal conductivity [k], specific heat [c<sub>p</sub>], density [ρ], and volumetric heat generation rate [Q].*
 
-![CLGT2](https://github.com/LukasFuchs/FDCSGm/assets/25866942/e37d281e-8b2b-46ad-b9c3-68f16650d49f)<br>
-***Figure 5. Continental Lithosphere II**. Same as Figure 3 but with constant upper and lower heat flux boundary conditions, q<sub>top</sub> = 40 mW/m<sup>2</sup> and q<sub>bottom</sub> = 10 mW/m<sup>2</sup>.*
+![CLGT2](https://github.com/LukasFuchs/FDCSGm/assets/25866942/76fdf3b5-5abc-4de8-9d3e-7e1158ec2add)<br>
+***Figure 5. Continental Lithosphere II**. Same as **Figure 3** but with constant upper and lower heat flux boundary conditions, q<sub>top</sub> = 40 mW/m<sup>2</sup> and q<sub>bottom</sub> = 10 mW/m<sup>2</sup>.*
 
 # Directory Content
 [ContinentalGeotherm_1D.m](https://github.com/LukasFuchs/FDCSGm/blob/main/DiffusionProblem/ContinentalGeotherm_1D.m)<br>

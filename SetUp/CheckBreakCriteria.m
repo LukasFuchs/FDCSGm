@@ -5,7 +5,7 @@ answer      = 'no';
 switch lower(Py.scale)
     case 'yes'
         T.tind  =   find(T.time(1:it) >= (T.time(it)-0.02),1,'first');
-        epsC    =   1e-1;
+        epsC    =   1e-2;
     case 'no'
         tspan   =   50;  % [ Ma ]
         tspan   =   tspan*1e6*(60*60*24*365.25);    % [ s ]
@@ -24,8 +24,12 @@ if (mod(it,10)==0||it==1)
 end
 
 if (T.time(it) >= T.tmax)
-    set(figure(1),'position',[1.8,1.8,766.4,780.8]);
-    h           =   figure(1);
+    if strcmp(getenv('OS'),'Windows_NT')
+        set(figure(1),'position',[]);
+    else
+        set(figure(1),'position',[1.8,26,866.2,949]);
+    end
+%     h           =   figure(1);
     disp('Maximale Zeit erreicht. Zeitschleife unterbrochen')
     T.indtime   = find(T.time(2:end)==0,1,'first');
     figure(1) % ----------------------------------------------------- %
@@ -52,8 +56,12 @@ if (T.time(it) >= T.tmax)
     end
     answer = 'yes';
 elseif( epsV <= epsC && it > 50 )
-    set(figure(1),'position',[1.8,1.8,766.4,780.8]);
-    h           =   figure(1);
+    if strcmp(getenv('OS'),'Windows_NT')
+        set(figure(1),'position',[]);
+    else
+        set(figure(1),'position',[1.8,26,866.2,949]);
+    end
+%     h           =   figure(1);
     T.indtime   = find(T.time(2:end)==0,1,'first');
     disp('Konvektion erreicht steady state.')
     figure(1) % ----------------------------------------------------- %
@@ -76,7 +84,7 @@ elseif( epsV <= epsC && it > 50 )
             ax2=subplot(2,1,2);
             plotfield(log10(D.eta),M.X,M.Z,Pl,'contourf',...
                 '$$\eta$$','quiver',ID.vx,ID.vz)
-            colormap(ax2,flipup(Pl.lapaz))
+            colormap(ax2,flipud(Pl.lapaz))
     end
     answer = 'yes';
 elseif(it == T.itmax)

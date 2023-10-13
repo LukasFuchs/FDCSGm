@@ -52,8 +52,8 @@ M.H         =   -1000;          %   Modeltiefe [ in km ]
 M.xmax      =   1;              %   Seitenverhaeltniss
 % ======================================================================= %
 %% ====================== Define the numerical grid ===================== %
-N.nz        =   21;             %   Vertikale Gitteraufloesung
-N.nx        =   21;             %   Horizontale Gitteraufloesung
+N.nz        =   51;             %   Vertikale Gitteraufloesung
+N.nx        =   51;             %   Horizontale Gitteraufloesung
 % ======================================================================= %
 %% ====================== Define physical constants ===================== %
 Py.g        =   10;                 %   Schwerebeschleunigung [m/s^2]
@@ -99,10 +99,10 @@ B.thf       =   273;
 B.bhf       =   B.thf + Py.DeltaT;
 % ======================================================================= %
 %% ====================== Define time constants ========================= %
-T.tmaxini   =   10000;         %   Maximale Zeit in Ma
-T.itmax     =   50000;           %   Maximal erlaubte Anzahl der Iterationen
-T.dtfac     =   1.0;           %   Advektionscourantkriterium
-T.dtdifac   =   1.0;            %   Diffusions Stabilitaetskriterium
+T.tmaxini   =   10000;          %   Maximale Zeit in Ma
+T.itmax     =   50000;          %   Maximal erlaubte Anzahl der Iterationen
+T.dtfac     =   1.0;            %   Advektionscourantkriterium
+T.dtdifac   =   0.5;            %   Diffusions Stabilitaetskriterium
 % ======================================================================= %
 %% ========================= Define fields required ===================== %
 [Py,D,ID,M,N,T,A,Pl]    =   SetUpFields(Py,B,N,M,T,Pl);
@@ -124,16 +124,17 @@ end
 %% ========================= Plot parameter ============================= %
 Pl.inc      =   min(N.nz/10,N.nx/10);
 Pl.inc      =   round(Pl.inc);
+Pl.tstpinc  =   50;
 Pl.xlab     =   '$$x$$';
 Pl.zlab     =   '$$z$$';
 switch Pl.plotfields
     case 'yes'
         if strcmp(getenv('OS'),'Windows_NT')
             set(figure(1),'position',[1.8,1.8,766.4,780.8]);
-            h           =   figure(1);
+            Pl.h        =   figure(1);
         else
-            set(figure(1),'position',[-1919,1,960,988]);
-            h           =   figure(1);
+            set(figure(1),'position',[1.8,26,866.2,949]);
+            Pl.h           =   figure(1);
         end
 end
 % Animation settings ---------------------------------------------------- %
@@ -148,7 +149,7 @@ switch Pl.savefig
             mkdir(M.ModDir)
         end
         Pl.filename =   [M.ModDir,'/Evolution.gif'];
-        set(figure(1),'position',[1.8,1.8,766.4,780.8]);
+        set(figure(1),'position',[1.8,26,866.2,949]);
         Pl.h        =   figure(1);
 end
 % ======================================================================= %
@@ -206,7 +207,7 @@ for it = 1:T.itmax
     %% =========== Interpolate velocity onto the regular grid =========== %
     [ID]        =   InterpStaggered(D,ID,N,'velocity');
 %     D.meanV(it) = mean(ID.v,'all');   % Mittleregeschwindigkeit
-    D.meanV(it) = rms(ID.vx(:) + ID.vz(:));
+    D.meanV(it)     =   rms(ID.vx(:) + ID.vz(:));
     % =================================================================== %
     %% ========================== Plot data ============================= %
     Pl              =   PlotData(it,Pl,T,D,M,ID,Py);
