@@ -28,7 +28,11 @@ if Benchmark
     end
 end
 
-set(figure(2),'position',[1,1,1536,788.8]);
+if strcmp(getenv('OS'),'Windows_NT')
+    set(figure(1),'position',[]);
+else
+    set(figure(2),'position',[1,25,1920,950]);
+end
 
 figure(2)
 clf
@@ -86,7 +90,7 @@ if Benchmark
             'MarkerFaceColor','r')
     end
     set(gca,'FontWeight','Bold','LineWidth',2,'FontSize',12,...
-        'yscale','log','TickLabelInterpreter','latex')    
+        'yscale','log','TickLabelInterpreter','latex')
     xlabel('$$\Delta T$$','Interpreter','latex')
     ylabel('')
     title('$$Temperature\ difference\ at\ corners$$','Interpreter','latex')
