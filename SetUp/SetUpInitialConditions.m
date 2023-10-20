@@ -11,6 +11,8 @@ end
 %% Maximale Zeit -------------------------------------------------------- %
 if ~isempty(T)
     T.tmax      =   T.tmaxini.*1e6*(365.25*24*60*60);      % in [ s ]
+else
+    T.itmax     =   1;
 end
 % ----------------------------------------------------------------------- %
 %% Temperaturanfangsbedingungen ----------------------------------------- %
@@ -171,9 +173,6 @@ if isfield(B,'IniFlow')
             D.vzi(2:N.nz1,N.nx1)    = (M.Z(2:N.nz1,N.nx1)-M.H/2).*B.ebg;  % right
             D.vzi(1,1:N.nx1)        = (M.Z(1,1:N.nx1)-M.H/2).*B.ebg;      % top
             D.vzi(N.nz,1:N.nx1)     = (M.Z(N.nz,1:N.nx1)-M.H/2).*B.ebg;   % bottom
-            
-            %         D.vxi   =   D.vxi./(100*(60*60*24*365.25));   % [ m/s ]
-            %         D.vzi   =   D.vzi./(100*(60*60*24*365.25));   % [ m/s ]
         case 'SimpleShear'
             D.vxi(1:N.nz1,1)        = (M.Z1(1:N.nz1,end)-M.H/2).*B.ebg;    % left
             D.vxi(1:N.nz1,N.nx)     = (M.Z1(1:N.nz1,end)-M.H/2).*B.ebg;    % right
@@ -186,6 +185,43 @@ if isfield(B,'IniFlow')
             D.vzi(N.nz,1:N.nx1)     = 0;    % bottom
         case 'constPlate'
             error('Not defined yet!')
+        case 'Channel'
+            m                       =   Py.eta1/Py.eta0;    % eta_top/eta_bottom
+            if m == 1
+                D.vxi(1:N.nz1,1)        =   -Py.dPdx/2/Py.eta0*...
+                    (M.H.*M.z1' - M.z1'.^2) +...
+                    Py.v0.*M.z1'./M.H;                          % left
+                D.vxi(1:N.nz1,1)        =   flipud(D.vxi(1:N.nz1,1));
+                D.vxi(1:N.nz1,N.nx)     =   -Py.dPdx/2/Py.eta0*...
+                    (M.H.*M.z1' - M.z1'.^2) +...
+                    Py.v0.*M.z1'./M.H;                          % right
+                D.vxi(1:N.nz1,N.nx)     =   flipud(D.vxi(1:N.nz1,N.nx));
+                D.vxi(N.nz1,2:N.nx1)    =   (-Py.dPdx/2/Py.eta0*...
+                    (M.H.*M.z1(1) - M.z1(1)^2) +...
+                    Py.v0.*M.z1(1)/M.H).*ones(1,length(M.x1)-1);   % top
+                D.vxi(1,2:N.nx1)        =   (-Py.dPdx/2/Py.eta0*...
+                    (M.H.*M.z1(N.nz1) - M.z1(N.nz1)^2) +...
+                    Py.v0.*M.z1(N.nz1)/M.H).*ones(1,length(M.x1)-1); % bottom
+            else
+                D.vxi(1:N.nz1,1)        =   -Py.dPdx*M.H/(Py.eta0)/log(m).*...
+                    (m.^(-M.z1'./M.H)/(m-1).*(M.z1'.*(m-1) + M.H) - M.H/(m-1)) - ...
+                    m.^(-M.z1'./M.H).*m.*Py.v0./(m-1) + ...
+                    Py.v0*m/(m-1);                          % Left
+                D.vxi(1:N.nz1,1)        =   flipud(D.vxi(1:N.nz1,1));
+                D.vxi(1:N.nz1,N.nx)    =   -Py.dPdx*M.H/(Py.eta0)/log(m).*...
+                    (m.^(-M.z1'./M.H)/(m-1).*(M.z1'.*(m-1) + M.H) - M.H/(m-1)) - ...
+                    m.^(-M.z1'./M.H).*m.*Py.v0./(m-1) + ...
+                    Py.v0*m/(m-1);                          % Right
+                D.vxi(1:N.nz1,N.nx)     =   flipud(D.vxi(1:N.nz1,N.nx));
+                D.vxi(N.nz1,2:N.nx1)    =   (-Py.dPdx*M.H/(Py.eta0)/log(m).*...
+                    (m.^(-M.z1(1)./M.H)/(m-1).*(M.z1(1).*(m-1) + M.H) - M.H/(m-1)) - ...
+                    m.^(-M.z1(1)./M.H).*m.*Py.v0./(m-1) + ...
+                    Py.v0*m/(m-1)).*ones(1,length(M.x1)-1); % top
+                D.vxi(1,2:N.nx1)        =   (-Py.dPdx*M.H/(Py.eta0)/log(m).*...
+                    (m.^(-M.z1(N.nz1)./M.H)/(m-1).*(M.z1(1).*(m-1) + M.H) - M.H/(m-1)) - ...
+                    m.^(-M.z1(N.nz1)./M.H).*m.*Py.v0./(m-1) + ...
+                    Py.v0*m/(m-1)).*ones(1,length(M.x1)-1); % top
+            end
         case 'none'
             D.vxi    =   zeros(N.nz,N.nx);
             D.vzi    =   zeros(N.nz,N.nx);
@@ -202,6 +238,8 @@ if isfield(Py,'tparam')
     else
         D.rho       =   Py.rho0.*ones(N.nz,N.nx);
     end
+else
+    D.rho           =   Py.rho0.*ones(N.nz,N.nx);
 end
 % ----------------------------------------------------------------------- %
 %% Anfangsviskositaet --------------------------------------------------- %
@@ -313,6 +351,10 @@ switch B.EtaIni
         Ma.C        =   reshape(C,[nmzz*nmxx,1]);
         
         Ma.c        =   [1,2];
+    case 'exp'
+        D.eta       =   Py.eta0.*...        % Logarithmic Viscosity profile
+            exp(log(m).*(M.H-M.Z)./M.H);
+        %         keyboard
 end
 
 if ~isfield(B,'AdvMethod')
@@ -372,5 +414,6 @@ else
             end
     end
 end
+% keyboard
 % ----------------------------------------------------------------------- %
 end

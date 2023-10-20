@@ -296,7 +296,7 @@ The gradient of temperature (and thus the vertical heat flux) can be defined usi
 
 # Directory Content
 [ContinentalGeotherm_1D.m](https://github.com/LukasFuchs/FDCSGm/blob/main/DiffusionProblem/ContinentalGeotherm_1D.m)<br>
-&emsp;- Script to calculate the 1-D continental geotherm.
+&emsp;-> Script to calculate the 1-D continental geotherm.
     
 [Diff1D_stationary.m](https://github.com/LukasFuchs/FDCSGm/blob/main/DiffusionProblem/Diff1D_stationary.m)<br>
 &emsp;-> Script to calculate the 1-D steady state solution.

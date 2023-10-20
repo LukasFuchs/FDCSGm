@@ -523,17 +523,17 @@ end
 T.tend      = toc(T.tstart);
 %% ====================== Clear path structure ========================== %
 if strcmp(getenv('OS'),'Windows_NT')
-    rmpath('..\DiffusionProblem')
-    rmpath('..\AdvectionProblem')
-    rmpath('..\StokesProblem')
-    rmpath('..\SetUp')
-    rmpath('..\ScaleParam')
+    rmpath('..\..\DiffusionProblem')
+    rmpath('..\..\AdvectionProblem')
+    rmpath('..\..\StokesProblem')
+    rmpath('..\..\SetUp')
+    rmpath('..\..\ScaleParam')
 else
-    rmpath('../DiffusionProblem')
-    rmpath('../AdvectionProblem')
-    rmpath('../StokesProblem')
-    rmpath('../SetUp')
-    rmpath('../ScaleParam')
+    rmpath('../../DiffusionProblem')
+    rmpath('../../AdvectionProblem')
+    rmpath('../../StokesProblem')
+    rmpath('../../SetUp')
+    rmpath('../../ScaleParam')
 end
 % ======================================================================= %
 profile viewer
