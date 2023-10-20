@@ -50,5 +50,5 @@ $v_{x,ana} = -\frac{\partial P}{\partial x} \frac{H}{\eta_0 log(m)} (\frac{m^{-\
 [NSE_test_deriv.m](https://github.com/LukasFuchs/FDCSGm/blob/main/Benchmark/ChannelFlow/NSE_test_deriv.m)<br>
 &emsp; -> Script to calculate the 1-D stokes solution for a Couette-(Poiseuille) channel flow with variable viscosity using different finite discretization schemes (staggered, centered 2nd order, centered 4th order, chain rule) and compare it to its analytical solution.
 
-[ChannelFlow.m]()<br>
+[ChannelFlow.m](https://github.com/LukasFuchs/FDCSGm/blob/main/Benchmark/ChannelFlow/ChannelFlow.m)<br>
 &emsp; -> Script to calculate the 2-D solution of a horizontal Couette(-Poiseuille) channel flow for constant or depth-dependent viscosity condition and compares the numerical solution with its analytical. 
