@@ -17,14 +17,13 @@ Pl.plotfields   =   'yes';
 %% ==================== Define viscosity conditions ===================== %
 Py.eparam       =   'variable';
 B.EtaIni        =   'exp';
+Py.eta0         =   1e20;           % Viscosity at the bottom
+Py.eta1         =   1e26;           % Viscosity at the top
 % ======================================================================= %
 %% ========================= Define flow field ========================== %
 B.IniFlow       =   'Channel';
-Py.eta0         =   1e20;           % Viscosity at the bottom
-Py.eta1         =   1e26;           % Viscosity at the top
 Py.dPdx         =   -200;            % Horizontal pressure gradient; -10.0;
 Py.v0           =   1.58e-9;        % Velocity at the top [ m/s ]
-
 B.FlowFac       =   10;
 % ----------------------------------------------------------------------- %
 %% ==================== Define model geometry constants ================= %
