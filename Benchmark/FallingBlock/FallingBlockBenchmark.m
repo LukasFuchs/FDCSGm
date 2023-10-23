@@ -134,21 +134,25 @@ for k = 1:length(eta1)
             switch Py.eparam
                 case 'const'
                     ax1=subplot(2,1,1);
+                    Pl.cbtitle  =   {'$$\rho$$'};
                     plotfield(D.rho,M.X./1e3,M.Z./1e3,Pl,'pcolor',...
-                        '$$\rho$$','quiver',ID.vx,ID.vz)
+                        [],'quiver',ID.vx,ID.vz)
                     colormap(ax1,flipud(Pl.lajolla))
                     ax2=subplot(2,1,2);
+                    Pl.cbtitle  =   {'$$v$$'};
                     plotfield(ID.v,M.X./1e3,M.Z/1e3,Pl,'pcolor',...
-                        '$$v$$')
+                        [])
                     colormap(ax2,Pl.imola)
                 case 'variable'
                     ax1=subplot(2,1,1);
+                    Pl.cbtitle  =   {'$$\rho$$'};
                     plotfield(D.rho,M.X./1e3,M.Z./1e3,Pl,'contourf',...
-                        '$$\rho$$','quiver',ID.vx,ID.vz)
+                        [],'quiver',ID.vx,ID.vz)
                     colormap(ax1,flipud(Pl.lajolla))
                     ax2=subplot(2,1,2);
+                    Pl.cbtitle  =   {'$$\eta$$'};
                     plotfield(log10(D.eta),M.X./1e3,M.Z./1e3,Pl,'pcolor',...
-                        '$$\eta$$')
+                        [])
                     colormap(ax2,flipud(Pl.lapaz))
             end
             switch Pl.savefig

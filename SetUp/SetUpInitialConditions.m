@@ -274,7 +274,7 @@ switch B.EtaIni
         clear XM ZM
         Ma.C        =   ones(nmzz*nmxx,1);
         
-        ind         =   Ma.XM>xL & Ma.XM<xR & Ma.ZM > zB & Ma.ZM < zT;
+        ind         =   Ma.XM>=xL & Ma.XM<=xR & Ma.ZM>=zB & Ma.ZM<=zT;
         
         Ma.C(ind)   =   2;
         
@@ -358,7 +358,7 @@ switch B.EtaIni
 end
 
 if ~isfield(B,'AdvMethod')
-    Ma  =   [];
+%     Ma  =   [];
 else
     switch lower(B.AdvMethod)
         case 'slf'
