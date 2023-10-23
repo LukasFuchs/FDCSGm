@@ -16,15 +16,20 @@ where $\Delta A$ is the amplitude, *x* the horizontal coordinate, *L* the length
 **Figure 1.** Rayleigh-Taylor Instability. Initial setup and solution of the first time step for a model with a wavelength of 500 m and an amplitude of 100 m. **LEFT:** Density field overlain by the velocity vectors on the regular grid. **RIGHT:** Viscosity field. 
 
 
-&emsp; Below, the figure shows the results of a series of RTI of certain viscosity and density contrast for a range of amplitudes and perturbation wavelenghts (for more details see figure caption). The code does calculate the vertical velocity for the centered amplitude reasonably well, however, there are some deviations from the analytical solution and the code struggels for very small perturbation (i.e., A = h<sub>1</sub>/1500; not shown here for visualization reasons). These are topics remaining to analyze in detail regarding the accuracy of the code. 
+&emsp; Below, the figure shows the results of a series of RTIs of certain viscosity and density contrast for a range of amplitudes and perturbation wavelenghts (for more details see figure caption). The code does calculate the vertical velocity for the centered amplitude reasonably well, however, there are some deviations from the analytical solution and the code struggels for very small perturbation (i.e., A = h<sub>1</sub>/1500; not shown here for visualization reasons). These are topics remaining to analyze in detail regarding the accuracy of the code. 
 
 ![GrowthRate_15_150_101](https://github.com/LukasFuchs/FDCSGm/assets/25866942/0534df35-2316-4c90-a329-08e5487a04ab)<br>
-**Figure 2.** Growth rate of a rayleigh-taylor instability. The solid lines are the analytical solution of the growth rate for a certain perturbation amplitude, wavelength, density and viscosity ratio. The circles are the numerical solution for an amplitude of $\Delta A = h_1/15$ and the dots for an amplitude of $\Delta A = h_1/150$. The resolution of the numerical grid is defined as 51 in vertical direction and the number of grid points varies with the horizontal direction such that the gird is always squared, i.e., dx = dz. The number of marker varies as well, where I assume 25 marker per each finite difference cell.
+**Figure 2.** Growth rate of a rayleigh-taylor instability. The solid lines are the analytical solution of the growth rate for a certain perturbation amplitude, wavelength, density and viscosity ratio (for more details see Gerya, 2009, Figure. 16.1). The circles are the numerical solution for an amplitude of $\Delta A = h_1/15$ and the dots for an amplitude of $\Delta A = h_1/150$. The resolution of the numerical grid is defined as 101 in vertical direction and the number of grid points varies with the horizontal direction such that the gird is always squared, i.e., dx = dz. The number of marker varies as well, where I assume 25 marker per each finite difference cell.
 
 # Directory Content 
-GrowthRate.m*
-RTI_semiLag.m*
-RTI_tracers.m*
+[GrowthRate.m](https://github.com/LukasFuchs/FDCSGm/blob/main/Benchmark/RTI/GrowthRate.m)<br>
+&emsp;-> Script to calculate the series of models for the growth rate shown in **Figure 2**. 
+
+[RTI_semiLag.m](https://github.com/LukasFuchs/FDCSGm/blob/main/Benchmark/RTI/RTI_semiLag.m)<br>
+&emsp; -> Script to calculate a time-dependent RTI using the semi-lagrangian advection method for composition. I simply wrote this script to check if advection of composition is possible with semi-lagrangian, too. It works to a certain extent, however, caution needs to be taken along the compositional interface. 
+
+[RTI_tracers.m](https://github.com/LukasFuchs/FDCSGm/blob/main/Benchmark/RTI/RTI_tracers.m)<br>
+&emsp; -> Script to calculate a time-dependent RTI using the tracer advection method. 
 
 # References 
 
