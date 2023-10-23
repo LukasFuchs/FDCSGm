@@ -47,27 +47,27 @@ To avoid the effect of boundary conditions as best as possible, I set the veloci
 
 ## Examples of the advection schemes
 
-![Field1](https://github.com/LukasFuchs/FDCSGm/assets/25866942/f632c6e3-2051-45d8-ae48-c62a40ac2242)<br>
+![Field1](https://github.com/LukasFuchs/FDCSGm/assets/25866942/7ce5423c-4aa8-45f6-a5b7-d1b7710f85b7)<br>
 **Figure 1.** Initial setup for a circular, constant (temperature) perturbation. The temperature field is scaled by the maximum of the temperature, thus it is equal to one inside. 
 
-![2D_Advection_RigidBody](https://github.com/LukasFuchs/FDCSGm/assets/25866942/66ea8ad6-a277-4cd5-a91e-627f1b3f41fd)<br>
+![2D_Advection_RigidBody](https://github.com/LukasFuchs/FDCSGm/assets/25866942/81e45839-b93f-4631-ab39-70be21370ecb)<br>
 **Figure 2.** Example of an evolution of a full rotation. The advection scheme is the semi-lagragian scheme for a grid resolution of 301x301, shown at every 50th iteration step. The shape of the initial perturbation is preserved rather well and only minor *diffusion* due to the interpolation of the temperature is observable. 
 
-![Comparison_301_301_circular](https://github.com/LukasFuchs/FDCSGm/assets/25866942/e3bea260-2b1c-4f4e-9da7-79cc429069f4)<br>
+![Comparison_301_301_circular](https://github.com/LukasFuchs/FDCSGm/assets/25866942/9f1e4c1d-7cb7-4dfc-82a8-a1ee985f3caa)<br>
 **Figure 3.** Comparison of the final step for each advection method. For more details see the titles of each subplot. 
 
-![Comparison_101_101_circular](https://github.com/LukasFuchs/FDCSGm/assets/25866942/ca206459-0f94-4500-8982-61b030ae71b8)<br>
+![Comparison_101_101_circular](https://github.com/LukasFuchs/FDCSGm/assets/25866942/74ea95eb-854b-47b9-83f1-5f24dd5b6218)<br>
 **Figure 4.** Same as *Figure 3*, but with a smaller resolution of 101x101. For more details see the titles of each subplot. 
 
-![Initial_101_101_gaussian](https://github.com/LukasFuchs/FDCSGm/assets/25866942/c6b09e02-5ce4-4cd7-b9a6-fbd78cebf3a4)<br>
+![Comparison_101_101_gaussian_ini](https://github.com/LukasFuchs/FDCSGm/assets/25866942/7f0b01f6-a4b4-4a98-98f7-18e1aea797ee)<br>
 **Figure 5.** Initial setup for a gaussian (temperature) perturbation. The temperature field is scaled by the maximum of the temperature, thus the maximum is equal to one.
 
-![Comparison_101_101_gaussian](https://github.com/LukasFuchs/FDCSGm/assets/25866942/c516f57b-4860-4a68-9e25-41e50a271d08)<br>
+![Comparison_101_101_gaussian](https://github.com/LukasFuchs/FDCSGm/assets/25866942/db56328b-de4d-4918-b18a-94804bc7575f)<br>
 **Figure 6.** Same as *Figure 4*, but with a gaussian (temperature) perturbation. For more details see the titles of each subplot. 
 
-![Initial_101_101_block](https://github.com/LukasFuchs/FDCSGm/assets/25866942/3fe2ccf2-a341-4446-bca1-c274bf2b1c75) <br>
+![Comparison_101_101_block_ini](https://github.com/LukasFuchs/FDCSGm/assets/25866942/0483945e-69ad-4d1d-9c09-e8b5b6f3cd7e)<br>
 **Figure 7.** Initial setup for a rectangular, constant (temperature) perturbation. The temperature field is scaled by the maximum of the temperature, thus it is equal to one inside.
 
-![Comparison_101_101_block](https://github.com/LukasFuchs/FDCSGm/assets/25866942/2c1c431c-7b63-4f82-8a6b-34894afc8261)<br>
+![Comparison_101_101_block](https://github.com/LukasFuchs/FDCSGm/assets/25866942/14924353-0927-46b3-9ee8-d5b55960ff4b)<br>
 **Figure 8.** Same as *Figure 4*, but with a rectangular, constant (temperature) perturbation. For more details see the titles of each subplot.
 

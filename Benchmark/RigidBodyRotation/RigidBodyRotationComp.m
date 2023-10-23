@@ -15,7 +15,7 @@ end
 scheme          =   {'upwind','SLF','semi-lag','tracers'};
 for i = 1:size(scheme,2)
     %% ===================== Some initial definitions =================== %
-    Pl.savefig      =   'no';
+    Pl.savefig      =   'yes';
     Pl.plotfields   =   'no';
     % =================================================================== %
     %% ============ Define method to solve the energy equation ========== %
@@ -27,7 +27,7 @@ for i = 1:size(scheme,2)
     B.EtaIni        =   'none';
     % =================================================================== %
     %% ================== Define initial temperature anomaly ============ %
-    B.Tini          =   'circle';       % Tanomaly
+    B.Tini          =   'block';       % Tanomaly
     B.T0            =   1000;           % [ K ]
     B.TAmpl         =   200;            % [ K ]
     switch B.Tini
@@ -40,14 +40,14 @@ for i = 1:size(scheme,2)
     %% ========================= Define flow field ====================== %
     B.IniFlow       =   'RigidBody';    % FlowField
     B.FlowFac       =   1;
-    % =================================================================== %
+    % ============================================= ====================== %
     %% ==================== Define model geometry constants ============= %
     M.H             =   -1;             % [ km ]
     M.xmax          =   1;              % Aspect ratio
     % =================================================================== %
     %% ====================== Define the numerical grid ================= %
-    N.nx            =   201;
-    N.nz            =   201;
+    N.nx            =   101;
+    N.nz            =   101;
     % =================================================================== %
     %% ====================== Define time constants ===================== %
     T.tmaxini       =   6.2869e-1;      % [ Ma ]
@@ -110,7 +110,7 @@ for i = 1:size(scheme,2)
     % =================================================================== %
     %% ========================= Time loop ============================= %%
     for it = 1:T.itmax
-%         disp([' Time step: ',num2str(it)])
+        %         disp([' Time step: ',num2str(it)])
         if it>1
             T.time(it)  =   T.time(it-1) + T.dt;
             if T.time(it) > T.tmax
@@ -120,8 +120,7 @@ for i = 1:size(scheme,2)
         end
         %% ========================== Plot data ========================= %
         Pl.time     =   ...
-            ['$$@ Iteration: ',sprintf('%i',it),...
-            '; Time: ',sprintf('%2.2e',T.time(it)/1e6/(365.25*24*60*60)),' Myr$$'];
+            {};
         switch Pl.plotfields
             case 'yes'
                 if (mod(it,50)==0||it==1)
@@ -137,7 +136,7 @@ for i = 1:size(scheme,2)
                             plotfield(D.T./D.Tmax,M.X/1e3,M.Z/1e3,Pl,...
                                 'pcolor',tit,'quiver',ID.vx,ID.vz)
                             colormap(ax1,flipud(Pl.lajolla))
-
+                            
                             ax2=subplot(1,2,2);
                             plot(Ma.XM./1e3,Ma.ZM./1e3,'.','MarkerSize',1)
                             hold on
@@ -164,12 +163,12 @@ for i = 1:size(scheme,2)
                         case 'yes'
                             saveas(figure(2),...
                                 [M.ModDir,'/Field',num2str(it)],'png')
-
+                            
                             % Capture the plot as an image
                             frame       = getframe(h);
                             im          = frame2im(frame);
                             [imind,cm]  = rgb2ind(im,256);
-
+                            
                             % Write to the GIF File
                             if it == 1
                                 imwrite(imind,cm,Pl.filename,'gif', 'Loopcount',inf);
@@ -197,7 +196,7 @@ for i = 1:size(scheme,2)
                     plotfield(D.T./D.Tmax,M.X/1e3,M.Z/1e3,Pl,...
                         'pcolor',tit,'quiver',ID.vx,ID.vz)
                     colormap(ax1,flipud(Pl.lajolla))
-
+                    
                     ax2=subplot(1,2,2);
                     plot(Ma.XM./1e3,Ma.ZM./1e3,'.','MarkerSize',1)
                     hold on

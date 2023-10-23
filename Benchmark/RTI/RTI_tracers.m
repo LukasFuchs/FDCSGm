@@ -1,6 +1,5 @@
 clear
 clc
-% profile on
 %% ======================== Add required paths ========================== %
 if strcmp(getenv('OS'),'Windows_NT')
     addpath('..\..\AdvectionProblem')
@@ -12,11 +11,9 @@ else
     addpath('../../SetUp')
 end
 % ======================================================================= %
-T.tstart        =   tic;
 %% ===================== Some initial definitions ======================= %
 Pl.savefig      =   'no';
 Pl.plotfields   =   'yes';
-Py.scale        =   'no';
 % ======================================================================= %
 %% ============ Define method to solve the energy equation ============== %
 B.AdvMethod     =   'tracers';
@@ -70,7 +67,7 @@ B.rbc       =   1;          %   Right
 % ======================================================================= %
 %% ====================== Define time constants ========================= %
 T.tmaxini   =   4500;       %   Maximum time in Ma
-T.itmax     =   50;         %   Maximal erlaubte Anzahl der Iterationen
+T.itmax     =   50;          %   Maximal erlaubte Anzahl der Iterationen
 T.dtfac     =   1.0;        %   Advektionscourantkriterium
 % ======================================================================= %
 %% ========================= Define fields required ===================== %
@@ -82,8 +79,8 @@ T.dtfac     =   1.0;        %   Advektionscourantkriterium
 %% ========================= Plot parameter ============================= %
 Pl.inc      =   min(N.nz/10,N.nx/5);
 Pl.inc      =   round(Pl.inc);
-Pl.xlab     =   '$$x\ [km]$$';
-Pl.zlab     =   '$$z\ [km]$$';
+Pl.xlab     =   'x [km]';
+Pl.zlab     =   'z [km]';
 switch Pl.plotfields
     case 'yes'
         if strcmp(getenv('OS'),'Windows_NT')
@@ -124,22 +121,12 @@ fprintf(['Maximum Time : %1.4g',...
 %% ========================= Time loop ================================= %%
 for it = 1:T.itmax
     if(strcmp(B.AdvMethod,'none')==0)
-        switch Py.eparam
-            case 'const'
-                [D,A]       =   solveSECE_const_Eta(D,Py,N,B,A);
-                if (it == 2)
-                    N.beenhere = 1;
-                end
-            case 'variable'
-                [D,A]       =   solveSECE(D,Py,N,B);
-            otherwise
-                error('Viscosity not difined! Check Py.eparam parameter.')
-        end
+        [D,A]       =   solveSECE(D,Py,N,B);
     end
     % =================================================================== %
     %% ===================== Calculate time stepping ==================== %
     T.dt        =   T.dtfac*min(N.dx,abs(N.dz))/...
-        (sqrt(max(max(D.vx))^2 + max(max(D.vz))^2));    
+        (sqrt(max(max(D.vx))^2 + max(max(D.vz))^2));
     if it>1
         T.time(it)  =   T.time(it-1) + T.dt;
     end
@@ -150,26 +137,28 @@ for it = 1:T.itmax
     % =================================================================== %
     %% ========================== Plot data ============================= %
     Pl.time     =   ...
-        ['@ Iteration: ',sprintf('%i',it),...
-        '; Time: ',sprintf('%2.2e',T.time(it)/1e6/(365.25*24*60*60)),' Myr'];
+        ['Time: ',sprintf('%2.2e',T.time(it)/1e6/(365.25*24*60*60)),...
+        ' Myr'];
     
     switch Pl.plotfields
         case 'yes'
             if (mod(it,5)==0||it==1)
                 figure(3)
                 clf
-                
                 ax1=subplot(3,1,1);
+                Pl.cbtitle  =   [{'$$\rho$$'},{'$$[kg/m^3]$$'}];
                 plotfield(D.rho,M.X/1e3,M.Z/1e3,Pl,'contourf',...
-                    '$$\rho$$','quiver',ID.vx,ID.vz)
+                    [],'quiver',ID.vx,ID.vz)
                 colormap(ax1,flipud(Pl.oslo))
                 ax2=subplot(3,1,2);
+                Pl.cbtitle  =   [{'$$\eta$$'},{'$$[ Pa s ]$$'}];
                 plotfield(log10(D.eta),M.X/1e3,M.Z/1e3,Pl,'pcolor',...
-                    '$$\eta$$')
+                    [])
                 colormap(ax2,flipud(Pl.lapaz))
                 ax3=subplot(3,1,3);
-                plotfield(ID.v.*100*365.25*24*60*60,...
-                    M.X/1e3,M.Z/1e3,Pl,'pcolor','$$v$$')
+                Pl.cbtitle  =   [{'v'},{'[ cm/a ]'}];
+                plotfield(ID.v.*100.*(60*60*24*365.25),...
+                    M.X/1e3,M.Z/1e3,Pl,'pcolor',[])
                 colormap(ax3,Pl.imola)
                 
                 switch Pl.savefig
@@ -201,16 +190,19 @@ end
 figure(3)
 clf
 ax1=subplot(3,1,1);
+Pl.cbtitle  =   [{'$$\rho$$'},{'$$[kg/m^3]$$'}];
 plotfield(D.rho,M.X/1e3,M.Z/1e3,Pl,'contourf',...
-    '$$\rho$$','quiver',ID.vx,ID.vz)
+    [],'quiver',ID.vx,ID.vz)
 colormap(ax1,flipud(Pl.oslo))
 ax2=subplot(3,1,2);
+Pl.cbtitle  =   [{'$$\eta$$'},{'$$[ Pa s ]$$'}];
 plotfield(log10(D.eta),M.X/1e3,M.Z/1e3,Pl,'pcolor',...
-    '$$\eta$$')
+    [])
 colormap(ax2,flipud(Pl.lapaz))
 ax3=subplot(3,1,3);
-plotfield(ID.v.*100*365.25*24*60*60,...
-    M.X/1e3,M.Z/1e3,Pl,'pcolor','$$v$$')
+Pl.cbtitle  =   [{'v'},{'[ cm/a ]'}];
+plotfield(ID.v.*100.*(60*60*24*365.25),...
+    M.X/1e3,M.Z/1e3,Pl,'pcolor',[])
 colormap(ax3,Pl.imola)
 switch Pl.savefig
     case 'yes'
@@ -235,7 +227,6 @@ switch Pl.savefig
         saveas(figure(4),[M.ModDir,'/TimeSeries'],'png')
 end
 % ======================================================================= %
-T.tend      = toc(T.tstart);
 %% ====================== Clear path structure ========================== %
 if strcmp(getenv('OS'),'Windows_NT')
     rmpath('..\..\AdvectionProblem')

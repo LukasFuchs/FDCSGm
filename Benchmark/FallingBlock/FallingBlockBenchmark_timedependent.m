@@ -87,8 +87,8 @@ for k = 1:length(eta1)
     %% ========================= Plot parameter ========================= %
     Pl.inc      =   min(N.nz/10,N.nx/5);
     Pl.inc      =   round(Pl.inc);
-    Pl.xlab     =   '$$x$$';
-    Pl.zlab     =   '$$z$$';
+    Pl.xlab     =   '$$x [km]$$';
+    Pl.zlab     =   '$$z [km]$$';
     switch Pl.plotfields
         case 'yes'
             if strcmp(getenv('OS'),'Windows_NT')
@@ -102,10 +102,10 @@ for k = 1:length(eta1)
     % Animation settings ------------------------------------------------ %
     switch Pl.savefig
         case 'yes'
-            M.ModDir    = ['data/TimeDependent/FallingBlock_',...
-                '_eta_',Py.eparam,'_xmax_',num2str(M.xmax),...
-                '_nx_',num2str(N.nz),'_nz_',num2str(N.nz),'_etar_',...
-                num2str(Py.eta1/Py.eta0)];           
+            M.ModDir    = ['data/FallingBlock',...
+            '_etar_',num2str(Py.eta1/Py.eta0),...
+            '_drho_',num2str(Py.rho1-Py.rho0),...
+            '_nx_',num2str(N.nz),'_nz_',num2str(N.nz)];            
             if ~exist(M.ModDir,'dir')
                 mkdir(M.ModDir)
             end
@@ -162,8 +162,7 @@ for k = 1:length(eta1)
         % =============================================================== %
         %% ========================== Plot data ========================= %
         Pl.time     =   ...
-            ['@ Iteration: ',sprintf('%i',it),...
-            '; Time: ',sprintf('%2.2e',T.time(it))];
+            {['@ Iteration: ',sprintf('%i',it)]};
         if (mod(it,10)==0||it==1)
             switch Pl.plotfields
                 case 'yes'
@@ -231,7 +230,7 @@ end
 %% ======================== Save final figure =========================== %
 switch Pl.savefig
     case 'yes'
-        saveas(figure(3),['data/TimeDependent/TracerComparison_nx_',...
+        saveas(figure(3),['data/TracerComparison_nx_',...
             num2str(N.nx)],'png')
 end
 % ======================================================================= %
@@ -241,12 +240,10 @@ if strcmp(getenv('OS'),'Windows_NT')
     rmpath('..\..\AdvectionProblem')
     rmpath('..\..\StokesProblem')
     rmpath('..\..\SetUp')
-%     rmpath('..\..\ScaleParam')
 else
     rmpath('../../AdvectionProblem')
     rmpath('../../StokesProblem')
     rmpath('../../SetUp')
-%     rmpath('../../ScaleParam')
 end
 % ======================================================================= %
 % ======================================================================= %

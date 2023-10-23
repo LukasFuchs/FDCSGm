@@ -11,7 +11,6 @@ else
     addpath('../../SetUp')
 end
 % ======================================================================= %
-T.tstart        =   tic;
 %% ===================== Some initial definitions ======================= %
 Pl.savefig      =   'no';
 Pl.plotfields   =   'yes';
@@ -82,8 +81,8 @@ T.dtfac     =   0.5;            %   Courant criterium
 %% ========================= Plot parameter ============================= %
 Pl.inc      =   min(N.nz/10,N.nx/5);
 Pl.inc      =   round(Pl.inc);
-Pl.xlab     =   '$$x$$';
-Pl.zlab     =   '$$z$$';
+Pl.xlab     =   'x [km]';
+Pl.zlab     =   'z [km]';
 switch Pl.plotfields
     case 'yes'
         if strcmp(getenv('OS'),'Windows_NT')
@@ -97,8 +96,9 @@ end
 % Animation settings ---------------------------------------------------- %
 switch Pl.savefig
     case 'yes'
-        M.ModDir    = ['data/Blanckenbach_Ra_',sprintf('%2.2e',Py.Ra),...
-            '_eta_',Py.eparam,'_xmax_',num2str(M.xmax),...
+        M.ModDir    = ['data/FallingBlock',...
+            '_etar_',num2str(Py.eta1/Py.eta0),...
+            '_drho_',num2str(Py.rho1-Py.rho0),...
             '_nx_',num2str(N.nz),'_nz_',num2str(N.nz)];
         if ~exist(M.ModDir,'dir')
             mkdir(M.ModDir)
@@ -145,8 +145,8 @@ for it = 1:T.itmax
         T.time(it)  =   T.time(it-1) + T.dt;
     end
     if T.time(it) > T.tmax
-        T.dt        =   T.tmax - T.time(it-1); 
-        T.time(it)  =   T.time(it-1) + T.dt; 
+        T.dt        =   T.tmax - T.time(it-1);
+        T.time(it)  =   T.time(it-1) + T.dt;
     end
     % =================================================================== %
     %% =========== Interpolate velocity onto the regular grid =========== %
@@ -156,8 +156,8 @@ for it = 1:T.itmax
     % =================================================================== %
     %% ========================== Plot data ============================= %
     Pl.time     =   ...
-        ['@ Iteration: ',sprintf('%i',it),...
-        '; Time: ',sprintf('%2.2e',T.time(it))];
+        [['@ Iteration: ',sprintf('%i',it)];...
+        ['Time: ',sprintf('%2.2e',T.time(it))]];
     if (mod(it,10)==0||it==1)
         switch Pl.plotfields
             case 'yes'
@@ -166,21 +166,25 @@ for it = 1:T.itmax
                 switch Py.eparam
                     case 'const'
                         ax1=subplot(2,1,1);
+                        Pl.cbtitle  =   {'$$\rho$$'};
                         plotfield(D.rho,M.X./1e3,M.Z./1e3,Pl,'contourf',...
-                            '$$\rho$$','quiver',ID.vx,ID.vz)
+                            [],'quiver',ID.vx,ID.vz)
                         colormap(ax1,flipud(Pl.lajolla))
+                        Pl.cbtitle  =   {'$$v$$'};
                         ax2=subplot(2,1,2);
                         plotfield(ID.v,M.X./1e3,M.Z/1e3,Pl,'pcolor',...
-                            '$$v$$')
+                            [])
                         colormap(ax2,Pl.imola)
                     case 'variable'
                         ax1=subplot(2,1,1);
-                        plotfield(D.rho,M.X./1e3,M.Z./1e3,Pl,'contourf',...
-                            '$$\rho$$','quiver',ID.vx,ID.vz)
+                        Pl.cbtitle  =   {'$$\rho$$'};
+                        plotfield(D.rho,M.X./1e3,M.Z./1e3,Pl,'pcolor',...
+                            [],'quiver',ID.vx,ID.vz)
                         colormap(ax1,flipud(Pl.lajolla))
+                        Pl.cbtitle  =   {'$$\eta$$'};
                         ax2=subplot(2,1,2);
-                        plotfield(log10(D.eta),M.X./1e3,M.Z./1e3,Pl,'contourf',...
-                            '$$\eta$$','quiver',ID.vx,ID.vz)
+                        plotfield(log10(D.eta),M.X./1e3,M.Z./1e3,Pl,'pcolor',...
+                            [],'quiver',ID.vx,ID.vz)
                         colormap(ax2,flipud(Pl.lapaz))
                 end
                 switch Pl.savefig
@@ -208,30 +212,32 @@ for it = 1:T.itmax
     % =================================================================== %
     %% ========================== Check break =========================== %
     if (T.time(it) >= T.tmax)
-        set(figure(3),'position',[1.8,1.8,766.4,780.8]);
-        h           =   figure(3);
         disp('Maximum time reached, stop time loop!')
         T.indtime   = find(T.time(2:end)==0,1,'first');
-        figure(3)
+        figure(2)
         clf
         switch Py.eparam
             case 'const'
                 ax1=subplot(2,1,1);
+                Pl.cbtitle  =   {'$$\rho$$'};
                 plotfield(D.rho,M.X./1e3,M.Z./1e3,Pl,'contourf',...
-                    '$$\rho$$','quiver',ID.vx,ID.vz)
+                    [],'quiver',ID.vx,ID.vz)
                 colormap(ax1,flipud(Pl.lajolla))
+                Pl.cbtitle  =   {'$$v$$'};
                 ax2=subplot(2,1,2);
                 plotfield(ID.v,M.X./1e3,M.Z/1e3,Pl,'pcolor',...
-                    '$$v$$')
+                    [])
                 colormap(ax2,Pl.imola)
             case 'variable'
                 ax1=subplot(2,1,1);
-                plotfield(D.rho,M.X./1e3,M.Z./1e3,Pl,'contourf',...
-                    '$$\rho$$','quiver',ID.vx,ID.vz)
+                Pl.cbtitle  =   {'$$\rho$$'};
+                plotfield(D.rho,M.X./1e3,M.Z./1e3,Pl,'pcolor',...
+                    [],'quiver',ID.vx,ID.vz)
                 colormap(ax1,flipud(Pl.lajolla))
+                Pl.cbtitle  =   {'$$\eta$$'};
                 ax2=subplot(2,1,2);
-                plotfield(log10(D.eta),M.X./1e3,M.Z./1e3,Pl,'contourf',...
-                    '$$\eta$$','quiver',ID.vx,ID.vz)
+                plotfield(log10(D.eta),M.X./1e3,M.Z./1e3,Pl,'pcolor',...
+                    [],'quiver',ID.vx,ID.vz)
                 colormap(ax2,flipud(Pl.lapaz))
         end
         break
@@ -241,10 +247,9 @@ end
 %% ======================== Save final figure =========================== %
 switch Pl.savefig
     case 'yes'
-        saveas(figure(3),[M.ModDir,'/Field_SS'],'png')
+        saveas(figure(2),[M.ModDir,'/Field_SS'],'png')
 end
 % ======================================================================= %
-T.tend      = toc(T.tstart);
 %% ====================== Clear path structure ========================== %
 if strcmp(getenv('OS'),'Windows_NT')
     rmpath('..\..\AdvectionProblem')

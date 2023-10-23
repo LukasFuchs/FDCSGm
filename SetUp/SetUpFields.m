@@ -35,11 +35,13 @@ D.rho      =   zeros(N.nz,N.nx);
 if strcmp(B.Aparam,'comp')
     D.C        =   zeros(N.nz,N.nx);
 end
-D.T        =    zeros(N.nz,N.nx);
+if isfield(B,'Tini')
+    D.T        =    zeros(N.nz,N.nx);
+end
 if isfield(Py,'Q0')
     D.Q    =    ones(N.nz,N.nx).*Py.Q0;
-else
-    D.Q    =    zeros(N.nz,N.nx);
+% else
+%     D.Q    =    zeros(N.nz,N.nx);
 end
 
 if isfield(Py,'tparam')

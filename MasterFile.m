@@ -66,10 +66,11 @@ Py.eparam       =   'const';
 %   'tdep'                                                                %
 %   'ellipse'                                                             %
 %   'RTI'                                                                 %
+%   'exp'                                                                 %
 B.EtaIni        =   'tdep';
 
 % If B.EtaIni == 'tdep' ------------------------                          %
-% Define parameters for T-dep viscosity                                   %
+%   Define parameters for T-dep viscosity                                 %
 %   1) b, c -> eta = eta0 * exp(-b*T/dT + c*z/H)                          %
 Py.b            =   log(1000); %log(16384);     % Temperaturabhaengigkeit
 Py.c            =   0; %log(64);                % Tiefenabhaengigkeit
@@ -89,6 +90,13 @@ B.EllB          =   2e2;
 %       deltaA  -   Amplitude in km                                       %
 B.lambda        =   0.5;
 B.deltaA        =   100;
+
+% If B.EtaIni == 'tdep' ------------------------                          %
+%   Define parameters for an logarithmically, with depth varying viscosity%
+%       eta0    -   Viscosity at the bottom [ Pa s ]                      %
+%       eta1    -   Viscosity at the top [ Pa s ]                         %
+Py.eta0         =   1e20; 
+Py.eta1         =   1e26; 
 % ======================================================================= %
 %% ================== Define initial temperature anomaly ================ %
 %   'none'                                                                %
@@ -135,15 +143,22 @@ Py.tparam       =   'const';
 %   'ShearCell'                                                           %
 %   'PureShear'                                                           %
 %   'SimpleShear'                                                         %
+%   'Channel'                                                             %
 B.IniFlow       =   'none';
 
-% If IniFlow == 'RigidBody' || 'ShearCell' 
+% If IniFlow == 'RigidBody' || 'ShearCell'                                %
+B.FlowFac       =   10;
 
 % If B.IniFlow == 'PureShear' || 'SimpleShear'                            %
 %   Define background strain rate ebg [ s^-1 ]; % < 0 compression         %
 B.ebg           =   -1e15;
 
-B.FlowFac       =   10;
+% If IniFlow == 'Channel'                                                 %
+%   Define parameters for channel Couette-Poiseuill channel flow          %
+%       dPdx    -   Horizontal pressure gradient                          %
+%       v0      -   Velocity at the top [ m/s ]                           %
+Py.dPdx         =   -200; 
+Py.v0           =   1.58e-9; 
 % ----------------------------------------------------------------------- %
 %% ==================== Define model geometry constants ================= %
 M.H         =   -2900;          %   Depth [ in km ]
@@ -188,7 +203,7 @@ Py.Ra       =   1e6;                %   Rayleigh number
 % ======================================================================= %
 %% ===================== Define boundary conditions ===================== %
 % Velocity boundary conditions ------------------------------------------ %
-%   0 - no slip; 1 - free slip;
+%   0 - no slip/constant velocity; 1 - free slip;
 B.tbc       =   1;              %   Top
 B.bbc       =   1;              %   Bottom
 B.lbc       =   1;              %   Left
@@ -523,17 +538,17 @@ end
 T.tend      = toc(T.tstart);
 %% ====================== Clear path structure ========================== %
 if strcmp(getenv('OS'),'Windows_NT')
-    rmpath('..\DiffusionProblem')
-    rmpath('..\AdvectionProblem')
-    rmpath('..\StokesProblem')
-    rmpath('..\SetUp')
-    rmpath('..\ScaleParam')
+    rmpath('..\..\DiffusionProblem')
+    rmpath('..\..\AdvectionProblem')
+    rmpath('..\..\StokesProblem')
+    rmpath('..\..\SetUp')
+    rmpath('..\..\ScaleParam')
 else
-    rmpath('../DiffusionProblem')
-    rmpath('../AdvectionProblem')
-    rmpath('../StokesProblem')
-    rmpath('../SetUp')
-    rmpath('../ScaleParam')
+    rmpath('../../DiffusionProblem')
+    rmpath('../../AdvectionProblem')
+    rmpath('../../StokesProblem')
+    rmpath('../../SetUp')
+    rmpath('../../ScaleParam')
 end
 % ======================================================================= %
 profile viewer

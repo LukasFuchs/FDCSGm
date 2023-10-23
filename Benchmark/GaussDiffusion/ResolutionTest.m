@@ -14,7 +14,7 @@ end
 T.tstart        =   tic;
 
 Schema          =   {'explicit';'implicit';'CNV';'ADI'};
-nrnxnz          =   2; 
+nrnxnz          =   8;
 
 eps             =   zeros(size(Schema,1),nrnxnz);
 nxnz            =   zeros(size(Schema,1),nrnxnz);
@@ -101,7 +101,7 @@ for k = 1:size(Schema,1)
         switch Pl.savefig
             case 'yes'
                 M.ModDir    = ['data/ResTest/GaussDiffusion_',...
-                    '_xmax_',num2str(M.xmax),...
+                    B.DiffMethod,'_xmax_',num2str(M.xmax),...
                     '_nx_',num2str(N.nz),'_nz_',num2str(N.nz)];
                 if ~exist(M.ModDir,'dir')
                     mkdir(M.ModDir)
@@ -137,7 +137,7 @@ for k = 1:size(Schema,1)
                     T.dt        =   T.tmax - T.time(it-1);
                     T.time(it)  =   T.time(it-1) + T.dt;
                 end
-                    
+                
                 % Analytical Solution ------------------------                    %
                 D.Tana      =  B.T0 + B.TAmpl ./...
                     (1 + 2 * pi * T.time(it) * Py.kappa / B.Tsigma^2 ) .*...
@@ -159,9 +159,9 @@ for k = 1:size(Schema,1)
             D.RMS(it)   =   sqrt(sum(sum((D.epsT).^2))/(N.nx*N.nz));
             %% ========================== Plot data ============================= %
             Pl.time     =   ...
-                ['@ Iteration: ',sprintf('%i',it),...
-                '; Time: ',sprintf('%2.2e',T.time(it)/T.tscale),...
-                ' [Ma]'];            
+                [{['@ Iteration: ',sprintf('%i',it)]};...
+                {['Time: ',sprintf('%2.2e',T.time(it)/T.tscale),' [Ma]']}];
+            
             if (mod(it,2)==0||it==1||T.time(it)==T.tmax)
                 switch Pl.plotfields
                     case 'yes'
@@ -175,6 +175,7 @@ for k = 1:size(Schema,1)
                         plotfield(D.epsT,M.X./M.Lscale,M.Z./M.Lscale,Pl,'pcolor',...
                             '$$\varepsilon_{T}$$');
                         colormap(ax2,Pl.vik)
+                        caxis([-0.5 0.5])
                         ax3=subplot(2,2,3);
                         plot(D.TProfile(:,it),M.z./M.Lscale,'k','LineWidth',2)
                         hold on
@@ -221,6 +222,35 @@ for k = 1:size(Schema,1)
         %% ======================== Save final figure =========================== %
         switch Pl.savefig
             case 'yes'
+                figure(1)
+                clf
+                ax1=subplot(2,2,1);
+                plotfield(D.T,M.X./M.Lscale,M.Z./M.Lscale,Pl,'contourf',...
+                    '$$T$$','contoury',D.Tana);
+                colormap(ax1,flipud(Pl.lajolla))
+                ax2=subplot(2,2,2);
+                plotfield(D.epsT,M.X./M.Lscale,M.Z./M.Lscale,Pl,'pcolor',...
+                    '$$\varepsilon_{T}$$');
+                colormap(ax2,Pl.vik)
+                caxis([-0.5 0.5])
+                ax3=subplot(2,2,3);
+                plot(D.TProfile(:,it),M.z./M.Lscale,'k','LineWidth',2)
+                hold on
+                plot(D.TProfilea(:,it),M.z./M.Lscale,'y--')
+                hold off
+                axis([B.T0 B.T0+B.TAmpl M.H/M.Lscale 0])
+                xlabel('$$T_{x=L/2}\ [^oC]$$','Interpreter','latex')
+                ylabel('$$Depth\ [km]$$','Interpreter','latex')
+                title([{'$$Temperature\ Profile$$'};...
+                    {'$$@\ Distance\ x=L/2$$'}],'Interpreter','latex')
+                set(gca,'FontWeight','Bold','FontSize',15,'LineWidth',2,...
+                    'TickLabelInterpreter','latex')
+                ax4=subplot(2,2,4);
+                plot(T.time(1:it)/T.tscale,D.RMS(1:it),'k','LineWidth',2)
+                ylabel('$$RMS$$','Interpreter','latex')
+                xlabel('$$Time\ [Myrs]$$','Interpreter','latex')
+                set(gca,'FontWeight','Bold','FontSize',15,'LineWidth',2,...
+                    'TickLabelInterpreter','latex')
                 saveas(figure(1),[M.ModDir,'/Field_SS'],'png')
         end
         % ======================================================================= %
@@ -253,7 +283,7 @@ for k = 1:size(Schema,1)
         set(gca,'FontWeight','Bold','FontSize',15,'LineWidth',2,...
             'TickLabelInterpreter','latex')
         legend(p,legendinfo,'Location','NorthWest','Interpreter','latex')
-%         axis([1e-5 1e-2 1e-2 2])
+        %         axis([1e-5 1e-2 1e-2 2])
     end
     subplot(1,3,2)
     loglog(1./nxnz(k,:),Tmax(k,:),'LineStyle',linstyle{k},...
@@ -270,7 +300,7 @@ for k = 1:size(Schema,1)
         set(gca,'FontWeight','Bold','FontSize',15,'LineWidth',2,...
             'xscale','log','TickLabelInterpreter','latex')
         legend(legendinfo,'Location','NorthWest','Interpreter','latex')
-%         axis([1e-5 1e-2 785 795])
+        %         axis([1e-5 1e-2 785 795])
     end
     subplot(1,3,3)
     loglog(1./nxnz(k,:),Tmean(k,:),'LineStyle',linstyle{k},...
@@ -286,7 +316,7 @@ for k = 1:size(Schema,1)
         set(gca,'FontWeight','Bold','FontSize',15,'LineWidth',2,...
             'TickLabelInterpreter','latex')
         legend(legendinfo,'Location','NorthEast','Interpreter','latex')
-%         axis([1e-5 1e-2 775 776])
+        %         axis([1e-5 1e-2 775 776])
     end
 end
 

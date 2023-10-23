@@ -50,12 +50,23 @@ end
 
 xlabel(Pl.xlab,'Interpreter','latex')
 ylabel(Pl.zlab,'Interpreter','latex')
-title([titparam;{Pl.time}],'Interpreter','latex')
+if ~isempty(titparam)
+    title([titparam;{Pl.time}],'Interpreter','latex')
+else
+    title({Pl.time},'Interpreter','latex')
+end
 cb = colorbar; cb.TickLabelInterpreter = 'latex';
+if isfield(Pl,'cbtitle')
+    title(cb,Pl.cbtitle,'Interpreter','latex')
+end
 shading interp, lighting phong
-axis normal; axis equal, axis tight; caxis([fmin fmax])
+axis normal; axis equal, axis tight; %caxis([fmin fmax])
 axis([min(X(:)) max(X(:)) min(Z(:)) max(Z(:))])
+<<<<<<< HEAD
 set(gca,'FontWeight','Bold','FontSize',15,...
+=======
+set(gca,'FontWeight','Bold','FontSize',12,...
+>>>>>>> 1313b6f4e635b6b12273d4ab454bdbaaf8dbce15
     'TickLabelInterpreter','latex')
 box on
 

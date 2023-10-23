@@ -39,18 +39,18 @@ Minor half axis **b** [m]: 200
 
 ## Pure Shear
 
-![ViscousInclusionFields_PureShear](https://github.com/LukasFuchs/FDCSGm/assets/25866942/cd39d4ee-4a5a-4ce8-93dd-0961baba62c3)
+![Pure_Shear_Solution](https://github.com/LukasFuchs/FDCSGm/assets/25866942/f441f7d4-80b3-417a-beb3-1cec1e82451a)<br>
 **Figure 1.** Instantaneous solution of the stokes equation. **Top Left:** Logarithm of the viscosity. **Top Right:** Logartihm of the dissipative energy $\psi$. **Bottom Left:** Logarithm of the second invariant of the strain-rate tensor. **Bottom Right:** Logartihm of the second invariant of the deviatoric stress tensor. 
 
-![ViscousInclusionCompAna_PureShear](https://github.com/LukasFuchs/FDCSGm/assets/25866942/e13fdff3-522c-4545-9d62-fea1bf1888db)
+![Pure_Shear_Deviation](https://github.com/LukasFuchs/FDCSGm/assets/25866942/d1ec1d33-11e9-47d4-938b-5263a7fada02)<br>
 **Figure 2.** Comparison with the analytical solution. **Top Row:** Analytical and numerical solution of the horizontal velocity and their deviation (in ?). **Middle Row:** Analytical and numerical solution of the vertical velocity and their deviation (in ?). **Bottom Row:** Analytical and numerical solution of the dynamic pressure and their deviation (in ?).
 
 ## Simple Shear
 
-![ViscousInclusionFields_SimpleShear](https://github.com/LukasFuchs/FDCSGm/assets/25866942/541fff64-28bf-42de-b7e9-fef9efc10d0d)
+![Simple_Shear_Solution](https://github.com/LukasFuchs/FDCSGm/assets/25866942/10e04dc8-2c64-4f20-ba62-b244ff991b19)<br>
 **Figure 3.** Same as in **Figure 1.** but for a simple shear background deformation field. See caption of **Figure 1.** for more detail.
 
-![ViscousInclusionCompAna_SimpleShear](https://github.com/LukasFuchs/FDCSGm/assets/25866942/e087915d-6771-4819-9bc7-0bc915230e90)
+![Simple_Shear_Deviation](https://github.com/LukasFuchs/FDCSGm/assets/25866942/06945e5a-2f73-4497-896c-cc24af13140d)<br>
 **Figure 4.** Same as in **Figure 2.** but for a simple shear background deformation field. See caption of **Figure 2.** for more detail.
 
 -----------------------------------------------------------------
@@ -79,7 +79,7 @@ Minor half axis **b** [m]: 100
 
 Orientation **α** [°]: 45
 
-![Inclusion_Deta_PureShear_45](https://github.com/LukasFuchs/FDCSGm/assets/25866942/35dd79f2-e1cc-4753-93a1-ddff70919e41)<br>
+![Inclusion_Deta_PureShear_45](https://github.com/LukasFuchs/FDCSGm/assets/25866942/fc5038f8-388b-4048-b782-3e0a115930c5)<br>
 **Figure 5.** Variation of each field with increasing inclusion viscosity for an orientaion of the elliptical inclusion of 45° and a pure shear backgraound deforamtion. For more details see caption of **Figure 1.**
 
 ### References

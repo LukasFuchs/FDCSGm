@@ -23,7 +23,7 @@ A = 200 [K], <br>
 σ = 10 [% of L], <br>
 T<sub>0</sub> = 1000 [K]. <br>
 
-![Evolution](https://github.com/LukasFuchs/FDCSGm/assets/25866942/3cff6778-028d-48ce-b63d-7afff14b8c2c)<br>
+![Evolution](https://github.com/LukasFuchs/FDCSGm/assets/25866942/4ef2feff-8b47-41f8-83df-d8ed04f7f5a3)<br>
 **Figure 1.** Transient solution. **Top Left:** Numerical solution of the temperature field (background color and black contour lines), overlain by the same contour lines of the analytical solution (yellow dashed lines) for every second iteration step. **Top Right:** Total difference between the analytical and numerical temperature solution (*T*<sub>ana</sub> - *T*<sub>num</sub>). **Bottom Left:** Temperature profile through the middle of the model domain; solid line - numerical solution; yellow dashed line - analytical solution. **Bottom Right:** Root mean square error with time. 
 
 --------------------------------------------------------------
@@ -32,6 +32,6 @@ T<sub>0</sub> = 1000 [K]. <br>
 
 &emsp;For the resolution test, we compared the RMS between the analytical and numerical solution, the maximum, and mean of the temperature of the analytical and numerical solution for each finite differnece scheme after a period of 10 Million years. The resolution is 21, 41, 61, 81, 101, 121, 141, 161, respectively.
 
-![Comparison](https://github.com/LukasFuchs/FDCSGm/assets/25866942/b4bfe7a0-96e1-43b5-8656-02269bf06e67)<br>
+![Comparison](https://github.com/LukasFuchs/FDCSGm/assets/25866942/d298959d-8622-462f-b888-c434b57747c8)<br>
 **Figure 2.** RMS, *T*<sub>max</sub>, and *T*<sub>mean</sub> for each finite difference discretization scheme. 
 

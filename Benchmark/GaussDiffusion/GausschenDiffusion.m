@@ -121,6 +121,12 @@ for it = 1:T.itmax
     %% ===================== Calculate time stepping ==================== %
     if it>1
         T.time(it)  =   T.time(it-1) + T.dt;
+        
+        if T.time(it) > T.tmax
+            T.dt        =   T.tmax - T.time(it-1);
+            T.time(it)  =   T.time(it-1) + T.dt;
+        end
+        
         % Analytical Solution ------------------------                    %
         D.Tana      =  B.T0 + B.TAmpl ./...
             (1 + 2 * pi * T.time(it) * Py.kappa / B.Tsigma^2 ) .*...
@@ -141,11 +147,10 @@ for it = 1:T.itmax
     D.RMS(it)   =   sqrt(sum(sum((D.epsT).^2))/(N.nx*N.nz));
     %% ========================== Plot data ============================= %
     Pl.time     =   ...
-        ['@ Iteration: ',sprintf('%i',it),...
-        '; Time: ',sprintf('%2.2e',T.time(it)/T.tscale),...
-        ' [Ma]'];
+        [{['@ Iteration: ',sprintf('%i',it)]};...
+        {['Time: ',sprintf('%2.2e',T.time(it)/T.tscale),' [Ma]']}];
     
-    if (mod(it,2)==0||it==1)
+    if (mod(it,5)==0||it==1||T.time(it) >= T.tmax)
         switch Pl.plotfields
             case 'yes'
                 figure(1)
@@ -158,6 +163,7 @@ for it = 1:T.itmax
                 plotfield(D.epsT,M.X./M.Lscale,M.Z./M.Lscale,Pl,'pcolor',...
                     '$$\varepsilon_{T}$$');
                 colormap(ax2,Pl.vik)
+                caxis([-0.4 0.4])
                 ax3=subplot(2,2,3);
                 plot(D.TProfile(:,it),M.z./M.Lscale,'k','LineWidth',2)
                 hold on
@@ -167,7 +173,7 @@ for it = 1:T.itmax
                 xlabel('$$T_{x=L/2}\ [^oC]$$','Interpreter','latex')
                 ylabel('$$Depth\ [km]$$','Interpreter','latex')
                 title([{'$$Temperatur\ Profile$$'};...
-                    {'$$at\ Distance\ x=L/2$$'}],'Interpreter','latex')                
+                    {'$$at\ Distance\ x=L/2$$'}],'Interpreter','latex')
                 set(gca,'FontWeight','Bold','FontSize',15,'LineWidth',2,...
                     'TickLabelInterpreter','latex')
                 ax4=subplot(2,2,4);
@@ -194,6 +200,9 @@ for it = 1:T.itmax
             case 'no'
                 disp(['Iteration: ',sprintf('%i',it)])
         end
+    end
+    if (T.time(it) >= T.tmax)
+        break
     end
     % =================================================================== %
 end
