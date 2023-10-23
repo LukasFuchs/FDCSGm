@@ -89,13 +89,8 @@ if Benchmark
         plot([Ger(7,blmod),Ger(8,blmod),Ger(9,blmod),Ger(10,blmod)],'s',...
             'MarkerFaceColor','r')
     end
-<<<<<<< HEAD
-    set(gca,'FontWeight','Bold','LineWidth',2,'FontSize',12,...
-        'yscale','log','TickLabelInterpreter','latex')
-=======
     set(gca,'FontWeight','Bold','LineWidth',2,'FontSize',15,...
-        'yscale','log','TickLabelInterpreter','latex')    
->>>>>>> 6b9832310cc814801daf2d0fe51327d7c49e4178
+        'yscale','log','TickLabelInterpreter','latex')
     xlabel('$$\Delta T$$','Interpreter','latex')
     ylabel('')
     title('$$Temperature\ difference\ at\ corners$$','Interpreter','latex')

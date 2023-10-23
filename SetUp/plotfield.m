@@ -55,11 +55,7 @@ cb = colorbar; cb.TickLabelInterpreter = 'latex';
 shading interp, lighting phong
 axis normal; axis equal, axis tight; caxis([fmin fmax])
 axis([min(X(:)) max(X(:)) min(Z(:)) max(Z(:))])
-<<<<<<< HEAD
-set(gca,'FontWeight','bold','FontSize',12,...
-=======
 set(gca,'FontWeight','Bold','FontSize',15,...
->>>>>>> 6b9832310cc814801daf2d0fe51327d7c49e4178
     'TickLabelInterpreter','latex')
 box on
 
