@@ -91,7 +91,7 @@ $nz = (n-1)\sqrt[3]{\frac{Ra}{4}}+1$. &emsp; &emsp; &emsp; (3)
 
 Increasing the resolution of the model, insuring that a high enough resolution is given for the thermal boundary layer as defined with equation (3), should result in steady-state values similar to the values given by the benchmark. Thus, one can run a series of models for the high Rayleigh number cases with an increasng resolution (n = 2,3,4, and 5) and plot the results with respect to the resolution: 
 
-![ResTest_eta_constRa1e6](https://github.com/LukasFuchs/FDCSGm/assets/25866942/29b92c83-ddb2-498b-a0fb-c3ca3da6f24a)<br>
+![ResTest_eta_const_Ra1e6](https://github.com/LukasFuchs/FDCSGm/assets/25866942/526b50d7-d346-48da-9804-1a50134e9eb3)<br>
 **Figure 7.** Resolution test for high Rayleigh number calculations. Needs some further exploration, why the rms is not propergating towards the benchmark value! The models were calculated using ADI for the diffusion solver (t<sub>courant</sub>=3.0) and semi-lagrangian for the advection. 
 
 --------------------------------------------------------------
