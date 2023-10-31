@@ -34,7 +34,7 @@ nmz = 5
 
 ## Instantaneous Solution
 
-![FieldSS](https://github.com/LukasFuchs/FDCSGm/assets/25866942/0aea1c3f-ac42-44f9-95ef-a597625b8f6f)<br>
+![Field1](https://github.com/LukasFuchs/FDCSGm/assets/25866942/5a53c246-d05e-45ef-babe-4fcd9dfab735)<br>
 **Figure 1.** Denstiy [kg/m<sup>3</sup>] and viscosity [Pa s] fields for a viscosity ratio between the block and the background medium of 6 orders of magnitude. The arrows show the instantaneous solution for the velocity field. 
 
 ![drho_100_vz_eta_r_nx_51](https://github.com/LukasFuchs/FDCSGm/assets/25866942/ab71d51e-21da-4185-9d03-54e8e57c0b70)<br>
@@ -44,7 +44,7 @@ nmz = 5
 
 ## Time Dependent
 
-&emsp;The material defroms and sinks similar to the ones presented in *Gerya* (2009). However, somehow the block seems to rotate, especially for the high viscosity ratio cases. This might be due to the advection of the tracers with the regular grid velocity instead of the staggered grid one. This is will be implemente in the future. 
+&emsp;The properties from the tracers are interpolated onto the regular finite differnece grid using a bilinear interpolation scheme. Thereby, the interpolation of the viscosity is limited to a cell of dx*dz around a grid node, where the density is interpolated within a cell of 2 * dx 2 * dz. The material defroms and sinks similar to the ones presented in *Gerya* (2009).  
 
-![Comparison](https://github.com/LukasFuchs/FDCSGm/assets/25866942/29dbc458-c6aa-4edf-bb56-bcaa3dcab80a)<br>
-**Figure 3.** Density fields [kg/m<sup>3</sup>] after a certain time for a sinking block model with different viscosity ratios (from top left to bottom right: -1,1,2,3,4,5, respectively). Shown is the density field on the tracers ploted as dots of a certain size. 
+![TracerCompTPRT05](https://github.com/LukasFuchs/FDCSGm/assets/25866942/b63c1fc0-47cc-4e52-b9fc-f62b981d4e92)<br>
+**Figure 3.** Density fields [kg/m<sup>3</sup>] after a certain time for a sinking block model with different viscosity ratios (from top left to bottom right: -1,1,2,3,4,5, respectively). Shown is the density field overlaid by the tracers distribution. 
