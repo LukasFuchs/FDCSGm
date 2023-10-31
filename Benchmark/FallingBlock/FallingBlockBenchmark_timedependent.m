@@ -11,7 +11,6 @@ else
     addpath('../../SetUp')
 end
 % ======================================================================= %
-T.tstart        =   tic;
 %% ===================== Some initial definitions ======================= %
 Pl.savefig      =   'no';
 Pl.plotfields   =   'yes';
@@ -28,6 +27,7 @@ B.EtaIni        =   'block';
 %% ========================= Define flow field ========================== %
 B.IniFlow       =   'none';
 B.FlowFac       =   10;
+B.chkvel        =   0; 
 % ======================================================================= %
 eta0            =   1e21;
 eta1            =   [1e20 1e21 1e22 1e23 1e25 1e27]; % [ Pa s ]
@@ -103,9 +103,9 @@ for k = 1:length(eta1)
     switch Pl.savefig
         case 'yes'
             M.ModDir    = ['data/FallingBlock',...
-            '_etar_',num2str(Py.eta1/Py.eta0),...
-            '_drho_',num2str(Py.rho1-Py.rho0),...
-            '_nx_',num2str(N.nz),'_nz_',num2str(N.nz)];            
+                '_etar_',num2str(Py.eta1/Py.eta0),...
+                '_drho_',num2str(Py.rho1-Py.rho0),...
+                '_nx_',num2str(N.nz),'_nz_',num2str(N.nz)];
             if ~exist(M.ModDir,'dir')
                 mkdir(M.ModDir)
             end
@@ -113,7 +113,7 @@ for k = 1:length(eta1)
             set(figure(2),'position',[1.8,1.8,766.4,780.8]);
             h           =   figure(2);
     end
-    % =================================================================== %    
+    % =================================================================== %
     %% ================ Information for the command window ============== %
     fprintf([' Falling Block --------------------- ',...
         '\n Advektion mit: %s',...
@@ -157,8 +157,10 @@ for k = 1:length(eta1)
         % =============================================================== %
         %% =========== Interpolate velocity onto the regular grid ======= %
         [ID]        =   InterpStaggered(D,ID,N,'velocity');
-        D.meanV(it) =   mean(ID.v,'all');   % Mittleregeschwindigkeit
         D.meanV(it) =   rms(ID.vx(:) + ID.vz(:));
+        if B.chkvel == 1
+            ID  =   CheckContinuum(ID,N,M,Ma,Pl);
+        end
         % =============================================================== %
         %% ========================== Plot data ========================= %
         Pl.time     =   ...
@@ -219,9 +221,14 @@ for k = 1:length(eta1)
             T.indtime   = find(T.time(2:end)==0,1,'first');
             figure(3)
             ax1=subplot(3,2,k);
-            plotfield(Ma.C,Ma.XM./1e3,Ma.ZM./1e3,Pl,'scatter',...
-                '$$Tracers$$')
-            colormap(ax1,flipud(Pl.lajolla))                        
+            plotfield(D.rho,M.X./1e3,M.Z./1e3,Pl,'pcolor',...
+                '$$\rho$$')            
+            colormap(ax1,flipud(Pl.lajolla))
+            hold on
+            ind1    =   Ma.C==1;
+            scatter1 = scatter(Ma.XM(ind1)./1e3,Ma.ZM(ind1)./1e3,1,...
+                'MarkerFaceColor','k');
+            alpha(scatter1,0.1)
             break
         end
         % =============================================================== %
@@ -234,7 +241,6 @@ switch Pl.savefig
             num2str(N.nx)],'png')
 end
 % ======================================================================= %
-T.tend      = toc(T.tstart);
 %% ====================== Clear path structure ========================== %
 if strcmp(getenv('OS'),'Windows_NT')
     rmpath('..\..\AdvectionProblem')

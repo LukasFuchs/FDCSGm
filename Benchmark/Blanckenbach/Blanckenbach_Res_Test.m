@@ -21,14 +21,14 @@ else
 end
 % ======================================================================= %
 %% Some initial definitions --------------------------------------------- %
-Pl.savefig      =   'yes';
+Pl.savefig      =   'no';
 Pl.plotfields   =   'no';
 Py.scale        =   'yes';
 % ======================================================================= %
 %% ============ Define method to solve the energy equation ============== %
 B.AdvMethod     =   'semi-lag';
 B.Aparam        =   'temp';
-B.DiffMethod    =   'ADI';
+B.DiffMethod    =   'explicit';
 % ======================================================================= %
 %% ==================== Define viscosity conditions ===================== %
 Py.eparam       =   'const';
@@ -43,7 +43,6 @@ B.TAmpl         =   20;         %   Temperature pertubation [ K ]
 Py.tparam       =   'const';
 % ======================================================================= %
 %% ========================= Define flow field ========================== %
-% B.IniFlow       =   'none';
 B.FlowFac       =   10;
 % ======================================================================= %
 %% ==================== Define model geometry constants ================= %
@@ -66,7 +65,7 @@ Py.kappa    =   Py.k/Py.rho0/Py.cp; % 	Thermische Diffusivitaet [ m^2/s ]
 Py.Q0       =   0;              % Waermeproduktionsrate pro Volumen [W/m^3]
 Py.Q0       =   Py.Q0/Py.rho0;  % Waermeproduktionsrate pro Masse [W/kg]
 
-Py.eta0     =   1e21;           %   Viskositaet [ Pa*s ]
+Py.eta0     =   1e23;           %   Viskositaet [ Pa*s ]
 
 Py.DeltaT   =   1000;           % Temperaturdifferenz
 
@@ -101,7 +100,7 @@ B.bhf       =   B.thf + Py.DeltaT;
 T.tmaxini   =   10000;          %   Maximale Zeit in Ma
 T.itmax     =   1e6;            %   Maximal erlaubte Anzahl der Iterationen
 T.dtfac     =   1.0;            %   Advektionscourantkriterium
-T.dtdifac   =   3.0;            %   Diffusions Stabilitaetskriterium
+T.dtdifac   =   1.0;            %   Diffusions Stabilitaetskriterium
 % ======================================================================= %
 %% ======================= Rayleigh number conditions =================== %
 if Py.Ra < 0
@@ -134,8 +133,8 @@ for i = 1:length(n)
     Pl.inc      =   min(N.nz/10,N.nx/10);
     Pl.inc      =   round(Pl.inc);
     Pl.tstpinc  =   50; 
-    Pl.xlab     =   '$$x$$';
-    Pl.zlab     =   '$$z$$';
+    Pl.xlab     =   'x';
+    Pl.zlab     =   'z';
     switch Pl.plotfields
         case 'yes'
             if strcmp(getenv('OS'),'Windows_NT')
@@ -337,7 +336,6 @@ else
     rmpath('../../ScaleParam')
 end
 % ======================================================================= %
-
 % ======================================================================= %
 % =============================== END =================================== %
 % ======================================================================= %

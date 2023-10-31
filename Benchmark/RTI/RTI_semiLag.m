@@ -165,18 +165,20 @@ for it = 1:T.itmax
             if (mod(it,5)==0||it==1)
                 figure(3)
                 clf
-                
                 ax1=subplot(3,1,1);
+                Pl.cbtitle  =   [{'$$\rho$$'},{'$$[kg/m^3]$$'}];
                 plotfield(D.rho,M.X/1e3,M.Z/1e3,Pl,'contourf',...
-                    '$$\rho$$','quiver',ID.vx,ID.vz)
+                    [],'quiver',ID.vx,ID.vz)
                 colormap(ax1,flipud(Pl.oslo))
                 ax2=subplot(3,1,2);
+                Pl.cbtitle  =   [{'$$\eta$$'},{'$$[ Pa s ]$$'}];
                 plotfield(log10(D.eta),M.X/1e3,M.Z/1e3,Pl,'pcolor',...
-                    '$$\eta$$')
+                    [])
                 colormap(ax2,flipud(Pl.lapaz))
                 ax3=subplot(3,1,3);
-                plotfield(ID.v.*100*365.25*24*60*60,...
-                    M.X/1e3,M.Z/1e3,Pl,'pcolor','$$v$$')
+                Pl.cbtitle  =   [{'v'},{'[ cm/a ]'}];
+                plotfield(ID.v.*100.*(60*60*24*365.25),...
+                    M.X/1e3,M.Z/1e3,Pl,'pcolor',[])
                 colormap(ax3,Pl.imola)
                 
                 switch Pl.savefig
@@ -208,16 +210,19 @@ end
 figure(3)
 clf
 ax1=subplot(3,1,1);
+Pl.cbtitle  =   [{'$$\rho$$'},{'$$[kg/m^3]$$'}];
 plotfield(D.rho,M.X/1e3,M.Z/1e3,Pl,'contourf',...
-    '$$\rho$$','quiver',ID.vx,ID.vz)
+    [],'quiver',ID.vx,ID.vz)
 colormap(ax1,flipud(Pl.oslo))
 ax2=subplot(3,1,2);
+Pl.cbtitle  =   [{'$$\eta$$'},{'$$[ Pa s ]$$'}];
 plotfield(log10(D.eta),M.X/1e3,M.Z/1e3,Pl,'pcolor',...
-    '$$\eta$$')
+    [])
 colormap(ax2,flipud(Pl.lapaz))
 ax3=subplot(3,1,3);
-plotfield(ID.v.*100*365.25*24*60*60,...
-    M.X/1e3,M.Z/1e3,Pl,'pcolor','$$v$$')
+Pl.cbtitle  =   [{'v'},{'[ cm/a ]'}];
+plotfield(ID.v.*100.*(60*60*24*365.25),...
+    M.X/1e3,M.Z/1e3,Pl,'pcolor',[])
 colormap(ax3,Pl.imola)
 switch Pl.savefig
     case 'yes'

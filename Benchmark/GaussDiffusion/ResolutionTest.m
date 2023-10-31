@@ -14,7 +14,7 @@ end
 T.tstart        =   tic;
 
 Schema          =   {'explicit';'implicit';'CNV';'ADI'};
-nrnxnz          =   8;
+nrnxnz          =   2;
 
 eps             =   zeros(size(Schema,1),nrnxnz);
 nxnz            =   zeros(size(Schema,1),nrnxnz);
@@ -170,7 +170,7 @@ for k = 1:size(Schema,1)
                         ax1=subplot(2,2,1);
                         plotfield(D.T,M.X./M.Lscale,M.Z./M.Lscale,Pl,'contourf',...
                             '$$T$$','contoury',D.Tana);
-                        colormap(ax1,flipud(Pl.lajolla))
+                        colormap(ax1,Pl.lajolla)
                         ax2=subplot(2,2,2);
                         plotfield(D.epsT,M.X./M.Lscale,M.Z./M.Lscale,Pl,'pcolor',...
                             '$$\varepsilon_{T}$$');

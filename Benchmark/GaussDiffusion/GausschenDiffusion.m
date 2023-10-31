@@ -72,8 +72,8 @@ T.dtdifac   =   0.8;         %   Diffusion stability criterium
 %% ========================= Plot parameter ============================= %
 Pl.inc      =   min(N.nz/10,N.nx/5);
 Pl.inc      =   round(Pl.inc);
-Pl.xlab     =   '$$x\ [\ km\ ]$$';
-Pl.zlab     =   '$$z\ [\ km\ ]$$';
+Pl.xlab     =   'x [ km ]';
+Pl.zlab     =   'z [ km ]';
 
 switch Pl.plotfields
     case 'yes'
@@ -147,8 +147,8 @@ for it = 1:T.itmax
     D.RMS(it)   =   sqrt(sum(sum((D.epsT).^2))/(N.nx*N.nz));
     %% ========================== Plot data ============================= %
     Pl.time     =   ...
-        [{['@ Iteration: ',sprintf('%i',it)]};...
-        {['Time: ',sprintf('%2.2e',T.time(it)/T.tscale),' [Ma]']}];
+        {['@ Iteration: ',sprintf('%i',it)];...
+        ['Time: ',sprintf('%2.2e',T.time(it)/T.tscale),' [Ma]']};
     
     if (mod(it,5)==0||it==1||T.time(it) >= T.tmax)
         switch Pl.plotfields
@@ -157,8 +157,8 @@ for it = 1:T.itmax
                 clf
                 ax1=subplot(2,2,1);
                 plotfield(D.T,M.X./M.Lscale,M.Z./M.Lscale,Pl,'contourf',...
-                    '$$T$$','contoury',D.Tana);
-                colormap(ax1,flipud(Pl.lajolla))
+                    {'T'},'contoury',D.Tana);
+                colormap(ax1,Pl.lajolla)
                 ax2=subplot(2,2,2);
                 plotfield(D.epsT,M.X./M.Lscale,M.Z./M.Lscale,Pl,'pcolor',...
                     '$$\varepsilon_{T}$$');

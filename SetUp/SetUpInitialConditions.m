@@ -15,6 +15,9 @@ else
     T.itmax     =   1;
 end
 % ----------------------------------------------------------------------- %
+%% Tracer perturation --------------------------------------------------- %
+tprt        =   0.5; 
+% ----------------------------------------------------------------------- %
 %% Temperaturanfangsbedingungen ----------------------------------------- %
 if isfield(B,'Tini')
     switch B.Tini
@@ -148,21 +151,17 @@ if isfield(B,'IniFlow')
             D.vx    =   D.vx./(100*(60*60*24*365.25));   % [ m/s ]
             D.vz    =   D.vz./(100*(60*60*24*365.25));   % [ m/s ]
             
-            %             switch B.AdvMethod
-            %                 case 'tracers'
             Rad     =   sqrt((M.X-(M.L)/2).^2 + (M.Z-(M.H)/2).^2);
             
             D.vx(Rad>((M.L-5*N.dx)/2))  =   0;
-            D.vz(Rad>((M.L-5*N.dx)/2))  =   0;
-            %             end
+            D.vz(Rad>((M.L-5*N.dx)/2))  =   0;            
         case 'ShearCell'
             % Zelle mit einfacher Scherdehnung
             D.vx    =   B.FlowFac.*(sin(pi.*M.X./M.L).*cos(-pi.*(M.Z-N.dz/2)./M.H));
             D.vz    =   -B.FlowFac.*(cos(pi.*(M.X-N.dx/2)./M.L).*sin(-pi.*M.Z./M.H));
             
             D.vx    =   D.vx/(100*(60*60*24*365.25));   % [ m/s ]
-            D.vz    =   D.vz/(100*(60*60*24*365.25));   % [ m/s ]
-            
+            D.vz    =   D.vz/(100*(60*60*24*365.25));   % [ m/s ]            
         case 'PureShear'
             D.vxi(1:N.nz1,1)        = (M.X(1:N.nz1,end)-M.L/2).*B.ebg;    % left
             D.vxi(1:N.nz1,N.nx)     = -(M.X(1:N.nz1,end)-M.L/2).*B.ebg;   % right
@@ -239,7 +238,7 @@ if isfield(Py,'tparam')
         D.rho       =   Py.rho0.*ones(N.nz,N.nx);
     end
 else
-    D.rho           =   Py.rho0.*ones(N.nz,N.nx);
+    D.rho           =   zeros(N.nz,N.nx);
 end
 % ----------------------------------------------------------------------- %
 %% Anfangsviskositaet --------------------------------------------------- %
@@ -261,20 +260,20 @@ switch B.EtaIni
         % Tracer Initialisierung
         nmxx        =   (N.nx-1)*N.nmx;
         nmzz        =   (N.nz-1)*N.nmz;
-        dmx         =   M.L/(nmxx-1);
-        dmz         =   M.H/(nmzz-1);
-        xm          =   linspace(0,M.L-dmx,nmxx);
-        zm          =   linspace(M.H-dmz,0,nmzz);
+        dmx         =   M.L/(nmxx);
+        dmz         =   M.H/(nmzz);
+        xm          =   linspace(0+dmx/2,M.L-dmx/2,nmxx);
+        zm          =   linspace(M.H-dmz/2,0+dmz/2,nmzz);
         
         [XM,ZM]     =   meshgrid(xm,zm);
-        XM          =   XM + rand(nmzz,nmxx)*dmx;
+        XM          =   XM + (rand(nmzz,nmxx)-0.5)*dmx*tprt;
         Ma.XM       =   reshape(XM,[nmzz*nmxx,1]);
-        ZM          =   ZM + rand(nmzz,nmxx)*dmz;
+        ZM          =   ZM + (rand(nmzz,nmxx)-0.5)*dmz*tprt;
         Ma.ZM       =   reshape(ZM,[nmzz*nmxx,1]);
         clear XM ZM
         Ma.C        =   ones(nmzz*nmxx,1);
         
-        ind         =   Ma.XM>=xL & Ma.XM<=xR & Ma.ZM>=zB & Ma.ZM<=zT;
+        ind         =   Ma.XM >= xL & Ma.XM <= xR & Ma.ZM>=zB & Ma.ZM<=zT;
         
         Ma.C(ind)   =   2;
         
@@ -288,17 +287,17 @@ switch B.EtaIni
         % Tracer Initialisierung
         nmxx        =   (N.nx-1)*N.nmx;
         nmzz        =   (N.nz-1)*N.nmz;
-        dmx         =   M.L/(nmxx-1);
-        dmz         =   M.H/(nmzz-1);
-        xm          =   linspace(0,M.L-dmx,nmxx);
-        zm          =   linspace(M.H-dmz,0,nmzz);
+        dmx         =   M.L/(nmxx);
+        dmz         =   M.H/(nmzz);
+        xm          =   linspace(0+dmx/2,M.L-dmx/2,nmxx);
+        zm          =   linspace(M.H-dmz/2,0+dmz/2,nmzz);
         
         [XM,ZM]     =   meshgrid(xm,zm);
-        XM          =   XM + rand(nmzz,nmxx)*dmx;
+        XM          =   XM + (rand(nmzz,nmxx)-0.5)*dmx*tprt;
         Ma.XM       =   reshape(XM,[nmzz*nmxx,1]);
-        ZM          =   ZM + rand(nmzz,nmxx)*dmz;
+        ZM          =   ZM + (rand(nmzz,nmxx)-0.5)*dmz*tprt;
         Ma.ZM       =   reshape(ZM,[nmzz*nmxx,1]);
-        
+        clear XM ZM
         Ma.C        =   ones(nmzz*nmxx,1);
         
         % Bereich der Inclusion --------------------------------- %
@@ -327,22 +326,22 @@ switch B.EtaIni
         % Tracer Initialisierung
         nmxx        =   (N.nx-1)*N.nmx;
         nmzz        =   (N.nz-1)*N.nmz;
-        dmx         =   M.L/(nmxx-1);
-        dmz         =   M.H/(nmzz-1);
-        xm          =   linspace(0,M.L-dmx,nmxx);
-        zm          =   linspace(M.H-dmz,0,nmzz);
+        dmx         =   M.L/(nmxx);
+        dmz         =   M.H/(nmzz);
+        Ma.xm       =   linspace(0+dmx/2,M.L-dmx/2,nmxx);
+        Ma.zm       =   linspace(M.H-dmz/2,0+dmz/2,nmzz);       
         
-        [XM,ZM]     =   meshgrid(xm,zm);
-        XM          =   XM + rand(nmzz,nmxx)*dmx;
-        ZM          =   ZM + rand(nmzz,nmxx)*dmz;
+        [XM,ZM]     =   meshgrid(Ma.xm,Ma.zm);
+        XM          =   XM + (rand(nmzz,nmxx)-0.5)*dmx*tprt;
+        ZM          =   ZM + (rand(nmzz,nmxx)-0.5)*dmz*tprt;
         
         C           =   zeros(nmzz,nmxx);
         
         % Layer interface
-        deltaAm     =   cos(2*pi*((xm - 0.5*M.L)/(B.lambda*1e3)))*B.deltaA;
+        Ma.deltaAm     =   cos(2*pi*((Ma.xm - 0.5*M.L)/(B.lambda*1e3)))*B.deltaA;
         
         for j = 1:nmzz
-            C(j,:)  =   ZM(j,:)  <  M.H/2 + deltaAm;
+            C(j,:)  =   ZM(j,:)  <  M.H/2 + Ma.deltaAm;
         end
         C           =   C + 1;
         
@@ -351,14 +350,40 @@ switch B.EtaIni
         Ma.C        =   reshape(C,[nmzz*nmxx,1]);
         
         Ma.c        =   [1,2];
+%         % Tracer Initialisierung
+%         nmxx        =   (N.nx-1)*N.nmx;
+%         nmzz        =   (N.nz-1)*N.nmz;
+%         dmx         =   M.L/(nmxx-1);
+%         dmz         =   M.H/(nmzz-1);
+%         Ma.xm       =   linspace(0+dmx/2,M.L-dmx/2,nmxx);
+%         Ma.zm       =   linspace(M.H-dmz/2,0+dmz/2,nmzz);
+%         
+%         [XM,ZM]     =   meshgrid(Ma.xm,Ma.zm);
+% %         XM          =   XM + (rand(nmzz,nmxx)-0.5)*dmx/2;
+% %         ZM          =   ZM + (rand(nmzz,nmxx)-0.5)*dmz/2;
+%         
+%         C           =   zeros(nmzz,nmxx);
+%         
+%         % Layer interface
+%         Ma.deltaAm  =   cos(2*pi*((Ma.xm - 0.5*M.L)/(B.lambda*1e3)))*B.deltaA;
+%         
+%         for j = 1:nmzz
+%             C(j,:)  =   ZM(j,:)  <  M.H/2 + Ma.deltaAm;
+%         end
+%         C           =   C + 1;
+%         
+%         Ma.ZM       =   reshape(ZM,[nmzz*nmxx,1]);
+%         Ma.XM       =   reshape(XM,[nmzz*nmxx,1]);
+%         Ma.C        =   reshape(C,[nmzz*nmxx,1]);
+%         
+%         Ma.c        =   [1,2];
     case 'exp'
         D.eta       =   Py.eta0.*...        % Logarithmic Viscosity profile
             exp(log(m).*(M.H-M.Z)./M.H);
-        %         keyboard
 end
 
 if ~isfield(B,'AdvMethod')
-%     Ma  =   [];
+    %     Ma  =   [];
 else
     switch lower(B.AdvMethod)
         case 'slf'
@@ -392,28 +417,27 @@ else
                     % Tracer Initialisierung
                     nmxx        =   (N.nx-1)*N.nmx;
                     nmzz        =   (N.nz-1)*N.nmz;
-                    dmx         =   M.L/(nmxx-1);
-                    dmz         =   M.H/(nmzz-1);
-                    xm          =   linspace(0,M.L-dmx,nmxx);
-                    zm          =   linspace(M.H-dmz,0,nmzz);
+                    dmx         =   M.L/(nmxx);
+                    dmz         =   M.H/(nmzz);
+                    xm          =   linspace(0+dmx/2,M.L-dmx/2,nmxx);
+                    zm          =   linspace(M.H-dmz/2,0+dmz/2,nmzz);
                     
                     [XM,ZM]     =   meshgrid(xm,zm);
-                    XM          =   XM + rand(nmzz,nmxx)*dmx;
+                    XM          =   XM + (rand(nmzz,nmxx)-0.5)*dmx*tprt;
                     Ma.XM       =   reshape(XM,[nmzz*nmxx,1]);
-                    ZM          =   ZM + rand(nmzz,nmxx)*dmz;
+                    ZM          =   ZM + (rand(nmzz,nmxx)-0.5)*dmz*tprt;
                     Ma.ZM       =   reshape(ZM,[nmzz*nmxx,1]);
+                    clear XM ZM                                                            
                     
                     Ma.C        =   ones(nmzz*nmxx,1);
                     Ma.T        =   zeros(nmzz*nmxx,1);
                     % Interpolate from the grid to the tracers ---------- %
                     [Ma,~]   =   ...
                         TracerInterp(Ma,D.T,[],M.X,M.Z,'to','temp');
-                    %                     keyboard
                 otherwise
                     error('Error! Check advection settings!s')
             end
     end
 end
-% keyboard
 % ----------------------------------------------------------------------- %
 end

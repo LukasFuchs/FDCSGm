@@ -22,8 +22,8 @@ B.Aparam        =   'comp';
 %% ==================== Define viscosity conditions ===================== %
 Py.eparam       =   'variable';
 B.EtaIni        =   'RTI';
-B.lambda        =   0.5; 		% Wellenlaenge der Perturbation [ km ]
-B.deltaA        =   100;        % Amplitude [ km ]
+B.lambda        =   1.0; 		% Wellenlaenge der Perturbation [ km ]
+B.deltaA        =   500/15;     % Amplitude [ km ]
 % ======================================================================= %
 %% ========================= Define flow field ========================== %
 B.FlowFac       =   10;
@@ -33,7 +33,7 @@ M.H         =   -1;                 %   Modeltiefe [ in km ]
 M.xmax      =   -2*B.lambda/M.H;   %   Seitenverhaeltniss
 % ======================================================================= %
 %% ====================== Define the numerical grid ===================== %
-N.nz        =   101;                 %   Vertikale Gitteraufloesung
+N.nz        =   51;                 %   Vertikale Gitteraufloesung
 N.nx        =   (N.nz-1)*M.xmax+1;   %   Horizontale Gitteraufloesung
 % ======================================================================= %
 %% ====================== Tracer advection method ======================= %
@@ -43,7 +43,7 @@ N.nmz       =   5;
 % ======================================================================= %
 %% ====================== Define physical constants ===================== %
 Py.g        =   10.0;           %   Schwerebeschleunigung [m/s^2]
-Py.rho0     =   3300;           %   Hintergunddichte [kg/m^3]
+Py.rho0     =   3000;           %   Hintergunddichte [kg/m^3]
 Py.k        =   3;              %   Thermische Leitfaehigkeit [ W/m/K ]
 Py.cp       =   1000;           %   Heat capacity [ J/kg/K ]
 Py.alpha    =   5e-5;           %   Thermischer Expnasionskoef. [ K^-1 ]
@@ -52,10 +52,10 @@ Py.kappa    =   Py.k/Py.rho0/Py.cp; % 	Thermische Diffusivitaet [ m^2/s ]
 
 Py.Q0       =   0;              %   Waermeproduktionsrate pro Volumen [W/m^3]
 
-Py.eta0     =   1e21;           %   Viskositaet comp. 0 [ Pa*s ]
-Py.eta1     =   1e18;           %   Viskositaet comp. 1 [ Pa*s ]
+Py.eta0     =   1e19;           %   Viskositaet comp. 0 [ Pa*s ]
+Py.eta1     =   1e13;           %   Viskositaet comp. 1 [ Pa*s ]
 
-Py.rho1     =   3000;           %   Density comp. 1 [ kg/m^3 ]
+Py.rho1     =   2900;           %   Density comp. 1 [ kg/m^3 ]
 % ======================================================================= %
 %% ===================== Define boundary conditions ===================== %
 % Geschwindigkeitsrandbedingungen --------------------------------------- %

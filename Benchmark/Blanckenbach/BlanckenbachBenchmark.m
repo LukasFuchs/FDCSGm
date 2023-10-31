@@ -44,7 +44,6 @@ B.TAmpl         =   20;         %   Temperature pertubation [ K ]
 Py.tparam       =   'const';
 % ======================================================================= %
 %% ========================= Define flow field ========================== %
-% B.IniFlow       =   'none';
 B.FlowFac       =   10;
 % ======================================================================= %
 %% ==================== Define model geometry constants ================= %
@@ -100,9 +99,9 @@ B.bhf       =   B.thf + Py.DeltaT;
 % ======================================================================= %
 %% ====================== Define time constants ========================= %
 T.tmaxini   =   10000;          %   Maximale Zeit in Ma
-T.itmax     =   50000;          %   Maximal erlaubte Anzahl der Iterationen
+T.itmax     =   3000    ;          %   Maximal erlaubte Anzahl der Iterationen
 T.dtfac     =   1.0;            %   Advektionscourantkriterium
-T.dtdifac   =   0.5;            %   Diffusions Stabilitaetskriterium
+T.dtdifac   =   1.0;            %   Diffusions Stabilitaetskriterium
 % ======================================================================= %
 %% ========================= Define fields required ===================== %
 [Py,D,ID,M,N,T,A,Pl]    =   SetUpFields(Py,B,N,M,T,Pl);
@@ -125,8 +124,8 @@ end
 Pl.inc      =   min(N.nz/10,N.nx/10);
 Pl.inc      =   round(Pl.inc);
 Pl.tstpinc  =   50;
-Pl.xlab     =   '$$x$$';
-Pl.zlab     =   '$$z$$';
+Pl.xlab     =   'x';
+Pl.zlab     =   'z';
 switch Pl.plotfields
     case 'yes'
         if strcmp(getenv('OS'),'Windows_NT')
@@ -149,7 +148,7 @@ switch Pl.savefig
             mkdir(M.ModDir)
         end
         Pl.filename =   [M.ModDir,'/Evolution.gif'];
-        set(figure(1),'position',[1.8,26,866.2,949]);
+        set(figure(1),'position',[1.8,1.8,766.4,780.8]);
         Pl.h        =   figure(1);
 end
 % ======================================================================= %
@@ -206,7 +205,6 @@ for it = 1:T.itmax
     % =================================================================== %
     %% =========== Interpolate velocity onto the regular grid =========== %
     [ID]        =   InterpStaggered(D,ID,N,'velocity');
-%     D.meanV(it) = mean(ID.v,'all');   % Mittleregeschwindigkeit
     D.meanV(it)     =   rms(ID.vx(:) + ID.vz(:));
     % =================================================================== %
     %% ========================== Plot data ============================= %

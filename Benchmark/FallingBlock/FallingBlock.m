@@ -26,6 +26,7 @@ B.EtaIni        =   'block';
 % ======================================================================= %
 %% ========================= Define flow field ========================== %
 B.FlowFac       =   10;
+B.chkvel        =   0;
 % ======================================================================= %
 %% ==================== Define model geometry constants ================= %
 M.H         =   -500;          %   Depth [ in km ]
@@ -53,7 +54,7 @@ Py.Q0       =   0; %3.1e-9;         %   Heat production rate per volume [W/m^3]
 Py.Q0       =   Py.Q0/Py.rho0;      %   Heat production rate per mass [W/kg]
 
 Py.eta0     =   1e21;               %   Viscosity comp. 0 [ Pa*s ]
-Py.eta1     =   1e22;               %   Viscosity comp. 1 [ Pa*s ]
+Py.eta1     =   1e27;               %   Viscosity comp. 1 [ Pa*s ]
 
 Py.rho1     =   3300;               %   Density comp. 1 [ kg/m^3 ]
 
@@ -68,9 +69,9 @@ B.lbc       =   1;              %   Left
 B.rbc       =   1;              %   Right
 % ======================================================================= %
 %% ====================== Define time constants ========================= %
-T.tmaxini   =   15.446;         %   Maximum time in Ma;
+T.tmaxini   =   20.589; % 15.446;         %   Maximum time in Ma;
 T.itmax     =   2000;           %   Maximum number of iterations
-T.dtfac     =   0.5;            %   Courant criterium
+T.dtfac     =   1.0;            %   Courant criterium
 % ======================================================================= %
 %% ========================= Define fields required ===================== %
 [Py,D,ID,M,N,T,A,Pl]    =   SetUpFields(Py,B,N,M,T,Pl);
@@ -148,16 +149,20 @@ for it = 1:T.itmax
         T.dt        =   T.tmax - T.time(it-1);
         T.time(it)  =   T.time(it-1) + T.dt;
     end
+    Pl.time     =   ...
+        {['@ Iteration: ',sprintf('%i',it)];...
+        ['Time: ',sprintf('%2.2e',T.time(it)/(60*60*24*365.25)/1e6)]};
     % =================================================================== %
     %% =========== Interpolate velocity onto the regular grid =========== %
     [ID]        =   InterpStaggered(D,ID,N,'velocity');
     D.meanV(it) =   mean(ID.v,'all');   % Mittleregeschwindigkeit
     D.meanV(it) =   rms(ID.vx(:) + ID.vz(:));
+    % Check velocity solution, optional --------------------------------- %
+    if B.chkvel == 1
+        ID  =   CheckContinuum(ID,N,M,Ma,Pl);
+    end
     % =================================================================== %
     %% ========================== Plot data ============================= %
-    Pl.time     =   ...
-        [['@ Iteration: ',sprintf('%i',it)];...
-        ['Time: ',sprintf('%2.2e',T.time(it))]];
     if (mod(it,10)==0||it==1)
         switch Pl.plotfields
             case 'yes'

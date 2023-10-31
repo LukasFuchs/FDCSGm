@@ -13,11 +13,11 @@ else
 end
 % ======================================================================= %
 %% ===================== Some initial definitions ======================= %
-Pl.savefig      =   'yes';
+Pl.savefig      =   'no';
 Pl.plotfields   =   'yes';
 % ======================================================================= %
 %% ============ Define method to solve the energy equation ============== %
-B.AdvMethod     =   'semi-lag';
+B.AdvMethod     =   'tracers';
 B.Aparam        =   'temp';
 % ======================================================================= %
 %% ==================== Define viscosity conditions ===================== %
@@ -33,17 +33,18 @@ B.Tsigma        =   0.1;            %
 %% ========================= Define flow field ========================== %
 B.IniFlow       =   'RigidBody';    % FlowField
 B.FlowFac       =   1;
+B.chkvel        =   0;
 % ======================================================================= %
 %% ==================== Define model geometry constants ================= %
 M.H             =   -1;             % [ km ]
 M.xmax          =   1;              % Aspect ratio
 % ======================================================================= %
 %% ====================== Define the numerical grid ===================== %
-N.nx            =   301;
-N.nz            =   301;
+N.nx            =   101;
+N.nz            =   101;
 % ======================================================================= %
 %% ====================== Define time constants ========================= %
-T.tmaxini       =   6.2869e-1;      % [ Ma ]
+T.tmaxini       =   6.27e-1;      % [ Ma ]
 T.itmax         =   1e4;
 T.dtfac         =   1.0;            % Courant time factor
 % ======================================================================= %
@@ -69,6 +70,10 @@ Pl.inc      =   min(N.nz/11,N.nx/11);
 Pl.inc      =   round(Pl.inc);
 Pl.xlab     =   '$$x\ [km]$$';
 Pl.zlab     =   '$$z\ [km]$$';
+% Check velocity solution, optional --------------------------------- %
+if B.chkvel == 1
+    ID = CheckContinuum(ID,N,M,Ma,Pl);
+end
 % Animation settings ---------------------------------------------------- %
 switch Pl.savefig
     case 'yes'
@@ -102,6 +107,15 @@ fprintf(['Maximum Time : %1.4g',...
     T.tmax/1e6/(365.25*24*60*60),T.itmax)
 % ======================================================================= %
 %% ========================= Time loop ================================= %%
+switch lower(B.AdvMethod)
+    case 'tracers'
+        Ma.XMini    =   Ma.XM;
+        Ma.ZMini    =   Ma.ZM;
+        Ma.Cini     =   Ma.C;
+        Ma.Tini     =   Ma.T;
+    otherwise
+        D.Tini      =   D.T;
+end
 for it = 1:T.itmax
     disp([' Time step: ',num2str(it)])
     if it>1
@@ -130,12 +144,12 @@ for it = 1:T.itmax
                         plotfield(D.T./D.Tmax,M.X/1e3,M.Z/1e3,Pl,...
                             'pcolor',tit,'quiver',ID.vx,ID.vz)
                         colormap(ax1,flipud(Pl.lajolla))
-
+                        
                         ax2=subplot(1,2,2);
                         plot(Ma.XM./1e3,Ma.ZM./1e3,'.','MarkerSize',1)
                         hold on
                         plot(M.X./1e3,M.Z./1e3,'kx','MarkerSize',2)
-                        xlabel('$$x\ [km\]$$','Interpreter','latex')
+                        xlabel('$$x\ [km]$$','Interpreter','latex')
                         ylabel('$$z\ [km]$$','Interpreter','latex')
                         title('$$Tracerdistribution$$','Interpreter','latex')
                         axis equal; axis tight
@@ -157,12 +171,12 @@ for it = 1:T.itmax
                     case 'yes'
                         saveas(figure(1),...
                             [M.ModDir,'/Field',num2str(it)],'png')
-
+                        
                         % Capture the plot as an image
                         frame       = getframe(h);
                         im          = frame2im(frame);
                         [imind,cm]  = rgb2ind(im,256);
-
+                        
                         % Write to the GIF File
                         if it == 1
                             imwrite(imind,cm,Pl.filename,'gif', 'Loopcount',inf);
@@ -189,8 +203,16 @@ for it = 1:T.itmax
                 ax1=subplot(1,2,1);
                 plotfield(D.T./D.Tmax,M.X/1e3,M.Z/1e3,Pl,...
                     'pcolor',tit,'quiver',ID.vx,ID.vz)
-                colormap(ax1,flipud(Pl.lajolla))
-
+                colormap(ax1,(Pl.lajolla))
+                hold on
+                %                 ind1        =   Ma.Tini==B.T0;
+                ind2        =   Ma.Tini==B.T0+B.TAmpl;
+                %                 scatter1 =  scatter(Ma.XMini(ind1)./1e3,Ma.ZMini(ind1)./1e3,...
+                %                     1,'MarkerFaceColor','k');
+                scatter2 =  scatter(Ma.XMini(ind2)./1e3,Ma.ZMini(ind2)./1e3,...
+                    1,'MarkerFaceColor','r');
+                %                 alpha(scatter1,0.2)
+                alpha(scatter2,0.2)
                 ax2=subplot(1,2,2);
                 plot(Ma.XM./1e3,Ma.ZM./1e3,'.','MarkerSize',1)
                 hold on
@@ -211,7 +233,10 @@ for it = 1:T.itmax
                 plotfield(D.T./D.Tmax,M.X/1e3,M.Z/1e3,Pl,...
                     'pcolor',tit,'quiver',ID.vx,ID.vz)
                 caxis([B.T0/(B.T0+B.TAmpl) 1])
-                colormap(ax1,flipud(Pl.lajolla))
+                colormap(ax1,(Pl.lajolla))
+                hold on
+                plotfield(D.Tini./D.Tmax,M.X/1e3,M.Z/1e3,Pl,...
+                    'contour',tit)
         end
         break
     end

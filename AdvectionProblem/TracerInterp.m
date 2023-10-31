@@ -85,8 +85,8 @@ switch direction
                     % Lower-Right node
                     PG(i(k)+1,j(k)+1) = PG(i(k)+1,j(k)+1) + dxm*dzm*MAPROP(k);
                     wt(i(k)+1,j(k)+1) = wt(i(k)+1,j(k)+1) + dxm*dzm;
-                end                
-            otherwise
+                end
+            case 'rho'
                 for k = 1:nmr
                     dxm     = (Ma.XM(k) - X(i(k),j(k)))/dx;
                     dzm     = (Ma.ZM(k) - Z(i(k),j(k)))/dz;
@@ -104,6 +104,48 @@ switch direction
                     PG(i(k)+1,j(k)+1) = PG(i(k)+1,j(k)+1) + dxm*dzm*MAPROP(Ma.C(k));
                     wt(i(k)+1,j(k)+1) = wt(i(k)+1,j(k)+1) + dxm*dzm;
                 end
+            otherwise
+                for k = 1:nmr
+                    dzm     =   (Ma.ZM(k) - Z(i(k),j(k)))/dz;
+                    dxm     =   (Ma.XM(k) - X(i(k),j(k)))/dx;
+                    
+                    % Upper-Left node
+                    if(dxm <= 0.5 && dzm <= 0.5)
+                        PG(i(k),j(k))     = PG(i(k),j(k)) + (1.0-dxm)*(1.0-dzm)*MAPROP(Ma.C(k));
+                        wt(i(k),j(k))     = wt(i(k),j(k)) + (1.0-dxm)*(1.0-dzm);
+                    end
+                    % Lower-Left node
+                    if(dxm<=0.5 && dzm >= 0.5)
+                        PG(i(k)+1,j(k))   = PG(i(k)+1,j(k)) + (1.0-dxm)*dzm*MAPROP(Ma.C(k));
+                        wt(i(k)+1,j(k))   = wt(i(k)+1,j(k)) + (1.0-dxm)*dzm;
+                    end
+                    % Upper-Right node
+                    if(dxm >= 0.5 && dzm <= 0.5)
+                        PG(i(k),j(k)+1)   = PG(i(k),j(k)+1) + dxm*(1.0-dzm)*MAPROP(Ma.C(k));
+                        wt(i(k),j(k)+1)   = wt(i(k),j(k)+1) + dxm*(1.0-dzm);
+                    end
+                    % Lower-Right node
+                    if (dxm >= 0.5 && dzm >= 0.5)
+                        PG(i(k)+1,j(k)+1) = PG(i(k)+1,j(k)+1) + dxm*dzm*MAPROP(Ma.C(k));
+                        wt(i(k)+1,j(k)+1) = wt(i(k)+1,j(k)+1) + dxm*dzm;
+                    end
+                    
+                    %                     dxm     = (Ma.XM(k) - X(i(k),j(k)))/dx;
+                    %                     dzm     = (Ma.ZM(k) - Z(i(k),j(k)))/dz;
+                    %
+                    %                     % Upper-Left node
+                    %                     PG(i(k),j(k))     = PG(i(k),j(k)) + (1.0-dxm)*(1.0-dzm)*MAPROP(Ma.C(k));
+                    %                     wt(i(k),j(k))     = wt(i(k),j(k)) + (1.0-dxm)*(1.0-dzm);
+                    %                     % Lower-Left node
+                    %                     PG(i(k)+1,j(k))   = PG(i(k)+1,j(k)) + (1.0-dxm)*dzm*MAPROP(Ma.C(k));
+                    %                     wt(i(k)+1,j(k))   = wt(i(k)+1,j(k)) + (1.0-dxm)*dzm;
+                    %                     % Upper-Right node
+                    %                     PG(i(k),j(k)+1)   = PG(i(k),j(k)+1) + dxm*(1.0-dzm)*MAPROP(Ma.C(k));
+                    %                     wt(i(k),j(k)+1)   = wt(i(k),j(k)+1) + dxm*(1.0-dzm);
+                    %                     % Lower-Right node
+                    %                     PG(i(k)+1,j(k)+1) = PG(i(k)+1,j(k)+1) + dxm*dzm*MAPROP(Ma.C(k));
+                    %                     wt(i(k)+1,j(k)+1) = wt(i(k)+1,j(k)+1) + dxm*dzm;
+                end
         end
         
         PG  = PG./wt;
@@ -111,5 +153,4 @@ switch direction
         PG(isinf(PG))   = min(min(PG));
         
 end
-% keyboard
 end

@@ -15,7 +15,7 @@ end
 scheme          =   {'upwind','SLF','semi-lag','tracers'};
 for i = 1:size(scheme,2)
     %% ===================== Some initial definitions =================== %
-    Pl.savefig      =   'yes';
+    Pl.savefig      =   'no';
     Pl.plotfields   =   'no';
     % =================================================================== %
     %% ============ Define method to solve the energy equation ========== %
@@ -27,7 +27,7 @@ for i = 1:size(scheme,2)
     B.EtaIni        =   'none';
     % =================================================================== %
     %% ================== Define initial temperature anomaly ============ %
-    B.Tini          =   'block';       % Tanomaly
+    B.Tini          =   'circle';       % Tanomaly
     B.T0            =   1000;           % [ K ]
     B.TAmpl         =   200;            % [ K ]
     switch B.Tini
@@ -50,7 +50,7 @@ for i = 1:size(scheme,2)
     N.nz            =   101;
     % =================================================================== %
     %% ====================== Define time constants ===================== %
-    T.tmaxini       =   6.2869e-1;      % [ Ma ]
+    T.tmaxini       =   6.27e-1;      % [ Ma ]
     T.itmax         =   1e4;
     T.dtfac         =   1.0;            % Courant time factor
     % =================================================================== %
@@ -109,6 +109,15 @@ for i = 1:size(scheme,2)
         T.tmax/1e6/(365.25*24*60*60),T.itmax)
     % =================================================================== %
     %% ========================= Time loop ============================= %%
+    switch lower(B.AdvMethod)
+        case 'tracers'
+            Ma.XMini    =   Ma.XM;
+            Ma.ZMini    =   Ma.ZM;
+            Ma.Cini     =   Ma.C;
+            Ma.Tini     =   Ma.T;
+        otherwise
+            D.Tini      =   D.T;
+    end
     for it = 1:T.itmax
         %         disp([' Time step: ',num2str(it)])
         if it>1
@@ -232,7 +241,23 @@ for i = 1:size(scheme,2)
     plotfield(D.T./D.Tmax,M.X/1e3,M.Z/1e3,Pl,...
         'pcolor',tit,'quiver',ID.vx,ID.vz)
     caxis([B.T0/(B.T0+B.TAmpl) 1])
-    colormap(ax1,flipud(Pl.lajolla))
+    colormap(ax1,Pl.lajolla)
+    switch B.AdvMethod
+        case 'tracers'
+            hold on
+%             ind1        =   Ma.Tini==B.T0;
+            ind2        =   Ma.Tini==B.T0+B.TAmpl;
+%             scatter1 =  scatter(Ma.XMini(ind1)./1e3,Ma.ZMini(ind1)./1e3,...
+%                 1,'MarkerFaceColor','k');
+            scatter2 =  scatter(Ma.XMini(ind2)./1e3,Ma.ZMini(ind2)./1e3,...
+                1,'MarkerFaceColor','r');
+%             alpha(scatter1,0.2)
+            alpha(scatter2,0.2)
+        otherwise
+            hold on
+            plotfield(D.Tini./D.Tmax,M.X/1e3,M.Z/1e3,Pl,...
+                'contour',tit)
+    end
 end
 %% ====================== Clear path structure ========================== %
 if strcmp(getenv('OS'),'Windows_NT')

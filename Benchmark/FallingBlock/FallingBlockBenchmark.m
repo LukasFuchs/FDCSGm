@@ -22,6 +22,7 @@ B.EtaIni        =   'block';
 % ======================================================================= %
 %% ========================= Define flow field ========================== %
 B.FlowFac       =   10;
+B.chkvel        =   0; 
 % ======================================================================= %
 eta0            =   1e21;
 eta1            =   logspace(15,27,13);
@@ -95,9 +96,9 @@ for k = 1:length(eta1)
     switch Pl.savefig
         case 'yes'
             M.ModDir    = ['data/FallingBlock',...
-            '_etar_',num2str(Py.eta1/Py.eta0),...
-            '_drho_',num2str(Py.rho1-Py.rho0),...
-            '_nx_',num2str(N.nz),'_nz_',num2str(N.nz)];
+                '_etar_',num2str(Py.eta1/Py.eta0),...
+                '_drho_',num2str(Py.rho1-Py.rho0),...
+                '_nx_',num2str(N.nz),'_nz_',num2str(N.nz)];
             if ~exist(M.ModDir,'dir')
                 mkdir(M.ModDir)
             end
@@ -124,6 +125,10 @@ for k = 1:length(eta1)
     % =================================================================== %
     %% =========== Interpolate velocity onto the regular grid =========== %
     [ID]        =   InterpStaggered(D,ID,N,'velocity');
+    % Check velocity solution, optional --------------------------------- %
+    if B.chkvel == 1
+        ID  =   CheckContinuum(ID,N,M,Ma,Pl);
+    end
     % =================================================================== %
     %% ========================== Plot data ============================= %
     Pl.time     =   '';
@@ -176,8 +181,8 @@ set(gca,'FontWeight','Bold','LineWidth',2,'FontSize',15,'xscale','log',...
 switch Pl.savefig
     case 'yes'
         saveas(figure(3),['data',...
-                '/drho_',num2str(Py.rho1-Py.rho0),...
-                '_vz_eta_r_nx_',num2str(N.nx)],'png')
+            '/drho_',num2str(Py.rho1-Py.rho0),...
+            '_vz_eta_r_nx_',num2str(N.nx)],'png')
 end
 %% ====================== Clear path structure ========================== %
 if strcmp(getenv('OS'),'Windows_NT')

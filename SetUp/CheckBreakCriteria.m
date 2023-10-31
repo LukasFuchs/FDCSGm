@@ -25,11 +25,10 @@ end
 
 if (T.time(it) >= T.tmax)
     if strcmp(getenv('OS'),'Windows_NT')
-        set(figure(1),'position',[]);
+        set(figure(1),'position',[1.8,1.8,766.4,780.8]);
     else
         set(figure(1),'position',[1.8,26,866.2,949]);
     end
-%     h           =   figure(1);
     disp('Maximale Zeit erreicht. Zeitschleife unterbrochen')
     T.indtime   = find(T.time(2:end)==0,1,'first');
     figure(1) % ----------------------------------------------------- %
@@ -57,7 +56,7 @@ if (T.time(it) >= T.tmax)
     answer = 'yes';
 elseif( epsV <= epsC && it > 50 )
     if strcmp(getenv('OS'),'Windows_NT')
-        set(figure(1),'position',[]);
+        set(figure(1),'position',[1.8,1.8,766.4,780.8]);
     else
         set(figure(1),'position',[1.8,26,866.2,949]);
     end

@@ -64,7 +64,7 @@ for k = 1:length(angle)
         h           =   figure(1);
     end
     
-    Pl.savefig      =   'yes';
+    Pl.savefig      =   'no';
     Pl.plotfields   =   'yes';
     
     for i = 1:length(eta2)
@@ -94,8 +94,8 @@ for k = 1:length(angle)
         % --------------------------------------------------------------- %
         
         %% ------------------- Definition des Numerischen Gitters ------- %
-        N.nz        =   201;            %   Vertikale Gitteraufloesung
-        N.nx        =   201;            %   Horizontale Gitteraufloesung
+        N.nz        =   51;            %   Vertikale Gitteraufloesung
+        N.nx        =   51;            %   Horizontale Gitteraufloesung
         % --------------------------------------------------------------- %
         
         %% Tracer Advektionsmethode ------------------------------------- %

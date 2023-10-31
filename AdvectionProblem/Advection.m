@@ -60,5 +60,7 @@ switch lower(B.AdvMethod)
                 [~,D.rho]   =   TracerInterp(Ma,D.rho,[],M.X,M.Z,'from','rho');
                 [~,D.eta]   =   TracerInterp(Ma,D.eta,[],M.X,M.Z,'from','eta');
         end
+    otherwise 
+        error('Advection method unknown!')
 end
 end

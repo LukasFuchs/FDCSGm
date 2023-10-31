@@ -29,7 +29,7 @@ if Benchmark
 end
 
 if strcmp(getenv('OS'),'Windows_NT')
-    set(figure(1),'position',[]);
+    set(figure(2),'position',[1.0,1.0,1536.0,788.8]);
 else
     set(figure(2),'position',[1,25,1920,950]);
 end
