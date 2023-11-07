@@ -18,7 +18,7 @@ end
 % ======================================================================= %
 T.tstart        =   tic;
 %% ===================== Some initial definitions ======================= %
-Pl.savefig      =   'no';
+Pl.savefig      =   'yes';
 Pl.plotfields   =   'yes';
 Py.scale        =   'yes';
 % ======================================================================= %
@@ -120,25 +120,31 @@ end
 %% ========================= Plot parameter ============================= %
 Pl.inc      =   min(N.nz/10,N.nx/10);
 Pl.inc      =   round(Pl.inc);
-Pl.xlab     =   '$$x$$';
-Pl.zlab     =   '$$z$$';
+Pl.xlab     =   'x';
+Pl.zlab     =   'z';
+Pl.tstpinc  =   50;
 switch Pl.plotfields
     case 'yes'
         if strcmp(getenv('OS'),'Windows_NT')
             set(figure(1),'position',[1.8,1.8,766.4,780.8]);
-            h           =   figure(1);
+            Pl.h           =   figure(1);
         else
             set(figure(1),'position',[-1919,1,960,988]);
-            h           =   figure(1);
+            Pl.h           =   figure(1);
         end
 end
 % Animation settings ---------------------------------------------------- %
 switch Pl.savefig
     case 'yes'
-        if ~exist('data/','dir')
-            mkdir('data/')
+        M.ModDir    =   ['data/',Py.eparam,'_eta/Ra_',...
+            sprintf('%2.2e',Py.Ra),...
+            '_eta_',Py.eparam,'_xmax_',num2str(M.xmax),...
+            '_nx_',num2str(N.nz),'_nz_',num2str(N.nz),'_Adv_',...
+            B.AdvMethod,'_Diff_',B.DiffMethod];
+        if ~exist(M.ModDir,'dir')
+            mkdir(M.ModDir)
         end
-        Pl.filename    = ['data/ThermalConvect_Ra_',sprintf('%2.0e',Py.Ra),...
+        Pl.filename    = [M.ModDir,'/ThermalConvect_Ra_',sprintf('%2.0e',Py.Ra),...
             '_eta_',Py.eparam,'_xmax_',num2str(M.xmax),...
             '_nz_',num2str(N.nz),'.gif'];
         h           =   figure(1);
@@ -173,7 +179,7 @@ for it = 1:T.itmax
         switch Py.eparam
             case 'const'
                 [D,A]       =   solveSECE_const_EtaSc(D,Py,N,B,A);
-                if (it == 2)
+                if (it == 1)
                     N.beenhere = 1;
                 end
             case 'variable'
@@ -208,7 +214,6 @@ for it = 1:T.itmax
     %% ================== Heat flow at the surface ====================== %
     D.dTtop         =   (D.T(1,:)-D.T(2,:))./N.dz;
     D.dTbot         =   (D.T(end-1,:)-D.T(end,:))./N.dz;
-    %     D.Nus(it)       =   trapz(M.x,D.dTtop).*abs(M.H)/M.L;
     D.Nus(it)       =   mean(D.dTtop);
     
     D.meanT(:,it)   =   mean(D.T,2);
@@ -230,7 +235,7 @@ end
 %% ======================== Save final figure =========================== %
 switch Pl.savefig
     case 'yes'
-        saveas(figure(1),['data/ThermalConvect_Ra_',sprintf('%2.0e',Py.Ra),...
+        saveas(figure(1),[M.ModDir,'/ThermalConvect_Ra_',sprintf('%2.0e',Py.Ra),...
             '_eta_',Py.eparam,'_xmax_',num2str(M.xmax),...
             '_nz_',num2str(N.nz),'_SS'],'png')
 end
@@ -239,7 +244,7 @@ end
 PlotTimeSerieses(Py,T,D,M,N)
 switch Pl.savefig
     case 'yes'
-        saveas(figure(2),['data/ThermalConvect_Ra_',sprintf('%2.0e',Py.Ra),...
+        saveas(figure(2),[M.ModDir,'/ThermalConvect_Ra_',sprintf('%2.0e',Py.Ra),...
             '_eta_',Py.eparam,'_xmax_',num2str(M.xmax),...
             '_nz_',num2str(N.nz),'_TimeSeries'],'png')
 end
@@ -259,18 +264,19 @@ else
     rmpath('../../SetUp')
     rmpath('../../ScaleParam')
 end
-% ======================================================================= %
-
-% save('B.mat','B','-mat')
-% save('D.mat','D','-mat')
-% save('ID.mat','ID','-mat')
-% save('M.mat','M','-mat')
-% save('Ma.mat','Ma','-mat')
-% save('N.mat','N','-mat')
-% save('Pl.mat','Pl','-mat')
-% save('Py.mat','Py','-mat')
-% save('S.mat','S','-mat')
-% save('T.mat','T','-mat')
+switch Pl.savefig
+    case 'yes'
+        save('B.mat','B','-mat')
+        save('D.mat','D','-mat')
+        save('ID.mat','ID','-mat')
+        save('M.mat','M','-mat')
+        save('Ma.mat','Ma','-mat')
+        save('N.mat','N','-mat')
+        save('Pl.mat','Pl','-mat')
+        save('Py.mat','Py','-mat')
+        save('S.mat','S','-mat')
+        save('T.mat','T','-mat')
+end
 % profile viewer
 
 % ======================================================================= %

@@ -38,7 +38,7 @@ if (T.time(it) >= T.tmax)
             ax1=subplot(2,1,1);
             plotfield(D.T,M.X,M.Z,Pl,'contourf',...
                 '$$T$$','quiver',ID.vx,ID.vz)
-            colormap(ax1,flipud(Pl.lajolla))
+            colormap(ax1,(Pl.lajolla))
             ax2=subplot(2,1,2);
             plotfield(ID.v,M.X,M.Z,Pl,'pcolor',...
                 '$$v$$')
@@ -47,7 +47,7 @@ if (T.time(it) >= T.tmax)
             ax1=subplot(2,1,1);
             plotfield(D.T,M.X,M.Z,Pl,'contourf',...
                 '$$T$$','quiver',ID.vx,ID.vz)
-            colormap(ax1,flipud(Pl.lajolla))
+            colormap(ax1,(Pl.lajolla))
             ax2=subplot(2,1,2);
             plotfield(log10(D.eta),M.X,M.Z,Pl,'contourf',...
                 '$$\eta$$','quiver',ID.vx,ID.vz)
@@ -70,7 +70,7 @@ elseif( epsV <= epsC && it > 50 )
             ax1=subplot(2,1,1);
             plotfield(D.T,M.X,M.Z,Pl,'contourf',...
                 '$$T$$','quiver',ID.vx,ID.vz)
-            colormap(ax1,flipud(Pl.lajolla))
+            colormap(ax1,(Pl.lajolla))
             ax2=subplot(2,1,2);
             plotfield(ID.v,M.X,M.Z,Pl,'pcolor',...
                 '$$v$$')
@@ -79,7 +79,7 @@ elseif( epsV <= epsC && it > 50 )
             ax1=subplot(2,1,1);
             plotfield(D.T,M.X,M.Z,Pl,'contourf',...
                 '$$T$$','quiver',ID.vx,ID.vz)
-            colormap(ax1,flipud(Pl.lajolla))
+            colormap(ax1,(Pl.lajolla))
             ax2=subplot(2,1,2);
             plotfield(log10(D.eta),M.X,M.Z,Pl,'contourf',...
                 '$$\eta$$','quiver',ID.vx,ID.vz)
