@@ -13,7 +13,7 @@ switch lower(R.cetaeff)
 end
 
 switch lower(R.plast)
-    case 'yes'
+    case {'drucker-prager','yes'}
         D.eta   =   min(D.eta,D.etay);
 end
 
