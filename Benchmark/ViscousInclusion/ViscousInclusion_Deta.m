@@ -96,8 +96,8 @@ for k = 1:length(angle)
         % --------------------------------------------------------------- %
         
         %% ------------------- Definition des Numerischen Gitters ------- %
-        N.nz        =   201;            %   Vertikale Gitteraufloesung
-        N.nx        =   201;            %   Horizontale Gitteraufloesung
+        N.nz        =   301;            %   Vertikale Gitteraufloesung
+        N.nx        =   301;            %   Horizontale Gitteraufloesung
         % --------------------------------------------------------------- %
         
         %% Tracer Advektionsmethode ------------------------------------- %
@@ -301,9 +301,9 @@ for k = 1:length(angle)
             
         end
 
-        psiinc1(i)      = mean(ID.psi(incind));
-        eIIinc(i)       = mean(ID.eII(incind));
-        tauIIinc(i)     = mean(ID.tauII(incind));
+        psiinc1(i)      = median(ID.psi(incind));
+        eIIinc(i)       = median(ID.eII(incind));
+        tauIIinc(i)     = median(ID.tauII(incind));
        
         psiinc1ma(i)    = max(ID.psi(incind));
         eIIincma(i)     = max(ID.eII(incind));
@@ -318,9 +318,9 @@ for k = 1:length(angle)
         tauIIincstd(i)  = std(ID.tauII(incind));
         
         % -------
-        psimat1(i)      = mean(ID.psi(matind));
-        eIImat(i)       = mean(ID.eII(matind));
-        tauIImat(i)     = mean(ID.tauII(matind));
+        psimat1(i)      = median(ID.psi(matind));
+        eIImat(i)       = median(ID.eII(matind));
+        tauIImat(i)     = median(ID.tauII(matind));
         
         psimat1ma(i)    = max(ID.psi(matind));
         eIImatma(i)     = max(ID.eII(matind));

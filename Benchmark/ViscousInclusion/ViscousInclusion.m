@@ -22,7 +22,7 @@ Py.scale        =   'yes';
 % ======================================================================= %
 %% ============ Define method to solve the energy equation ============== %
 B.AdvMethod     =   'none';
-B.Aparam        =   'none';
+B.Aparam        =   'comp';
 B.DiffMethod    =   'none';
 % ======================================================================= %
 %% ==================== Define viscosity conditions ===================== %
@@ -40,7 +40,7 @@ B.Tini          =   'const';
 Py.tparam       =   'const';
 % ======================================================================= %
 %% ========================= Define flow field ========================== %
-B.IniFlow       =   'SimpleShear';
+B.IniFlow       =   'PureShear';
 B.ebg           =   -1e-15;         % < 0 compression
 B.FlowFac       =   [];
 % ======================================================================= %
@@ -49,8 +49,8 @@ M.H         =   -1;           %   Modeltiefe [ in km ]
 M.xmax      =   1;               %   Seitenverhaeltniss
 % ======================================================================= %
 %% ====================== Define the numerical grid ===================== %
-N.nz        =   201;             %   Vertikale Gitteraufloesung
-N.nx        =   201;             %   Horizontale Gitteraufloesung
+N.nz        =   301;             %   Vertikale Gitteraufloesung
+N.nx        =   301;             %   Horizontale Gitteraufloesung
 % ======================================================================= %
 %% =======================  Tracer advection ============================ %
 N.nmx       =   5;
@@ -69,7 +69,7 @@ Py.Q0       =   0;              % Waermeproduktionsrate pro Volumen [W/m^3]
 Py.Q0       =   Py.Q0/Py.rho0;  % Waermeproduktionsrate pro Masse [W/kg]
 
 Py.eta0     =   1e23;           % Viskositaet [ Pa*s ]
-Py.eta1     =   1e21;           % Inclusion viscosity
+Py.eta1     =   1e28;           % Inclusion viscosity
 Py.rho1     =   Py.rho0;        % Includion density
 
 Py.DeltaT   =   1000;           % Temperaturdifferenz
@@ -169,7 +169,9 @@ for it = 1:T.itmax
     [ID]        =   GetStrainRate(ID,N);
     ID.tauII    =   ID.eII.*D.eta.*2;
     ID.psi      =   ID.eII.*ID.tauII;
-    incind      =   log10(D.eta)==log10(Py.eta1);
+    incind      =   D.C > 1.5; 
+%             matind      =   D.C <= 1.5;
+%     incind      =   log10(D.eta)==log10(Py.eta1);
     % =================================================================== %
     %% ========================== Plot data ============================= %
     Pl.time     =   '';
@@ -180,18 +182,22 @@ for it = 1:T.itmax
         figure(1) % ----------------------------------------------------- %
         clf
         ax1 = subplot(2,2,1);
+        D.eta(~incind) = NaN;
         plotfield(log10(D.eta),M.X,M.Z,Pl,'pcolor',...
             '$$log_{10} (\ \eta\ )$$','quiver',ID.vx,ID.vz);
         colormap(ax1,flipud(Pl.lapaz))
         ax2 = subplot(2,2,2);
+        ID.psi(~incind) = NaN;
         plotfield(log10(ID.psi),M.X,M.Z,Pl,'pcolor',...
             '$$log_{10} (\ \psi\ )$$');
         colormap(ax2,Pl.imola)
         ax3 = subplot(2,2,3);
+        ID.eII(~incind) = NaN;
         plotfield(log10(ID.eII),M.X,M.Z,Pl,'pcolor',...
             '$$log_{10} (\ \dot\varepsilon_{II}\ )$$')
         colormap(ax3,Pl.batlowW)
         ax4 = subplot(2,2,4);
+        ID.tauII(~incind) = NaN;
         plotfield(log10(ID.tauII),M.X,M.Z,Pl,'pcolor',...
             '$$log_{10} (\ \tau_{II}\ )$$')
         colormap(ax4,Pl.nuuk)
