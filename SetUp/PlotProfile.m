@@ -13,10 +13,13 @@ else
 end
 
 plot(X,Y,'LineWidth',2)
-set(gca,'FontWeight','Bold','FontSize',10,'LineWidth',2);
+set(gca,'FontWeight','Bold','FontSize',12,'LineWidth',2,...
+    'TickLabelInterpreter','latex')
 box on; 
 if param1 == 1
-   title(tit); xlabel(xlab); ylabel(ylab)
+   title(tit,'Interpreter','latex') 
+   xlabel(xlab,'Interpreter','latex')
+   ylabel(ylab,'Interpreter','latex')
 end
 if param2 == 1
     axis([xmin xmax ymin ymax])

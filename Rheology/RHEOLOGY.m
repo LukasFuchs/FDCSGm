@@ -38,7 +38,7 @@ for j = 1:R.nrheo
     end
     
     switch lower(R.plast)
-        case 'yes'
+        case {'drucker-prager','yes'}
             D.epstot    =   max(D.epstot,D.eII);
     end
     
