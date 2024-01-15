@@ -315,6 +315,7 @@ switch B.EtaIni
         ind     =   Elleq < 1;
         
         Ma.C(ind)   =   2;
+        Ma.c        =   [1,2];
         
         Ma.rho      =   [Py.rho0,Py.rho1];
         Ma.eta      =   [Py.eta0,Py.eta1];
@@ -322,6 +323,7 @@ switch B.EtaIni
         % Interpolate from tracers to grid ------------------------------ %
         [~,D.eta]   =   TracerInterp(Ma,D.eta,[],M.X,M.Z,'from','eta');
         [~,D.rho]   =   TracerInterp(Ma,D.rho,[],M.X,M.Z,'from','rho');
+        [~,D.C]     =   TracerInterp(Ma,D.C,[],M.X,M.Z,'from','comp');
     case 'RTI'
         % Tracer Initialisierung
         nmxx        =   (N.nx-1)*N.nmx;

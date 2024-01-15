@@ -14,10 +14,12 @@ else
     addpath('../../ScaleParam')
 end
 
-angle = [0 22.5 45 90];
+angle = [0 0 22.5 45 90];
+
+legendinfo  =   cell(1,length(angle));
+legendinfoq =   cell(1,length(angle)-2);
 
 for k = 1:length(angle)
-    
     
     eta2        = logspace(18,28,40);
     eta2        = fliplr(eta2);
@@ -73,7 +75,7 @@ for k = 1:length(angle)
         % Define method for solving the energy equation ----------------- %
         B.AdvMethod     =   'none';
         B.DiffMethod    =   'none';
-        B.Aparam        =   'none';
+        B.Aparam        =   'comp';
         Py.scale        =   'none';
         
         % Variable oder konstante Vikositaet ---------------------------- %
@@ -94,8 +96,8 @@ for k = 1:length(angle)
         % --------------------------------------------------------------- %
         
         %% ------------------- Definition des Numerischen Gitters ------- %
-        N.nz        =   51;            %   Vertikale Gitteraufloesung
-        N.nx        =   51;            %   Horizontale Gitteraufloesung
+        N.nz        =   201;            %   Vertikale Gitteraufloesung
+        N.nx        =   201;            %   Horizontale Gitteraufloesung
         % --------------------------------------------------------------- %
         
         %% Tracer Advektionsmethode ------------------------------------- %
@@ -116,7 +118,7 @@ for k = 1:length(angle)
         
         Py.eta0     =   1e23;           % Viskositaet [ Pa*s ]
         Py.eta1     =   eta2(i);        % Inclusion viscosity
-        Py.rho1     =   Py.rho0; 
+        Py.rho1     =   Py.rho0;
         
         Py.DeltaT   =   1000;           % Temperaturdifferenz
         % --------------------------------------------------------------- %
@@ -148,10 +150,15 @@ for k = 1:length(angle)
         B.EtaIni        =   'ellipse';
         B.ebg           =   -1e-15;         % < 0 compression
         B.RotAng        =   Orientation;    % positive -> counter clockwise
-        B.EllA          =   3e2;            % [ m ]
-        B.EllB          =   1e2;          % [ m ]
-        B.T0            =   1000; 
-        B.TAmpl         =   1000; 
+        if k == 1
+            B.EllA          =   2e2;            % [ m ]
+            B.EllB          =   2e2;            % [ m ]
+        else
+            B.EllA          =   3e2;            % [ m ]
+            B.EllB          =   1e2;            % [ m ]
+        end
+        B.T0            =   1000;
+        B.TAmpl         =   1000;
         
         switch Pl.savefig
             case 'yes'
@@ -189,7 +196,7 @@ for k = 1:length(angle)
         %% ------------------------- Plot Parameter --------------------- %
         Pl.inc      =   min(N.nz/10,N.nx/10);
         Pl.inc      =   round(Pl.inc);
-        % --------------------------------------------------------------- %        
+        % --------------------------------------------------------------- %
         %% Scale Parameters ============================================= %
         [M,N,D,T,S]         =   ScaleParameters(B,M,Py,N,D,T);
         switch B.IniFlow
@@ -220,7 +227,6 @@ for k = 1:length(angle)
         %% BEGINN DER ZEITSCHLEIFE ===================================== %%
         for it = 1:T.itmax
             %% Erstellung der Koeffizienten Matrix und rechten Seite des
-            %     if(strcmp(B.AdvMethod,'none')==0)
             switch Py.eparam
                 case 'const'
                     [D,A]       =   solveSECE_const_EtaSc(D,Py,N,B,A);
@@ -232,40 +238,46 @@ for k = 1:length(angle)
                 otherwise
                     error('Viskositaet nicht definiert! Siehe Parameter Py.eparam.')
             end
-            %     end
             % ----------------------------------------------------------- %
             
             %% Interpolation der Geschwindigkeiten auf das regulaere Gitter - %
             [ID]        =   InterpStaggered(D,ID,N,'velocity');
-            D.meanV(it) = mean(ID.v,'all');   % Mittleregeschwindigkeit
+            D.meanV(it) =   mean(ID.v,'all');   % Mittleregeschwindigkeit
             % ----------------------------------------------------------- %
             [ID]        =   GetStrainRate(ID,N);
             ID.tauII    =   ID.eII.*D.eta.*2;
             ID.psi      =   ID.eII.*ID.tauII;
-            incind      =   log10(D.eta)==log10(Py.eta1/Py.eta0);
-            matind      =   log10(D.eta)==log10(Py.eta0/Py.eta0);
+            incind      =   D.C > 1.5; 
+            matind      =   D.C <= 1.5;
+%             incind      =   log10(D.eta)==log10(Py.eta1/Py.eta0);
+%             matind      =   log10(D.eta)==log10(Py.eta0/Py.eta0);
             
             %% Darstellung der Daten ------------------------------------ %
             Pl.time     =   '';
             Pl.xlab     =   '$$x$$';
             Pl.zlab     =   '$$z$$';
-            
-            if (mod(it,5)==0||it==1)
+
+            if ((mod(it,10)==0||it==1)) % && (mod(i,20)==0||i==1))
+                i
                 figure(1) % --------------------------------------------- %
                 clf
+                D.eta(~incind) = NaN;
                 ax1 = subplot(2,2,1);
                 plotfield(log10(D.eta),M.X,M.Z,Pl,'pcolor',...
                     '$$log_{10}\ (\eta)$$','quiver',ID.vx,ID.vz)
                 colormap(ax1,Pl.lapaz)
                 ax2 = subplot(2,2,2);
+                ID.psi(~incind) = NaN;
                 plotfield(log10(ID.psi),M.X,M.Z,Pl,'pcolor',...
                     '$$log_{10}\ (\psi)$$')
                 colormap(ax2,Pl.imola)
                 ax3 = subplot(2,2,3);
+                ID.eII(~incind) = NaN;
                 plotfield(log10(ID.eII),M.X,M.Z,Pl,'pcolor',...
                     '$$log_{10}\ ( \varepsilon_{II} )$$')
                 colormap(ax3,Pl.batlowW)
                 ax4 = subplot(2,2,4);
+                ID.tauII(~incind) = NaN; 
                 plotfield(log10(ID.tauII),M.X,M.Z,Pl,'pcolor',...
                     '$$log_{10}\ ( \tau_{II} )$$')
                 colormap(ax4,Pl.nuuk)
@@ -288,11 +300,11 @@ for k = 1:length(angle)
             % ----------------------------------------------------------- %
             
         end
-        
+
         psiinc1(i)      = mean(ID.psi(incind));
         eIIinc(i)       = mean(ID.eII(incind));
         tauIIinc(i)     = mean(ID.tauII(incind));
-        
+       
         psiinc1ma(i)    = max(ID.psi(incind));
         eIIincma(i)     = max(ID.eII(incind));
         tauIIincma(i)   = max(ID.tauII(incind));
@@ -323,6 +335,7 @@ for k = 1:length(angle)
         tauIImatstd(i)  = std(ID.tauII(matind));
         
     end
+    
     data    =   [eta2'./Py.eta0 ...
         psiinc1 psiinc1ma psiinc1mi psiinc1std ...
         eIIinc eIIincma eIIincmi eIIincstd ...
@@ -331,6 +344,7 @@ for k = 1:length(angle)
         eIImat eIImatma eIImatmi eIImatstd ...
         tauIImat tauIImatma tauIImatmi tauIImatstd  ...
         ];
+    
     switch Pl.savefig
         case 'yes'
             save([ModDir,'/Data_',B.IniFlow,'_',...
@@ -352,7 +366,7 @@ for k = 1:length(angle)
     ylabel('$$\varepsilon_{II}$$','Interpreter','latex')
     xlabel('$$\eta_{inc}/\eta_{out}$$','Interpreter','latex');
     legend('$$\langle \psi \rangle$$','$$\langle \tau_{II} \rangle$$',...
-        '$$\langle \epsilon_{II} \rangle$$','Location','SouthEast',...
+        '$$\langle \epsilon_{II} \rangle$$','Location','Best',...
         'Interpreter','latex')
     % axis([0 180 1e-11 1e-6])
     switch Pl.savefig
@@ -361,48 +375,98 @@ for k = 1:length(angle)
                 num2str(Orientation)],'png')
     end
     
-    set(figure(3),'Position',[1.8000,1.8000,766.4000,780.8000])
+    set(figure(3),'Position',[1.0,1.0,1536.0,788.8])
+    
+    if k == 2
+        psiinc1_0   =   psiinc1;
+        tauIIinc_0  =   tauIIinc;
+        eIIinc_0    =   eIIinc;
+    elseif k > 2
+        %         deltapsi    =   (abs(psiinc1_0-psiinc1)./psiinc1_0).*100;
+        %         deltatau    =   (abs(tauIIinc_0-tauIIinc)./tauIIinc_0).*100;
+        %         deltaeII    =   (abs(eIIinc_0-eIIinc)./eIIinc_0).*100;
+        deltapsi    =   psiinc1./psiinc1_0;
+        deltatau    =   tauIIinc./tauIIinc_0;
+        deltaeII    =   eIIinc./eIIinc_0;
+        figure(4)
+        subplot(3,1,1)
+        hold on
+        plot(eta2./Py.eta0,deltaeII,'LineWidth',2)
+        set(gca,'LineWidth',2,'FontSize',15,...
+            'yscale','log','xscale','log','TickLabelInterpreter','latex');
+        xlabel('$$\Delta ( \eta )$$','Interpreter','latex');
+        ylabel('$$\Delta \langle \varepsilon_{II} \rangle$$','Interpreter','latex')
+        box on
+        subplot(3,1,2)
+        hold on
+        plot(eta2./Py.eta0,deltatau,'LineWidth',2)
+        set(gca,'LineWidth',2,'FontSize',15,...
+            'yscale','log','xscale','log','TickLabelInterpreter','latex');
+        xlabel('$$\Delta ( \eta )$$','Interpreter','latex');
+        ylabel('$$\Delta \langle \tau_{II} \rangle$$','Interpreter','latex')
+        box on
+        subplot(3,1,3)
+        hold on
+        q(k-2) = plot(eta2./Py.eta0,deltapsi,'LineWidth',2);
+        legendinfoq{k-2}  =   ['$$\alpha = $$',num2str(angle(k))];
+        set(gca,'LineWidth',2,'FontSize',15,...
+            'yscale','log','xscale','log','TickLabelInterpreter','latex');
+        xlabel('$$\Delta ( \eta )$$','Interpreter','latex');
+        ylabel('$$\Delta \langle \psi_{II} \rangle$$','Interpreter','latex')
+        box on
+    end
     
     figure(3)
-    subplot(3,1,3)
+    subplot(3,2,5)
+    hold on
     plot(eta2./Py.eta0,psiinc1,'LineWidth',2)
     xlabel('$$\Delta ( \eta )$$','Interpreter','latex');
     ylabel('$$\langle \psi_{II} \rangle$$','Interpreter','latex')
-    set(gca,'LineWidth',2,'FontSize',20,...
+    set(gca,'LineWidth',2,'FontSize',15,...
         'yscale','log','xscale','log','TickLabelInterpreter','latex');
+    box on
     % axis([1e-4 1e2 1e-16 1e-11])
-    subplot(3,1,2)
+    subplot(3,2,3)
+    hold on
     plot(eta2./Py.eta0,tauIIinc,'LineWidth',2)
     xlabel('$$\Delta ( \eta )$$','Interpreter','latex');
     ylabel('$$\langle \tau_{II} \rangle$$','Interpreter','latex')
-    set(gca,'LineWidth',2,'FontSize',20,...
+    set(gca,'LineWidth',2,'FontSize',15,...
         'yscale','log','xscale','log','TickLabelInterpreter','latex');
-    subplot(3,1,1)
+    box on
+    subplot(3,2,1)
+    hold on
     plot(eta2./Py.eta0,eIIinc,'LineWidth',2)
     xlabel('$$\Delta ( \eta )$$','Interpreter','latex');
     ylabel('$$\langle \epsilon_{II} \rangle $$','Interpreter','latex')
-    set(gca,'LineWidth',2,'FontSize',20,...
+    set(gca,'LineWidth',2,'FontSize',15,...
         'yscale','log','xscale','log','TickLabelInterpreter','latex');
-    switch Pl.savefig
-        case 'yes'
-            saveas(figure(3),[ModDir,'/eps_tau_psi_Deta_',B.IniFlow,'_',...
-                num2str(Orientation)],'png')
-    end
+    box on
     
-    figure(4)
-    plot(eIIinc,tauIIinc,'LineWidth',2)
+    subplot(1,2,2)
+    hold on
+    legendinfo{k}   =   ['$$\alpha = $$',num2str(angle(k))];
+    p(k) = plot(eIIinc,tauIIinc,'LineWidth',2);
     xlabel('$$\langle \epsilon_{II} \rangle$$','Interpreter','latex')
     ylabel('$$\langle \tau_{II} \rangle$$','Interpreter','latex')
     set(gca,'FontWeight','Bold','LineWidth',2,'FontSize',15,...
         'yscale','log','xscale','log','TickLabelInterpreter','latex');
+    box on
     % axis([1e-16 1e-10 1e-2 1e3]);
     axis square
-    switch Pl.savefig
-        case 'yes'
-            saveas(figure(4),[ModDir,'/eps_tau',B.IniFlow,'_',...
-                num2str(Orientation)],'png')
-    end
-    close all
+    %     switch Pl.savefig
+    %         case 'yes'
+    %             saveas(figure(3),[ModDir,'/eps_tau_psi_Deta_',B.IniFlow,'_',...
+    %                 num2str(Orientation)],'png')
+    %     end
+    
+    %     close all
+end
+legend(p,legendinfo,'Location','Best','Interpreter','latex')
+legend(q,legendinfoq,'Location','Best','Interpreter','latex')
+switch Pl.savefig
+    case 'yes'
+        saveas(figure(3),[ModDir,'/eps_tau_psi_Deta_',B.IniFlow],'png')
 end
 
 if strcmp(getenv('OS'),'Windows_NT')

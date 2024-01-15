@@ -15,7 +15,7 @@ else
 end
 
 rotAngle    = 0:2:180;
-eta2        = 1e28;
+eta2        = 1e19;
 
 psiinc1     = zeros(length(rotAngle),1);
 eIIinc      = zeros(length(rotAngle),1);
@@ -29,7 +29,7 @@ else
     h           =   figure(1);
 end
 
-Pl.savefig      =   'no';
+Pl.savefig      =   'yes';
 Pl.plotfields   =   'yes';
 
 for i = 1:length(rotAngle)
@@ -49,7 +49,7 @@ for i = 1:length(rotAngle)
     B.Tini          =   'const';
     
     % Define flow field ------------------------------------------------- %
-    B.IniFlow       =   'SimpleShear';
+    B.IniFlow       =   'PureShear';
     B.FlowFac       =   [];
     % ------------------------------------------------------------------- %
     
@@ -194,7 +194,7 @@ for i = 1:length(rotAngle)
         
         %% Interpolation der Geschwindigkeiten auf das regulaere Gitter - %
         [ID]        =   InterpStaggered(D,ID,N,'velocity');
-        D.meanV(it) = mean(ID.v,'all');   % Mittleregeschwindigkeit
+        D.meanV(it) =   mean(ID.v,'all');   % Mittleregeschwindigkeit
         % --------------------------------------------------------------- %
         [ID]        =   GetStrainRate(ID,N);
         ID.tauII    =   ID.eII.*D.eta.*2;
