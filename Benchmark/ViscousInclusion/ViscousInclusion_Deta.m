@@ -14,7 +14,8 @@ else
     addpath('../../ScaleParam')
 end
 
-angle = [0 0 22.5 45 90];
+% angle = 30;
+angle   =   [0 0 22.5 45 90];
 
 legendinfo  =   cell(1,length(angle));
 legendinfoq =   cell(1,length(angle)-2);
@@ -22,7 +23,9 @@ legendinfoq =   cell(1,length(angle)-2);
 for k = 1:length(angle)
     
     eta2        = logspace(18,28,40);
-    eta2        = fliplr(eta2);
+    %     eta2        = logspace(23,25,10);
+%     eta2        =   1e20;
+%     eta2        = fliplr(eta2);
     
     psiinc1ma   = zeros(length(eta2),1);
     eIIincma    = zeros(length(eta2),1);
@@ -66,7 +69,7 @@ for k = 1:length(angle)
         h           =   figure(1);
     end
     
-    Pl.savefig      =   'no';
+    Pl.savefig      =   'yes';
     Pl.plotfields   =   'yes';
     
     for i = 1:length(eta2)
@@ -86,7 +89,7 @@ for k = 1:length(angle)
         B.Tini          =   'const';
         
         % Define flow field --------------------------------------------- %
-        B.IniFlow       =   'PureShear';
+        B.IniFlow       =   'SimpleShear';
         B.FlowFac       =   [];
         % --------------------------------------------------------------- %
         
@@ -151,14 +154,15 @@ for k = 1:length(angle)
         B.ebg           =   -1e-15;         % < 0 compression
         B.RotAng        =   Orientation;    % positive -> counter clockwise
         if k == 1
-            B.EllA          =   2e2;            % [ m ]
-            B.EllB          =   2e2;            % [ m ]
+            B.EllA          =   .5e2;            % [ m ]
+            B.EllB          =   .5e2;            % [ m ]
         else
-            B.EllA          =   3e2;            % [ m ]
-            B.EllB          =   1e2;            % [ m ]
+            B.EllA          =   4e2;            % [ m ]
+            B.EllB          =   .5e2;            % [ m ]
         end
         B.T0            =   1000;
         B.TAmpl         =   1000;
+        B.chkvel        =   0;
         
         switch Pl.savefig
             case 'yes'
@@ -244,43 +248,55 @@ for k = 1:length(angle)
             [ID]        =   InterpStaggered(D,ID,N,'velocity');
             D.meanV(it) =   mean(ID.v,'all');   % Mittleregeschwindigkeit
             % ----------------------------------------------------------- %
-            [ID]        =   GetStrainRate(ID,N);
-            ID.tauII    =   ID.eII.*D.eta.*2;
-            ID.psi      =   ID.eII.*ID.tauII;
-            incind      =   D.C > 1.5; 
-            matind      =   D.C <= 1.5;
-%             incind      =   log10(D.eta)==log10(Py.eta1/Py.eta0);
-%             matind      =   log10(D.eta)==log10(Py.eta0/Py.eta0);
+%             [ID]        =   GetStrainRate(ID,N);
+%             ID.tauII    =   ID.eII.*D.eta.*2;
+%             ID.psi      =   ID.eII.*ID.tauII;
+            [D]         =   GetStrainRateStag(D,N);
+            [D]         =   GetStressStag(D,N);
+            D.psi       =   D.eII.*D.tauII;
+            incind      =   D.C > 1.5;
+            matind      =   D.C <= 1.5;            
             
             %% Darstellung der Daten ------------------------------------ %
             Pl.time     =   '';
             Pl.xlab     =   '$$x$$';
             Pl.zlab     =   '$$z$$';
-
+            
             if ((mod(it,10)==0||it==1)) % && (mod(i,20)==0||i==1))
                 i
                 figure(1) % --------------------------------------------- %
                 clf
-                D.eta(~incind) = NaN;
+%                 D.eta(~incind) = NaN;
                 ax1 = subplot(2,2,1);
                 plotfield(log10(D.eta),M.X,M.Z,Pl,'pcolor',...
                     '$$log_{10}\ (\eta)$$','quiver',ID.vx,ID.vz)
-                colormap(ax1,Pl.lapaz)
+                colormap(ax1,flipud(Pl.lapaz))
                 ax2 = subplot(2,2,2);
-                ID.psi(~incind) = NaN;
-                plotfield(log10(ID.psi),M.X,M.Z,Pl,'pcolor',...
-                    '$$log_{10}\ (\psi)$$')
-                colormap(ax2,Pl.imola)
+%                 D.psi(~incind) = NaN;
+                plotfield((D.psi),M.X,M.Z,Pl,'pcolor',...
+                    '$$\psi$$')
+%                     '$$log_{10}\ (\psi)$$')
+                colormap(ax2,Pl.imola)  
+%                 plotfield(D.P(2:end,2:end)./2,M.X1,M.Z1,Pl,'pcolor',...
+%                     '$$P$$')
+%                 colormap(ax2,Pl.vik)
+%                 caxis([-1 1])
                 ax3 = subplot(2,2,3);
-                ID.eII(~incind) = NaN;
-                plotfield(log10(ID.eII),M.X,M.Z,Pl,'pcolor',...
-                    '$$log_{10}\ ( \varepsilon_{II} )$$')
+%                 D.eII(~incind) = NaN;
+                plotfield((D.eII),M.X,M.Z,Pl,'pcolor',...
+                    '$$\dot{\varepsilon_{II}}$$')
+%                     '$$log_{10}\ ( \varepsilon_{II} )$$')
                 colormap(ax3,Pl.batlowW)
                 ax4 = subplot(2,2,4);
-                ID.tauII(~incind) = NaN; 
-                plotfield(log10(ID.tauII),M.X,M.Z,Pl,'pcolor',...
-                    '$$log_{10}\ ( \tau_{II} )$$')
+%                 D.tauII(~incind) = NaN;
+                plotfield((D.tauII),M.X,M.Z,Pl,'pcolor',...
+                    '$$\tau_{II}$$')
+%                 '$$log_{10}\ ( \tau_{II} )$$')
                 colormap(ax4,Pl.nuuk)
+            end
+            
+            if B.chkvel == 1
+                ID  =   CheckContinuum(ID,N,M,Ma,Pl);
             end
             
             switch Pl.savefig
@@ -300,39 +316,39 @@ for k = 1:length(angle)
             % ----------------------------------------------------------- %
             
         end
-
-        psiinc1(i)      = median(ID.psi(incind));
-        eIIinc(i)       = median(ID.eII(incind));
-        tauIIinc(i)     = median(ID.tauII(incind));
-       
-        psiinc1ma(i)    = max(ID.psi(incind));
-        eIIincma(i)     = max(ID.eII(incind));
-        tauIIincma(i)   = max(ID.tauII(incind));
         
-        psiinc1mi(i)    = min(ID.psi(incind));
-        eIIincmi(i)     = min(ID.eII(incind));
-        tauIIincmi(i)   = min(ID.tauII(incind));
+        psiinc1(i)      = median(D.psi(incind));
+        eIIinc(i)       = median(D.eII(incind));
+        tauIIinc(i)     = median(D.tauII(incind));
         
-        psiinc1std(i)   = std(ID.psi(incind));
-        eIIincstd(i)    = std(ID.eII(incind));
-        tauIIincstd(i)  = std(ID.tauII(incind));
+        psiinc1ma(i)    = max(D.psi(incind));
+        eIIincma(i)     = max(D.eII(incind));
+        tauIIincma(i)   = max(D.tauII(incind));
+        
+        psiinc1mi(i)    = min(D.psi(incind));
+        eIIincmi(i)     = min(D.eII(incind));
+        tauIIincmi(i)   = min(D.tauII(incind));
+        
+        psiinc1std(i)   = std(D.psi(incind));
+        eIIincstd(i)    = std(D.eII(incind));
+        tauIIincstd(i)  = std(D.tauII(incind));
         
         % -------
-        psimat1(i)      = median(ID.psi(matind));
-        eIImat(i)       = median(ID.eII(matind));
-        tauIImat(i)     = median(ID.tauII(matind));
+        psimat1(i)      = median(D.psi(matind));
+        eIImat(i)       = median(D.eII(matind));
+        tauIImat(i)     = median(D.tauII(matind));
         
-        psimat1ma(i)    = max(ID.psi(matind));
-        eIImatma(i)     = max(ID.eII(matind));
-        tauIImatma(i)   = max(ID.tauII(matind));
+        psimat1ma(i)    = max(D.psi(matind));
+        eIImatma(i)     = max(D.eII(matind));
+        tauIImatma(i)   = max(D.tauII(matind));
         
-        psimat1mi(i)    = min(ID.psi(matind));
-        eIImatmi(i)     = min(ID.eII(matind));
-        tauIImatmi(i)   = min(ID.tauII(matind));
+        psimat1mi(i)    = min(D.psi(matind));
+        eIImatmi(i)     = min(D.eII(matind));
+        tauIImatmi(i)   = min(D.tauII(matind));
         
-        psimat1std(i)   = std(ID.psi(matind));
-        eIImatstd(i)    = std(ID.eII(matind));
-        tauIImatstd(i)  = std(ID.tauII(matind));
+        psimat1std(i)   = std(D.psi(matind));
+        eIImatstd(i)    = std(D.eII(matind));
+        tauIImatstd(i)  = std(D.tauII(matind));
         
     end
     
@@ -376,7 +392,8 @@ for k = 1:length(angle)
     end
     
     set(figure(3),'Position',[1.0,1.0,1536.0,788.8])
-    
+    set(figure(4),'Position',[1.8,1.8,766.4,780.8])
+        
     if k == 2
         psiinc1_0   =   psiinc1;
         tauIIinc_0  =   tauIIinc;
@@ -425,7 +442,7 @@ for k = 1:length(angle)
     set(gca,'LineWidth',2,'FontSize',15,...
         'yscale','log','xscale','log','TickLabelInterpreter','latex');
     box on
-    % axis([1e-4 1e2 1e-16 1e-11])
+%     axis([1e-6 1e2 1e- 1e-11])
     subplot(3,2,3)
     hold on
     plot(eta2./Py.eta0,tauIIinc,'LineWidth',2)
@@ -452,7 +469,7 @@ for k = 1:length(angle)
     set(gca,'FontWeight','Bold','LineWidth',2,'FontSize',15,...
         'yscale','log','xscale','log','TickLabelInterpreter','latex');
     box on
-    % axis([1e-16 1e-10 1e-2 1e3]);
+    axis([1e-6 1e2 1e-5 1e1]);
     axis square
     %     switch Pl.savefig
     %         case 'yes'
@@ -467,6 +484,7 @@ legend(q,legendinfoq,'Location','Best','Interpreter','latex')
 switch Pl.savefig
     case 'yes'
         saveas(figure(3),[ModDir,'/eps_tau_psi_Deta_',B.IniFlow],'png')
+        saveas(figure(4),[ModDir,'/Deviation_',B.IniFlow],'png')
 end
 
 if strcmp(getenv('OS'),'Windows_NT')
