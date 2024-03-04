@@ -30,8 +30,8 @@ Py.eparam       =   'variable';
 B.EtaIni        =   'ellipse';
 % inclusions bedingungen
 B.RotAng        =   0;             % positive -> counter clockwise
-B.EllA          =   2e2; % 1.75e3; [m]
-B.EllB          =   2e2; % 0.25e3; [m]
+B.EllA          =   0.5e2; % 1.75e3; [m]
+B.EllB          =   0.5e2; % 0.25e3; [m]
 B.T0            =   1000; 
 B.TAmpl         =   1000; 
 % ======================================================================= %
@@ -49,8 +49,8 @@ M.H         =   -1;           %   Modeltiefe [ in km ]
 M.xmax      =   1;               %   Seitenverhaeltniss
 % ======================================================================= %
 %% ====================== Define the numerical grid ===================== %
-N.nz        =   301;             %   Vertikale Gitteraufloesung
-N.nx        =   301;             %   Horizontale Gitteraufloesung
+N.nz        =   151;             %   Vertikale Gitteraufloesung
+N.nx        =   151;             %   Horizontale Gitteraufloesung
 % ======================================================================= %
 %% =======================  Tracer advection ============================ %
 N.nmx       =   5;

@@ -14,15 +14,15 @@ else
     addpath('../../ScaleParam')
 end
 
-angle = [0 0 22.5 45 90];
+angle = 0; % [0 0 22.5 45 90];
 
 legendinfo  =   cell(1,length(angle));
 legendinfoq =   cell(1,length(angle)-2);
 
 for k = 1:length(angle)
     
-    eta2        = logspace(18,28,40);
-    eta2        = fliplr(eta2);
+    eta2        = 1e28; %logspace(18,28,40);
+%     eta2        = fliplr(eta2);
     
     psiinc1ma   = zeros(length(eta2),1);
     eIIincma    = zeros(length(eta2),1);
@@ -96,8 +96,8 @@ for k = 1:length(angle)
         % --------------------------------------------------------------- %
         
         %% ------------------- Definition des Numerischen Gitters ------- %
-        N.nz        =   301;            %   Vertikale Gitteraufloesung
-        N.nx        =   301;            %   Horizontale Gitteraufloesung
+        N.nz        =   51;            %   Vertikale Gitteraufloesung
+        N.nx        =   51;            %   Horizontale Gitteraufloesung
         % --------------------------------------------------------------- %
         
         %% Tracer Advektionsmethode ------------------------------------- %
@@ -463,7 +463,7 @@ for k = 1:length(angle)
     %     close all
 end
 legend(p,legendinfo,'Location','Best','Interpreter','latex')
-legend(q,legendinfoq,'Location','Best','Interpreter','latex')
+% legend(q,legendinfoq,'Location','Best','Interpreter','latex')
 switch Pl.savefig
     case 'yes'
         saveas(figure(3),[ModDir,'/eps_tau_psi_Deta_',B.IniFlow],'png')
