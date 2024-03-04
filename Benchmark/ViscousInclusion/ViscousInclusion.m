@@ -34,6 +34,7 @@ B.EllA          =   0.5e2; % 1.75e3; [m]
 B.EllB          =   0.5e2; % 0.25e3; [m]
 B.T0            =   1000; 
 B.TAmpl         =   1000; 
+B.chkvel        =   1; 
 % ======================================================================= %
 %% ================== Define initial temperature anomaly ================ %
 B.Tini          =   'const';
@@ -69,7 +70,7 @@ Py.Q0       =   0;              % Waermeproduktionsrate pro Volumen [W/m^3]
 Py.Q0       =   Py.Q0/Py.rho0;  % Waermeproduktionsrate pro Masse [W/kg]
 
 Py.eta0     =   1e23;           % Viskositaet [ Pa*s ]
-Py.eta1     =   1e28;           % Inclusion viscosity
+Py.eta1     =   1e18;           % Inclusion viscosity
 Py.rho1     =   Py.rho0;        % Includion density
 
 Py.DeltaT   =   1000;           % Temperaturdifferenz
@@ -163,15 +164,17 @@ for it = 1:T.itmax
     % =================================================================== %
     %% =========== Interpolate velocity onto the regular grid =========== %
     [ID]        =   InterpStaggered(D,ID,N,'velocity');
-%     D.meanV(it) =   mean(ID.v,'all');   % Mittleregeschwindigkeit
     D.meanV(it) =   rms(ID.vx(:) + ID.vz(:));
-    % =================================================================== %
     [ID]        =   GetStrainRate(ID,N);
     ID.tauII    =   ID.eII.*D.eta.*2;
     ID.psi      =   ID.eII.*ID.tauII;
+    % =================================================================== %
+    [D]         =   GetStrainRateStag(D,N);
+    [D]         =   GetStressStag(D,N);
+    D.psi       =   D.eII.*D.tauII;
+        
     incind      =   D.C > 1.5; 
-%             matind      =   D.C <= 1.5;
-%     incind      =   log10(D.eta)==log10(Py.eta1);
+    %             matind      =   D.C <= 1.5;   
     % =================================================================== %
     %% ========================== Plot data ============================= %
     Pl.time     =   '';
@@ -187,22 +190,47 @@ for it = 1:T.itmax
             '$$log_{10} (\ \eta\ )$$','quiver',ID.vx,ID.vz);
         colormap(ax1,flipud(Pl.lapaz))
         ax2 = subplot(2,2,2);
-        ID.psi(~incind) = NaN;
-        plotfield(log10(ID.psi),M.X,M.Z,Pl,'pcolor',...
+        D.psi(~incind) = NaN;
+        plotfield((D.psi),M.X,M.Z,Pl,'pcolor',...
             '$$log_{10} (\ \psi\ )$$');
         colormap(ax2,Pl.imola)
         ax3 = subplot(2,2,3);
-        ID.eII(~incind) = NaN;
-        plotfield(log10(ID.eII),M.X,M.Z,Pl,'pcolor',...
+        D.eII(~incind) = NaN;
+        plotfield((D.eII),M.X,M.Z,Pl,'pcolor',...
             '$$log_{10} (\ \dot\varepsilon_{II}\ )$$')
         colormap(ax3,Pl.batlowW)
         ax4 = subplot(2,2,4);
-        ID.tauII(~incind) = NaN;
-        plotfield(log10(ID.tauII),M.X,M.Z,Pl,'pcolor',...
+        D.tauII(~incind) = NaN;
+        plotfield((D.tauII),M.X,M.Z,Pl,'pcolor',...
             '$$log_{10} (\ \tau_{II}\ )$$')
         colormap(ax4,Pl.nuuk)
+%         figure(3) % ----------------------------------------------------- %
+%         clf
+%         ax1 = subplot(2,2,1);
+%         D.eta(~incind) = NaN;
+%         plotfield(log10(D.eta),M.X,M.Z,Pl,'pcolor',...
+%             '$$log_{10} (\ \eta\ )$$','quiver',ID.vx,ID.vz);
+%         colormap(ax1,flipud(Pl.lapaz))
+%         ax2 = subplot(2,2,2);
+%         ID.psi(~incind) = NaN;
+%         plotfield((ID.psi),M.X,M.Z,Pl,'pcolor',...
+%             '$$log_{10} (\ \psi\ )$$');
+%         colormap(ax2,Pl.imola)
+%         ax3 = subplot(2,2,3);
+%         ID.eII(~incind) = NaN;
+%         plotfield((ID.eII),M.X,M.Z,Pl,'pcolor',...
+%             '$$log_{10} (\ \dot\varepsilon_{II}\ )$$')
+%         colormap(ax3,Pl.batlowW)
+%         ax4 = subplot(2,2,4);
+%         ID.tauII(~incind) = NaN;
+%         plotfield((ID.tauII),M.X,M.Z,Pl,'pcolor',...
+%             '$$log_{10} (\ \tau_{II}\ )$$')
+%         colormap(ax4,Pl.nuuk)
     end       
     % =================================================================== %
+    if B.chkvel == 1
+        ID  =   CheckContinuum(ID,N,M,Ma,Pl);
+    end
     
 end
 % Staggered grid coordinates
@@ -234,7 +262,7 @@ ax6 = subplot(3,3,6); plotfield(D.vze,M.xVz,M.zVz,Pl,...
 colormap(ax6,Pl.batlowW)
 ax7 = subplot(3,3,7); plotfield(D.Pa,M.X1,M.Z1,Pl,...
     'pcolor','$$P\ (analytical)$$')
-colormap(ax7,Pl.hawaii)
+colormap(ax7,Pl.hawaii)     
 ax8 = subplot(3,3,8); plotfield(D.P(2:end,2:end),M.X1,M.Z1,Pl,...
     'pcolor','$$P\ (numerical)$$')
 colormap(ax8,Pl.hawaii)
@@ -248,13 +276,11 @@ psiinc3 = sum(ID.psi(incind))./pi/B.EllA/B.EllB;
 
 %% ====================== Clear path structure ========================== %
 if strcmp(getenv('OS'),'Windows_NT')
-%     rmpath('..\..\DiffusionProblem')
     rmpath('..\..\AdvectionProblem')
     rmpath('..\..\StokesProblem')
     rmpath('..\..\SetUp')
     rmpath('..\..\ScaleParam')
 else
-%     rmpath('../../DiffusionProblem')
     rmpath('../../AdvectionProblem')
     rmpath('../../StokesProblem')
     rmpath('../../SetUp')
@@ -355,3 +381,4 @@ Vx_N(2:end-1,1) = Vx_NC(2:end-1,end);
 Vy_W(2:end-1,1) = Vy_NC(1  ,2:end-1)';
 Vy_E(2:end-1,1) = Vy_NC(end,2:end-1)';
 end
+
