@@ -66,7 +66,7 @@ Py.kappa    =   Py.k/Py.rho0/Py.cp; % 	Thermische Diffusivitaet [ m^2/s ]
 Py.Q0       =   0;              % Waermeproduktionsrate pro Volumen [W/m^3]
 Py.Q0       =   Py.Q0/Py.rho0;  % Waermeproduktionsrate pro Masse [W/kg]
 
-Py.eta0     =   1e23;           %   Viskositaet [ Pa*s ]
+Py.eta0     =   1e21;           %   Viskositaet [ Pa*s ]
 
 Py.T0       =   273.0;          %   Surface temperature
 
