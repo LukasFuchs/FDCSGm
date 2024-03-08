@@ -50,8 +50,8 @@ M.H         =   -1;           %   Modeltiefe [ in km ]
 M.xmax      =   1;               %   Seitenverhaeltniss
 % ======================================================================= %
 %% ====================== Define the numerical grid ===================== %
-N.nz        =   301;             %   Vertikale Gitteraufloesung
-N.nx        =   301;             %   Horizontale Gitteraufloesung
+N.nz        =   151;             %   Vertikale Gitteraufloesung
+N.nx        =   151;             %   Horizontale Gitteraufloesung
 % ======================================================================= %
 %% =======================  Tracer advection ============================ %
 N.nmx       =   5;

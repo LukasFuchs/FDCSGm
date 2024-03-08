@@ -68,7 +68,7 @@ Py.Q0       =   Py.Q0/Py.rho0;  % Waermeproduktionsrate pro Masse [W/kg]
 
 Py.eta0     =   1e23;           %   Viskositaet [ Pa*s ]
 
-Py.DeltaT   =   1000;           % Temperaturdifferenz
+Py.DeltaT   =   1000;           %   Temperaturdifferenz
 
 % Falls Ra < 0 gesetzt ist, dann wird Ra aus den obigen Parametern
 % berechnet. Falls Ra gegeben ist, dann wird die Referenzviskositaet so
@@ -205,7 +205,7 @@ for it = 1:T.itmax
     % =================================================================== %
     %% =========== Interpolate velocity onto the regular grid =========== %
     [ID]        =   InterpStaggered(D,ID,N,'velocity');
-    D.meanV(it)     =   rms(ID.vx(:) + ID.vz(:));
+    D.meanV(it)     =   rms(ID.vx(:).^2 + ID.vz(:).^2);
     % =================================================================== %
     %% ========================== Plot data ============================= %
     Pl              =   PlotData(it,Pl,T,D,M,ID,Py);
@@ -219,7 +219,7 @@ for it = 1:T.itmax
     %% ================== Heat flow at the surface ====================== %
     D.dTtop         =   (D.T(1,:)-D.T(2,:))./N.dz;
     D.dTbot         =   (D.T(end-1,:)-D.T(end,:))./N.dz;    
-    D.Nus(it)       =   mean(D.dTtop);
+    D.Nus(it)       =   mean(D.dTtop)*N.dx;
     
     D.meanT(:,it)   =   mean(D.T,2);
     % =================================================================== %
@@ -231,7 +231,7 @@ for it = 1:T.itmax
     end
     % =================================================================== %
     %% ========================== Check break =========================== %
-    [answer,T]  =   CheckBreakCriteria(it,T,D,M,Pl,ID,Py);
+    [answer,T]      =   CheckBreakCriteria(it,T,D,M,Pl,ID,Py);
     switch answer
         case 'yes'
             break
