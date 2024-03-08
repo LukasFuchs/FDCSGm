@@ -219,7 +219,7 @@ for it = 1:T.itmax
     %% ================== Heat flow at the surface ====================== %
     D.dTtop         =   (D.T(1,:)-D.T(2,:))./N.dz;
     D.dTbot         =   (D.T(end-1,:)-D.T(end,:))./N.dz;    
-    D.Nus(it)       =   mean(D.dTtop);
+    D.Nus(it)       =   mean(D.dTtop)*N.dx;
     
     D.meanT(:,it)   =   mean(D.T,2);
     % =================================================================== %
