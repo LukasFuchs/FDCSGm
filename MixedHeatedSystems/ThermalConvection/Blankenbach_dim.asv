@@ -22,7 +22,7 @@ end
 % ======================================================================= %
 T.tstart        =   tic;
 %% ===================== Some initial definitions ======================= %
-Pl.savefig      =   'yes';
+Pl.savefig      =   'no';
 Pl.plotfields   =   'yes';
 Py.scale        =   'no';
 % ======================================================================= %
@@ -207,10 +207,7 @@ for it = 1:T.itmax
     % =================================================================== %
     %% =========== Interpolate velocity onto the regular grid =========== %
     [ID]            =   InterpStaggered(D,ID,N,'velocity');
-%     D.meanV(it)     =   rms(ID.vx(:) + ID.vz(:));
-    ID.vmag         =   hypot(ID.vx,ID.vz); % sqrt(vx^2+vz^2)
-    D.meanV(it)     =   sqrt(sum(ID.vmag.^2 .* N.dx .* (-N.dz),'all')/M.L/(-M.H)) * ...
-                            ((-M.H * Py.rho0 * Py.cp)/ Py.k);
+    D.meanV(it)     =   rms(ID.vx(:) + ID.vz(:));
     % =================================================================== %
     %% ========================== Plot data ============================= %
     Pl              =   PlotData_dim(it,Pl,T,D,M,ID,Py);
@@ -224,7 +221,7 @@ for it = 1:T.itmax
     %% ================== Heat flow at the surface ====================== %
     D.dTtop         =   (D.T(1,:)-D.T(2,:))./N.dz;
     D.dTbot         =   (D.T(end-1,:)-D.T(end,:))./N.dz;
-    D.Nus(it)       =   (-M.H/(Py.DeltaT*M.L)) * sum(D.dTtop.*N.dx);
+    D.Nus(it)       =   D.dTtop.*;
     
     D.meanT(:,it)   =   mean(D.T,2);
     % =================================================================== %
@@ -252,11 +249,10 @@ switch Pl.savefig
 end
 % ======================================================================= %
 %% ======================== Plot time serieses ========================== %
-PlotTimeSerieses_dim(Py,T,D,M,N,Ger)
+PlotTimeSerieses(Py,T,D,M,N,Ger)
 switch Pl.savefig
     case 'yes'
         saveas(figure(2),[M.ModDir,'/TimeSeries'],'png')
-        saveas(figure(3),[M.ModDir,'/Tmean_end'],'png')
 end
 % ======================================================================= %
 T.tend      = toc(T.tstart);

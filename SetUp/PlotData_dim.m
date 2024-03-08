@@ -1,7 +1,7 @@
 function Pl = PlotData_dim(it,Pl,T,D,M,ID,Py)
 Pl.time     =   ...
     [{['@ Iteration: ',sprintf('%i',it)]};...
-    {['Time: ',sprintf('%2.2e',T.time(it))]}];
+    {['Time: ',sprintf('%2.2e',T.time(it)/(1e6*(365.25*24*60*60))),' [Ma]']}];
 if (mod(it,Pl.tstpinc)==0||it==1)
     switch Pl.plotfields
         case 'yes'
