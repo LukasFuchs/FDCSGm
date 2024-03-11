@@ -29,18 +29,17 @@ B.DiffMethod    =   'explicit';
 % ======================================================================= %
 %% ==================== Define viscosity conditions ===================== %
 Py.eparam       =   'const';
-Py.b            =   log(1000); %log(16384);          % Temperaturabhaengigkeit
-Py.c            =   0; %log(64);                  % Tiefenabhaengigkeit
+Py.b            =   log(1000);  % log(16384);     % Temperaturabhaengigkeit
+Py.c            =   0;      % log(64);            % Tiefenabhaengigkeit
 B.EtaIni        =   'tdep';
 % ======================================================================= %
 %% ================== Define initial temperature anomaly ================ %
 B.Tini          =   'block';
-B.T0            =   1000;
-B.TAmpl         =   100; 
+B.T0            =   1000;       %   Background temperature [ K ]
+B.TAmpl         =   20;         %   Temperature pertubation [ K ]
 Py.tparam       =   'const';
 % ======================================================================= %
 %% ========================= Define flow field ========================== %
-B.IniFlow       =   'none';
 B.FlowFac       =   10;
 % ======================================================================= %
 %% ==================== Define model geometry constants ================= %
@@ -63,7 +62,9 @@ Py.kappa    =   Py.k/Py.rho0/Py.cp; % 	Thermische Diffusivitaet [ m^2/s ]
 Py.Q0       =   0;              % Waermeproduktionsrate pro Volumen [W/m^3]
 Py.Q0       =   Py.Q0/Py.rho0;  % Waermeproduktionsrate pro Masse [W/kg]
 
-Py.eta0     =   1e21;               %   Viskositaet [ Pa*s ]
+Py.eta0     =   1e23;           %   Viskositaet [ Pa*s ]
+
+Py.T0       =   273.0;          %   Surface temperature
 
 Py.DeltaT   =   1000;           %   Temperaturdifferenz
 
@@ -91,7 +92,7 @@ B.rtbc      =   'flux';
 %   if 'const'  -   following parameters define the temperatue at the boundary in K
 B.lhf       =   0;
 B.rhf       =   0;
-B.thf       =   273;
+B.thf       =   Py.T0;
 B.bhf       =   B.thf + Py.DeltaT;
 % ======================================================================= %
 %% ====================== Define time constants ========================= %
@@ -120,28 +121,33 @@ end
 %% ========================= Plot parameter ============================= %
 Pl.inc      =   min(N.nz/10,N.nx/10);
 Pl.inc      =   round(Pl.inc);
-Pl.xlab     =   '$$x$$';
-Pl.zlab     =   '$$z$$';
+Pl.tstpinc  =   50;
+Pl.xlab     =   'x [km]';
+Pl.zlab     =   'z [km]';
 switch Pl.plotfields
     case 'yes'
         if strcmp(getenv('OS'),'Windows_NT')
             set(figure(1),'position',[1.8,1.8,766.4,780.8]);
-            h           =   figure(1);
+            Pl.h        =   figure(1);
         else
-            set(figure(1),'position',[-1919,1,960,988]);
-            h           =   figure(1);
+            set(figure(1),'position',[1.8,26,866.2,949]);
+            Pl.h           =   figure(1);
         end
 end
 % Animation settings ---------------------------------------------------- %
 switch Pl.savefig
     case 'yes'
-        if ~exist('data/','dir')
-            mkdir('data/')
-        end
-        Pl.filename    = ['data/ThermalConvect_Ra_',sprintf('%2.2e',Py.Ra),...
+        M.ModDir    =   ['data/',Py.eparam,'_eta/ThermalConvect_Ra_',...
+            sprintf('%2.2e',Py.Ra),...
             '_eta_',Py.eparam,'_xmax_',num2str(M.xmax),...
-            '_nz_',num2str(N.nz),'.gif'];
-        h           =   figure(1);
+            '_nx_',num2str(N.nz),'_nz_',num2str(N.nz),'_Adv_',...
+            B.AdvMethod,'_Diff_',B.DiffMethod];
+        if ~exist(M.ModDir,'dir')
+            mkdir(M.ModDir)
+        end
+        Pl.filename =   [M.ModDir,'/Evolution.gif'];
+        set(figure(1),'position',[1.8,1.8,766.4,780.8]);
+        Pl.h        =   figure(1);
 end
 % ======================================================================= %
 %% ========================== Scale Parameters ========================== %
@@ -156,11 +162,10 @@ fprintf([' Thermische Konvektion fuer Ra = %2.2e:\n  --------------------- ',...
     '\n Advektion mit: %s',...
     '\n Viskositaet ist: %s',...
     '\n Anfangstemperaturfeld: %s',...
-    '\n Anfangsgeschwindigkeitsfeld: %s',...
     '\n Aufloesung (nx x nz): %i x %i',...
     '\n Refrenzviskositaet [Pa s]: %2.2e',...
     '\n  --------------------- ',...
-    '\n '],Py.Ra,B.DiffMethod,B.AdvMethod,Py.eparam,B.Tini,B.IniFlow,...
+    '\n '],Py.Ra,B.DiffMethod,B.AdvMethod,Py.eparam,B.Tini,...
     N.nx,N.nz,Py.eta0);
 fprintf(['Maximum Time : %1.4g',...
     '\n Maximale Anzahl an Iterationen: %5i',...
@@ -186,10 +191,14 @@ for it = 1:T.itmax
     %% ===================== Calculate time stepping ==================== %
     T.dt        =   T.dtfac*min(N.dx,abs(N.dz))/...
         (sqrt(max(max(D.vx))^2 + max(max(D.vz))^2));    
-    T.dtdiff    =   T.dtdifac*min([N.dx,abs(N.dz)])^2/4;    
+    T.dtdiff    =   T.dtdifac*min([N.dx,abs(N.dz)])^2/4;   
     T.dt        =   min(T.dt,T.dtdiff);    
     if it>1
         T.time(it)  =   T.time(it-1) + T.dt;
+        if T.time(it) > T.tmax 
+            T.dt        =   T.tmax - T.time(it-1);
+            T.time(it)  =   T.time(it-1) + T.dt; 
+        end
     end
     % =================================================================== %
     %% =========== Interpolate velocity onto the regular grid =========== %
@@ -230,18 +239,14 @@ end
 %% ======================== Save final figure =========================== %
 switch Pl.savefig
     case 'yes'
-        saveas(figure(1),['data/ThermalConvect_Ra_',sprintf('%2.0e',Py.Ra),...
-            '_eta_',Py.eparam,'_xmax_',num2str(M.xmax),...
-            '_nz_',num2str(N.nz),'_SS'],'png')
+        saveas(figure(1),[M.ModDir,'/Field_SS'],'png')
 end
 % ======================================================================= %
 %% ======================== Plot time serieses ========================== %
 PlotTimeSerieses(Py,T,D,M,N)
 switch Pl.savefig
     case 'yes'
-        saveas(figure(2),['data/ThermalConvect_Ra_',sprintf('%2.0e',Py.Ra),...
-            '_eta_',Py.eparam,'_xmax_',num2str(M.xmax),...
-            '_nz_',num2str(N.nz),'_TimeSeries'],'png')
+        saveas(figure(2),[M.ModDir,'/TimeSeries'],'png')
 end
 % ======================================================================= %
 T.tend      = toc(T.tstart);
@@ -260,9 +265,6 @@ else
     rmpath('../../ScaleParam')
 end
 % ======================================================================= %
-
-% profile viewer
-
 % ======================================================================= %
 % =============================== END =================================== %
 % ======================================================================= %

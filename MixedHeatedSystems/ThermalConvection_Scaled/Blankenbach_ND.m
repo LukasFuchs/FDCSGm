@@ -24,7 +24,7 @@ T.tstart        =   tic;
 %% ===================== Some initial definitions ======================= %
 Pl.savefig      =   'yes';
 Pl.plotfields   =   'yes';
-Py.scale        =   'no';
+Py.scale        =   'yes';
 % ======================================================================= %
 %% ============ Define method to solve the energy equation ============== %
 B.AdvMethod     =   'upwind';
@@ -66,7 +66,7 @@ Py.kappa    =   Py.k/Py.rho0/Py.cp; % 	Thermische Diffusivitaet [ m^2/s ]
 Py.Q0       =   0;              % Waermeproduktionsrate pro Volumen [W/m^3]
 Py.Q0       =   Py.Q0/Py.rho0;  % Waermeproduktionsrate pro Masse [W/kg]
 
-Py.eta0     =   1e21;           %   Viskositaet [ Pa*s ]
+Py.eta0     =   1e23;           %   Viskositaet [ Pa*s ]
 
 Py.T0       =   273.0;          %   Surface temperature
 
@@ -171,22 +171,22 @@ fprintf([' Thermische Konvektion fuer Ra = %2.2e:\n  --------------------- ',...
     '\n  --------------------- ',...
     '\n '],Py.Ra,B.DiffMethod,B.AdvMethod,Py.eparam,B.Tini,...
     N.nx,N.nz,Py.eta0);
-fprintf(['Maximum Time : %1.4g [ Ma ]',...
+fprintf(['Maximum Time : %1.4g',...
     '\n Maximale Anzahl an Iterationen: %5i',...
     '\n  --------------------- \n'],...
-    T.tmax/(1e6*(365.25*24*60*60)),T.itmax)
+    T.tmax,T.itmax)
 % ======================================================================= %
 %% ========================= Time loop ================================= %%
 for it = 1:T.itmax
     if(strcmp(B.AdvMethod,'none')==0)
         switch Py.eparam
             case 'const'
-                [D,A]       =   solveSECE_const_Eta(D,Py,N,B,A);
+                [D,A]       =   solveSECE_const_EtaSc(D,Py,N,B,A);
                 if (it == 2)
                     N.beenhere = 1;
                 end
             case 'variable'
-                [D,A]       =   solveSECE(D,Py,N,B);
+                [D,A]       =   solveSECESc(D,Py,N,B);
             otherwise
                 error('Viscosity not difined! Check Py.eparam parameter.')
         end
@@ -195,7 +195,7 @@ for it = 1:T.itmax
     %% ===================== Calculate time stepping ==================== %
     T.dt        =   T.dtfac*min(N.dx,abs(N.dz))/...
         (sqrt(max(max(D.vx))^2 + max(max(D.vz))^2));    
-    T.dtdiff    =   T.dtdifac*min([N.dx,abs(N.dz)])^2/Py.kappa/4;   
+    T.dtdiff    =   T.dtdifac*min([N.dx,abs(N.dz)])^2/4;   
     T.dt        =   min(T.dt,T.dtdiff);    
     if it>1
         T.time(it)  =   T.time(it-1) + T.dt;
@@ -208,11 +208,10 @@ for it = 1:T.itmax
     %% =========== Interpolate velocity onto the regular grid =========== %
     [ID]            =   InterpStaggered(D,ID,N,'velocity');
     ID.vmag         =   hypot(ID.vx,ID.vz); % sqrt(vx^2+vz^2)
-    D.meanV(it)     =   sqrt(sum(ID.vmag.^2 .* N.dx .* (-N.dz),'all')/M.L/(-M.H)) * ...
-                            ((-M.H * Py.rho0 * Py.cp)/ Py.k);
+    D.meanV(it)     =   sqrt(sum(ID.vmag.^2 .* N.dx .* (-N.dz),'all'));
     % =================================================================== %
     %% ========================== Plot data ============================= %
-    Pl              =   PlotData_dim(it,Pl,T,D,M,ID,Py);
+    Pl              =   PlotData(it,Pl,T,D,M,ID,Py);
     % =================================================================== %
     %% ========================== Advection ============================= %
     [D,Ma,ID]       =   Advection(it,N,B,D,ID,Py,T.dt,M,Ma);
@@ -223,7 +222,7 @@ for it = 1:T.itmax
     %% ================== Heat flow at the surface ====================== %
     D.dTtop         =   (D.T(1,:)-D.T(2,:))./N.dz;
     D.dTbot         =   (D.T(end-1,:)-D.T(end,:))./N.dz;
-    D.Nus(it)       =   (-M.H/(Py.DeltaT*M.L)) * sum(abs(D.dTtop).*N.dx);
+    D.Nus(it)       =   sum(abs(D.dTtop).*N.dx);
     
     D.meanT(:,it)   =   mean(D.T,2);
     % =================================================================== %
@@ -233,9 +232,6 @@ for it = 1:T.itmax
             D.eta   =   exp( -Py.b.*((D.T-D.T(1,1))./(D.T(N.nz,1)-D.T(1,1)))...
                 + Py.c.*M.Z);
     end
-    % =================================================================== %
-    %% Zustandsgleichung ================================================ %
-    D.rho       =   Py.rho0.*(1-Py.alpha.*(D.T-D.T(1,1)));
     % =================================================================== %
     %% ========================== Check break =========================== %
     [answer,T]      =   CheckBreakCriteria(it,T,D,M,Pl,ID,Py);
@@ -251,11 +247,10 @@ switch Pl.savefig
 end
 % ======================================================================= %
 %% ======================== Plot time serieses ========================== %
-PlotTimeSerieses_dim(Py,T,D,M,N,Ger)
+PlotTimeSerieses(Py,T,D,M,N,Ger)
 switch Pl.savefig
     case 'yes'
         saveas(figure(2),[M.ModDir,'/TimeSeries'],'png')
-        saveas(figure(3),[M.ModDir,'/Tmean_end'],'png')
 end
 % ======================================================================= %
 T.tend      = toc(T.tstart);
