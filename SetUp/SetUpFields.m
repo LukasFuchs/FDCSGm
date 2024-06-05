@@ -103,6 +103,7 @@ Pl.tauColMapName    =   'nuuk';
 Pl.epsColMapName    =   'batlowW';
 Pl.PColMapName      =   'hawaii';
 Pl.batlowMapName    =   'batlow';
+Pl.devonMapName     =   'devon';
 
 if strcmp(getenv('OS'),'Windows_NT')
     Pl.SciColDir    =   ['D:\Users\lukas\Numerics\BACKUP\',...
@@ -110,7 +111,7 @@ if strcmp(getenv('OS'),'Windows_NT')
         'ScientificColourMaps',num2str(Version)];
     Pl.Slash        =   '\';
 else
-    Pl.SciColDir    =   ['/home/external_homes/lufuchs/',...
+    Pl.SciColDir    =   ['/home/lufuchs/',...
         'progs/src/MATLAB/FDCSGm/',...
         '/ScientificColourMaps',num2str(Version)];
     Pl.Slash        =   '/';
@@ -132,8 +133,10 @@ Pl.epsColMap    =   [Pl.SciColDir,Pl.Slash,Pl.epsColMapName,Pl.Slash,...
     Pl.epsColMapName,'.mat'];
 Pl.PColMap      =   [Pl.SciColDir,Pl.Slash,Pl.PColMapName,Pl.Slash,...
     Pl.PColMapName,'.mat'];
-Pl.batlowMap      =   [Pl.SciColDir,Pl.Slash,Pl.batlowMapName,Pl.Slash,...
+Pl.batlowMap    =   [Pl.SciColDir,Pl.Slash,Pl.batlowMapName,Pl.Slash,...
     Pl.batlowMapName,'.mat'];
+Pl.devonMap     =   [Pl.SciColDir,Pl.Slash,Pl.devonMapName,Pl.Slash,...
+    Pl.devonMapName,'.mat'];
 
 load(Pl.TColMap); Pl.lajolla    = lajolla;
 load(Pl.VColMap); Pl.imola      = imola;
@@ -144,5 +147,6 @@ load(Pl.tauColMap); Pl.nuuk     = nuuk;
 load(Pl.epsColMap); Pl.batlowW  = batlowW;
 load(Pl.PColMap); Pl.hawaii  = hawaii;
 load(Pl.batlowMap); Pl.batlow  = batlow;
+load(Pl.devonMap); Pl.devon  = devon;
 
 end
