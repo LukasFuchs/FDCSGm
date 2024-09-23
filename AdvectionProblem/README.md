@@ -9,7 +9,7 @@
 
 &emsp;In general, advection describes the transport of a property, here the temperature, from one point to another, where one can assume different reference frames for the given point of interest. If we assume a not moving reference frame (that is an *Eulerian* grid), the change in temperature at a certain point can be described by (i.e. the *eulerian advective transport equation*): 
 
-$\frac{\partial T}{\partial t} = - \overrightarrow{v} \cdot \nabla T$,&emsp;&emsp;&emsp;(1)
+,&emsp;&emsp;&emsp;(1)
 
 or in a Lagrangian reference frame (along a moving point; i.e., the *substantive* derivative) as: 
 
